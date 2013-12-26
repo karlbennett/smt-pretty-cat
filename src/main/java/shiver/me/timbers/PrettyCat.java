@@ -15,9 +15,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.LinkedList;
 
+import static java.util.Arrays.asList;
 import static shiver.me.timbers.KeyWords.KEYWORD_NAMES;
 
 public class PrettyCat {
@@ -36,25 +36,25 @@ public class PrettyCat {
             new TerminalColourApplyer(YELLOW)
     );
 
+    @SuppressWarnings("unchecked")
     private static final Transformations TRANSFORMATIONS = new IndividualTransformations(
-            new LinkedList<Transformation>() {{
-                for (Transformation transformation : KEYWORD_TRANSFORMATIONS) {
-                    add(transformation);
-                }
-                add(new Annotation(new TerminalColourApplyer(RED)));
-                add(new AnnotationName(new TerminalColourApplyer(RED)));
-                add(new IntegerLiteral(new TerminalColourApplyer(BLUE)));
-                add(new StringLiteral(new TerminalColourApplyer(GREEN)));
-                add(new VariableDeclaratorId(new TerminalColourApplyer(CYAN)));
-            }}
+            asList(
+                    KEYWORD_TRANSFORMATIONS,
+                    new LinkedList<Transformation>() {{
+                        add(new Annotation(new TerminalColourApplyer(RED)));
+                        add(new AnnotationName(new TerminalColourApplyer(RED)));
+                        add(new IntegerLiteral(new TerminalColourApplyer(BLUE)));
+                        add(new StringLiteral(new TerminalColourApplyer(GREEN)));
+                        add(new VariableDeclaratorId(new TerminalColourApplyer(CYAN)));
+                    }}
+            )
     );
 
     public static void main(String[] args) throws IOException {
 
         final InputStream stream = new FileInputStream(new File(args[0]));
 
-        System.out.println(new JavaTransformer(new IndividualTransformations(Collections.<Transformation>emptySet()))
-                .transform(stream, TRANSFORMATIONS));
+        System.out.println(new JavaTransformer().transform(stream, TRANSFORMATIONS));
     }
 
     private static class TerminalColourApplyer implements Applyer {
