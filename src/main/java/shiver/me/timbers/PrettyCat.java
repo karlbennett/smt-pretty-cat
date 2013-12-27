@@ -8,7 +8,10 @@ import shiver.me.timbers.transform.CompoundTransformations;
 import shiver.me.timbers.transform.IndividualTransformations;
 import shiver.me.timbers.transform.Transformation;
 import shiver.me.timbers.transform.Transformations;
+import shiver.me.timbers.types.Comment;
 import shiver.me.timbers.types.IntegerLiteral;
+import shiver.me.timbers.types.JavaDoc;
+import shiver.me.timbers.types.LineComment;
 import shiver.me.timbers.types.StringLiteral;
 
 import java.io.File;
@@ -20,6 +23,9 @@ import java.util.LinkedList;
 import static java.util.Arrays.asList;
 import static shiver.me.timbers.KeyWords.KEYWORD_NAMES;
 
+/**
+ * This application can be used to print different types of source code to the terminal with syntactic highlighting.
+ */
 public class PrettyCat {
 
     private static final String ESC = "\033[";
@@ -30,10 +36,13 @@ public class PrettyCat {
     private static final int YELLOW = 33;
     private static final int BLUE = 34;
     private static final int CYAN = 36;
+    private static final int WHITE = 37;
+    private static final int BRIGHT_GREEN = 92;
+    private static final int BRIGHT_WHITE = 97;
 
     private static final Transformations KEYWORD_TRANSFORMATIONS = new CompoundTransformations(
             KEYWORD_NAMES,
-            new TerminalColourApplyer(YELLOW)
+            new SimpleTerminalColourApplyer(YELLOW)
     );
 
     @SuppressWarnings("unchecked")
@@ -41,11 +50,14 @@ public class PrettyCat {
             asList(
                     KEYWORD_TRANSFORMATIONS,
                     new LinkedList<Transformation>() {{
-                        add(new Annotation(new TerminalColourApplyer(RED)));
-                        add(new AnnotationName(new TerminalColourApplyer(RED)));
-                        add(new IntegerLiteral(new TerminalColourApplyer(BLUE)));
-                        add(new StringLiteral(new TerminalColourApplyer(GREEN)));
-                        add(new VariableDeclaratorId(new TerminalColourApplyer(CYAN)));
+                        add(new JavaDoc(new SimpleTerminalColourApplyer(GREEN)));
+                        add(new Comment(new SimpleTerminalColourApplyer(WHITE)));
+                        add(new LineComment(new SimpleTerminalColourApplyer(WHITE)));
+                        add(new Annotation(new SimpleTerminalColourApplyer(RED)));
+                        add(new AnnotationName(new SimpleTerminalColourApplyer(RED)));
+                        add(new IntegerLiteral(new SimpleTerminalColourApplyer(BLUE)));
+                        add(new StringLiteral(new SimpleTerminalColourApplyer(BRIGHT_GREEN)));
+                        add(new VariableDeclaratorId(new SimpleTerminalColourApplyer(CYAN)));
                     }}
             )
     );
@@ -54,21 +66,22 @@ public class PrettyCat {
 
         final InputStream stream = new FileInputStream(new File(args[0]));
 
-        System.out.println(new JavaTransformer().transform(stream, TRANSFORMATIONS));
+        // Reset the colour scheme after printing the highlighted source code.
+        System.out.println(new JavaTransformer().transform(stream, TRANSFORMATIONS) + RESET);
     }
 
-    private static class TerminalColourApplyer implements Applyer {
+    private static class SimpleTerminalColourApplyer implements Applyer {
 
         private final int colour;
 
-        private TerminalColourApplyer(int colour) {
+        private SimpleTerminalColourApplyer(int colour) {
             this.colour = colour;
         }
 
         @Override
         public String apply(String string) {
 
-            return ESC + colour + "m" + string + RESET;
+            return ESC + colour + "m" + string + ESC + BRIGHT_WHITE + "m";
         }
     }
 }
