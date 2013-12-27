@@ -1,18 +1,19 @@
 package shiver.me.timbers;
 
-import shiver.me.timbers.rules.Annotation;
-import shiver.me.timbers.rules.AnnotationName;
-import shiver.me.timbers.rules.VariableDeclaratorId;
+import shiver.me.timbers.transform.java.JavaTransformer;
+import shiver.me.timbers.transform.java.rules.Annotation;
+import shiver.me.timbers.transform.java.rules.AnnotationName;
+import shiver.me.timbers.transform.java.rules.VariableDeclaratorId;
 import shiver.me.timbers.transform.Applyer;
 import shiver.me.timbers.transform.CompoundTransformations;
 import shiver.me.timbers.transform.IndividualTransformations;
 import shiver.me.timbers.transform.Transformation;
 import shiver.me.timbers.transform.Transformations;
-import shiver.me.timbers.types.Comment;
-import shiver.me.timbers.types.IntegerLiteral;
-import shiver.me.timbers.types.JavaDoc;
-import shiver.me.timbers.types.LineComment;
-import shiver.me.timbers.types.StringLiteral;
+import shiver.me.timbers.transform.java.types.Comment;
+import shiver.me.timbers.transform.java.types.IntegerLiteral;
+import shiver.me.timbers.transform.java.types.JavaDoc;
+import shiver.me.timbers.transform.java.types.LineComment;
+import shiver.me.timbers.transform.java.types.StringLiteral;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +22,7 @@ import java.io.InputStream;
 import java.util.LinkedList;
 
 import static java.util.Arrays.asList;
-import static shiver.me.timbers.KeyWords.KEYWORD_NAMES;
+import static shiver.me.timbers.transform.java.KeyWords.KEYWORD_NAMES;
 
 /**
  * This application can be used to print different types of source code to the terminal with syntactic highlighting.
