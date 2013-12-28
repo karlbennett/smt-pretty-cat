@@ -1,14 +1,16 @@
 package shiver.me.timbers;
 
+import org.antlr.v4.runtime.RuleContext;
+import org.antlr.v4.runtime.Token;
+import shiver.me.timbers.transform.IndividualTransformations;
+import shiver.me.timbers.transform.Transformations;
+import shiver.me.timbers.transform.antlr4.CompoundTransformations;
+import shiver.me.timbers.transform.antlr4.TokenApplyer;
+import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.java.JavaTransformer;
 import shiver.me.timbers.transform.java.rules.Annotation;
 import shiver.me.timbers.transform.java.rules.AnnotationName;
 import shiver.me.timbers.transform.java.rules.VariableDeclaratorId;
-import shiver.me.timbers.transform.Applyer;
-import shiver.me.timbers.transform.CompoundTransformations;
-import shiver.me.timbers.transform.IndividualTransformations;
-import shiver.me.timbers.transform.Transformation;
-import shiver.me.timbers.transform.Transformations;
 import shiver.me.timbers.transform.java.types.Comment;
 import shiver.me.timbers.transform.java.types.IntegerLiteral;
 import shiver.me.timbers.transform.java.types.JavaDoc;
@@ -22,6 +24,7 @@ import java.io.InputStream;
 import java.util.LinkedList;
 
 import static java.util.Arrays.asList;
+import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TOKEN_TRANSFORMATION;
 import static shiver.me.timbers.transform.java.KeyWords.KEYWORD_NAMES;
 
 /**
@@ -41,27 +44,29 @@ public class PrettyCat {
     private static final int BRIGHT_GREEN = 92;
     private static final int BRIGHT_WHITE = 97;
 
-    private static final Transformations KEYWORD_TRANSFORMATIONS = new CompoundTransformations(
+    private static final Transformations<TokenTransformation> KEYWORD_TRANSFORMATIONS = new CompoundTransformations(
             KEYWORD_NAMES,
             new SimpleTerminalColourApplyer(YELLOW)
     );
 
     @SuppressWarnings("unchecked")
-    private static final Transformations TRANSFORMATIONS = new IndividualTransformations(
-            asList(
-                    KEYWORD_TRANSFORMATIONS,
-                    new LinkedList<Transformation>() {{
-                        add(new JavaDoc(new SimpleTerminalColourApplyer(GREEN)));
-                        add(new Comment(new SimpleTerminalColourApplyer(WHITE)));
-                        add(new LineComment(new SimpleTerminalColourApplyer(WHITE)));
-                        add(new Annotation(new SimpleTerminalColourApplyer(RED)));
-                        add(new AnnotationName(new SimpleTerminalColourApplyer(RED)));
-                        add(new IntegerLiteral(new SimpleTerminalColourApplyer(BLUE)));
-                        add(new StringLiteral(new SimpleTerminalColourApplyer(BRIGHT_GREEN)));
-                        add(new VariableDeclaratorId(new SimpleTerminalColourApplyer(CYAN)));
-                    }}
-            )
-    );
+    private static final Transformations<TokenTransformation> TRANSFORMATIONS =
+            new IndividualTransformations<TokenTransformation>(
+                    asList(
+                            KEYWORD_TRANSFORMATIONS,
+                            new LinkedList<TokenTransformation>() {{
+                                add(new JavaDoc(new SimpleTerminalColourApplyer(GREEN)));
+                                add(new Comment(new SimpleTerminalColourApplyer(WHITE)));
+                                add(new LineComment(new SimpleTerminalColourApplyer(WHITE)));
+                                add(new Annotation(new SimpleTerminalColourApplyer(RED)));
+                                add(new AnnotationName(new SimpleTerminalColourApplyer(RED)));
+                                add(new IntegerLiteral(new SimpleTerminalColourApplyer(BLUE)));
+                                add(new StringLiteral(new SimpleTerminalColourApplyer(BRIGHT_GREEN)));
+                                add(new VariableDeclaratorId(new SimpleTerminalColourApplyer(CYAN)));
+                            }}
+                    ),
+                    NULL_TOKEN_TRANSFORMATION
+            );
 
     public static void main(String[] args) throws IOException {
 
@@ -71,7 +76,7 @@ public class PrettyCat {
         System.out.println(new JavaTransformer().transform(stream, TRANSFORMATIONS) + RESET);
     }
 
-    private static class SimpleTerminalColourApplyer implements Applyer {
+    private static class SimpleTerminalColourApplyer implements TokenApplyer {
 
         private final int colour;
 
@@ -80,7 +85,7 @@ public class PrettyCat {
         }
 
         @Override
-        public String apply(String string) {
+        public String apply(RuleContext context, Token token, String string) {
 
             return ESC + colour + "m" + string + ESC + BRIGHT_WHITE + "m";
         }
