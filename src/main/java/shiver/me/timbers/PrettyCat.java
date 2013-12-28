@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.Token;
 import shiver.me.timbers.transform.IndividualTransformations;
 import shiver.me.timbers.transform.Transformations;
 import shiver.me.timbers.transform.antlr4.CompoundTransformations;
-import shiver.me.timbers.transform.antlr4.TokenApplyer;
+import shiver.me.timbers.transform.antlr4.TokenApplier;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.java.JavaTransformer;
 import shiver.me.timbers.transform.java.rules.Annotation;
@@ -46,7 +46,7 @@ public class PrettyCat {
 
     private static final Transformations<TokenTransformation> KEYWORD_TRANSFORMATIONS = new CompoundTransformations(
             KEYWORD_NAMES,
-            new SimpleTerminalColourApplyer(YELLOW)
+            new SimpleTerminalColourApplier(YELLOW)
     );
 
     @SuppressWarnings("unchecked")
@@ -55,14 +55,14 @@ public class PrettyCat {
                     asList(
                             KEYWORD_TRANSFORMATIONS,
                             new LinkedList<TokenTransformation>() {{
-                                add(new JavaDoc(new SimpleTerminalColourApplyer(GREEN)));
-                                add(new Comment(new SimpleTerminalColourApplyer(WHITE)));
-                                add(new LineComment(new SimpleTerminalColourApplyer(WHITE)));
-                                add(new Annotation(new SimpleTerminalColourApplyer(RED)));
-                                add(new AnnotationName(new SimpleTerminalColourApplyer(RED)));
-                                add(new IntegerLiteral(new SimpleTerminalColourApplyer(BLUE)));
-                                add(new StringLiteral(new SimpleTerminalColourApplyer(BRIGHT_GREEN)));
-                                add(new VariableDeclaratorId(new SimpleTerminalColourApplyer(CYAN)));
+                                add(new JavaDoc(new SimpleTerminalColourApplier(GREEN)));
+                                add(new Comment(new SimpleTerminalColourApplier(WHITE)));
+                                add(new LineComment(new SimpleTerminalColourApplier(WHITE)));
+                                add(new Annotation(new SimpleTerminalColourApplier(RED)));
+                                add(new AnnotationName(new SimpleTerminalColourApplier(RED)));
+                                add(new IntegerLiteral(new SimpleTerminalColourApplier(BLUE)));
+                                add(new StringLiteral(new SimpleTerminalColourApplier(BRIGHT_GREEN)));
+                                add(new VariableDeclaratorId(new SimpleTerminalColourApplier(CYAN)));
                             }}
                     ),
                     NULL_TOKEN_TRANSFORMATION
@@ -76,11 +76,11 @@ public class PrettyCat {
         System.out.println(new JavaTransformer().transform(stream, TRANSFORMATIONS) + RESET);
     }
 
-    private static class SimpleTerminalColourApplyer implements TokenApplyer {
+    private static class SimpleTerminalColourApplier implements TokenApplier {
 
         private final int colour;
 
-        private SimpleTerminalColourApplyer(int colour) {
+        private SimpleTerminalColourApplier(int colour) {
             this.colour = colour;
         }
 
