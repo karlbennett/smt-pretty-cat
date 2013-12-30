@@ -19,7 +19,7 @@ import shiver.me.timbers.transform.java.types.StringLiteral;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.LinkedList;
 
@@ -68,7 +68,7 @@ public class PrettyCat {
                     NULL_TOKEN_TRANSFORMATION
             );
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws FileNotFoundException {
 
         final InputStream stream = new FileInputStream(new File(args[0]));
 
