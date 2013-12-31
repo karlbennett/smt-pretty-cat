@@ -36,21 +36,35 @@ public class FileTransformersTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testCreate() {
+    public void testCreateWithMap() {
 
-        new FileTransformers(mock(Map.class), mock(WrappedTransformer.class));
+        new FileTransformers(mock(Map.class));
     }
 
     @Test(expected = AssertionError.class)
     @SuppressWarnings("unchecked")
     public void testCreateWithNullMap() {
 
+        new FileTransformers(null);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testCreateWithMapAndTransformer() {
+
+        new FileTransformers(mock(Map.class), mock(WrappedTransformer.class));
+    }
+
+    @Test(expected = AssertionError.class)
+    @SuppressWarnings("unchecked")
+    public void testCreateWithNullMapAndTransformer() {
+
         new FileTransformers(null, mock(WrappedTransformer.class));
     }
 
     @Test(expected = AssertionError.class)
     @SuppressWarnings("unchecked")
-    public void testCreateWithNullTransformer() {
+    public void testCreateWithMapAndNullTransformer() {
 
         new FileTransformers(mock(Map.class), null);
     }
