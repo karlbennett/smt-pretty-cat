@@ -25,6 +25,9 @@ public class FileTransformer {
         this.transformers = transformers;
     }
 
+    /**
+     * Transform the text within the supplied file.
+     */
     public String transform(File file) {
 
         final WrappedTransformer<TokenTransformation> transformer = transformers.get(file);
