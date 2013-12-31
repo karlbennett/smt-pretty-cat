@@ -1,6 +1,7 @@
-package shiver.me.timbers;
+package shiver.me.timbers.java;
 
 import org.junit.Test;
+import shiver.me.timbers.ColourConfiguration;
 import shiver.me.timbers.transform.java.rules.Annotation;
 import shiver.me.timbers.transform.java.types.Comment;
 import shiver.me.timbers.transform.java.types.IntegerLiteral;

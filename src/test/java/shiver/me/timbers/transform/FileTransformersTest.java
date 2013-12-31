@@ -1,8 +1,7 @@
-package shiver.me.timbers;
+package shiver.me.timbers.transform;
 
 import org.junit.Before;
 import org.junit.Test;
-import shiver.me.timbers.transform.WrappedTransformer;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import java.io.File;

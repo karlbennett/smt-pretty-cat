@@ -1,8 +1,6 @@
-package shiver.me.timbers;
+package shiver.me.timbers.transform;
 
 import org.apache.commons.io.IOUtils;
-import shiver.me.timbers.transform.Transformations;
-import shiver.me.timbers.transform.Transformer;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import java.io.IOException;

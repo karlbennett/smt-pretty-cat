@@ -1,7 +1,5 @@
-package shiver.me.timbers;
+package shiver.me.timbers.transform;
 
-import shiver.me.timbers.transform.IndividualTransformations;
-import shiver.me.timbers.transform.WrappedTransformer;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TOKEN_TRANSFORMATION;

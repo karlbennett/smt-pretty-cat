@@ -1,6 +1,8 @@
-package shiver.me.timbers;
+package shiver.me.timbers.java;
 
+import shiver.me.timbers.ColourConfiguration;
 import shiver.me.timbers.transform.IndividualTransformations;
+import shiver.me.timbers.transform.TerminalForegroundColourTokenApplier;
 import shiver.me.timbers.transform.Transformations;
 import shiver.me.timbers.transform.WrappedTransformer;
 import shiver.me.timbers.transform.antlr4.CompoundTransformations;

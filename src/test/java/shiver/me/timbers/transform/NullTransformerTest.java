@@ -1,9 +1,8 @@
-package shiver.me.timbers;
+package shiver.me.timbers.transform;
 
 import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
 import org.junit.Test;
-import shiver.me.timbers.transform.Transformations;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import java.io.IOException;

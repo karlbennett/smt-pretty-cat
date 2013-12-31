@@ -1,12 +1,10 @@
-package shiver.me.timbers;
+package shiver.me.timbers.transform;
 
 import org.junit.Test;
-import shiver.me.timbers.transform.WrappedTransformer;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -15,6 +13,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static shiver.me.timbers.FileUtils.testFile;
 
 public class FileTransformerTest {
 
@@ -65,12 +64,5 @@ public class FileTransformerTest {
     public void testTransformWithNullFile() {
 
         new FileTransformer(mock(Transformers.class)).transform(null);
-    }
-
-    private static File testFile() {
-
-        final URL url = FileTransformerTest.class.getResource("Test.txt");
-
-        return new File(url.getFile());
     }
 }

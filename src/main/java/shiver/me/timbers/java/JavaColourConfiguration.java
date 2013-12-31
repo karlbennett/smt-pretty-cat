@@ -1,5 +1,7 @@
-package shiver.me.timbers;
+package shiver.me.timbers.java;
 
+import shiver.me.timbers.ColourConfiguration;
+import shiver.me.timbers.FOREGROUND_COLOUR;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.java.rules.Annotation;
 import shiver.me.timbers.transform.java.rules.AnnotationName;
