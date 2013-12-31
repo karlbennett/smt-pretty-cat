@@ -1,6 +1,6 @@
 package shiver.me.timbers.java;
 
-import shiver.me.timbers.ColourConfiguration;
+import shiver.me.timbers.FOREGROUND_COLOUR;
 import shiver.me.timbers.transform.IndividualTransformations;
 import shiver.me.timbers.transform.TerminalForegroundColourTokenApplier;
 import shiver.me.timbers.transform.Transformations;
@@ -19,45 +19,54 @@ import shiver.me.timbers.transform.java.types.StringLiteral;
 
 import java.util.Arrays;
 
-import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
 import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TOKEN_TRANSFORMATION;
 import static shiver.me.timbers.transform.java.KeyWords.KEYWORD_NAMES;
 
 public class JavaWrappedTransformer extends WrappedTransformer<TokenTransformation> {
 
-    public JavaWrappedTransformer(ColourConfiguration configuration) {
-        super(new JavaTransformer(), configureTransformations(configuration));
+    public JavaWrappedTransformer() {
+        super(new JavaTransformer(), configureTransformations());
     }
 
     @SuppressWarnings("unchecked")
-    private static Transformations<TokenTransformation> configureTransformations(ColourConfiguration configuration) {
+    private static Transformations<TokenTransformation> configureTransformations() {
 
         final Transformations<TokenTransformation> keywordTransformations = new CompoundTransformations(KEYWORD_NAMES,
-                new TerminalForegroundColourTokenApplier(YELLOW));
+                new TerminalForegroundColourTokenApplier(getProperty("keywords", "YELLOW")));
 
         return new IndividualTransformations<TokenTransformation>(
                 Arrays.<Iterable<TokenTransformation>>asList(
                         keywordTransformations,
                         Arrays.<TokenTransformation>asList(
                                 new JavaDoc(new TerminalForegroundColourTokenApplier(
-                                        configuration.getForegroundColourName(JavaDoc.class))),
+                                        getProperty(JavaDoc.class, "GREEN"))),
                                 new Comment(new TerminalForegroundColourTokenApplier(
-                                        configuration.getForegroundColourName(Comment.class))),
+                                        getProperty(Comment.class, "WHITE"))),
                                 new LineComment(new TerminalForegroundColourTokenApplier(
-                                        configuration.getForegroundColourName(LineComment.class))),
+                                        getProperty(LineComment.class, "WHITE"))),
                                 new Annotation(new TerminalForegroundColourTokenApplier(
-                                        configuration.getForegroundColourName(Annotation.class))),
+                                        getProperty(Annotation.class, "RED"))),
                                 new AnnotationName(new TerminalForegroundColourTokenApplier(
-                                        configuration.getForegroundColourName(AnnotationName.class))),
+                                        getProperty(AnnotationName.class, "RED"))),
                                 new IntegerLiteral(new TerminalForegroundColourTokenApplier(
-                                        configuration.getForegroundColourName(IntegerLiteral.class))),
+                                        getProperty(IntegerLiteral.class, "BLUE"))),
                                 new StringLiteral(new TerminalForegroundColourTokenApplier(
-                                        configuration.getForegroundColourName(StringLiteral.class))),
+                                        getProperty(StringLiteral.class, "BRIGHT_GREEN"))),
                                 new VariableDeclaratorId(new TerminalForegroundColourTokenApplier(
-                                        configuration.getForegroundColourName(VariableDeclaratorId.class)))
+                                        getProperty(VariableDeclaratorId.class, "CYAN")))
                         )
                 ),
                 NULL_TOKEN_TRANSFORMATION
         );
+    }
+
+    private static FOREGROUND_COLOUR getProperty(Class type, String defaultColour) {
+
+        return getProperty(type.getSimpleName(), defaultColour);
+    }
+
+    private static FOREGROUND_COLOUR getProperty(String name, String defaultColour) {
+
+        return FOREGROUND_COLOUR.valueOf(System.getProperty("java." + name, defaultColour));
     }
 }

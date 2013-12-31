@@ -1,6 +1,5 @@
 package shiver.me.timbers;
 
-import shiver.me.timbers.java.JavaColourConfiguration;
 import shiver.me.timbers.java.JavaWrappedTransformer;
 import shiver.me.timbers.transform.FileTransformer;
 import shiver.me.timbers.transform.FileTransformers;
@@ -21,7 +20,7 @@ public class PrettyCat {
 
     private static final Transformers<File, TokenTransformation> TRANSFORMATIONS = new FileTransformers(
             new HashMap<String, WrappedTransformer<TokenTransformation>>() {{
-                put("java", new JavaWrappedTransformer(new JavaColourConfiguration()));
+                put("java", new JavaWrappedTransformer());
             }});
 
     public static void main(String[] args) throws FileNotFoundException {
