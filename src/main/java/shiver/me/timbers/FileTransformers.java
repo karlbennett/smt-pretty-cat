@@ -1,7 +1,7 @@
 package shiver.me.timbers;
 
 import org.apache.commons.io.FilenameUtils;
-import shiver.me.timbers.transform.Transformer;
+import shiver.me.timbers.transform.WrappedTransformer;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import java.io.File;
@@ -20,9 +20,9 @@ import static shiver.me.timbers.checks.Checks.isNotNull;
  */
 public class FileTransformers implements Transformers<File, TokenTransformation> {
 
-    private final List<Transformer<TokenTransformation>> transformers;
-    private final Map<String, Transformer<TokenTransformation>> fileExtensionToTransformers;
-    private final Transformer<TokenTransformation> nullTransformer;
+    private final List<WrappedTransformer<TokenTransformation>> transformers;
+    private final Map<String, WrappedTransformer<TokenTransformation>> fileExtensionToTransformers;
+    private final WrappedTransformer<TokenTransformation> nullTransformer;
 
     /**
      * @param fileExtensionToTransformers this map should contain file extensions that map to their related
@@ -30,36 +30,37 @@ public class FileTransformers implements Transformers<File, TokenTransformation>
      * @param nullTransformer             this is the transformer that will be run when one cannot be found for the
      *                                    supplied file.
      */
-    public FileTransformers(Map<String, Transformer<TokenTransformation>> fileExtensionToTransformers,
-                            Transformer<TokenTransformation> nullTransformer) {
+    public FileTransformers(Map<String, WrappedTransformer<TokenTransformation>> fileExtensionToTransformers,
+                            WrappedTransformer<TokenTransformation> nullTransformer) {
 
         assertIsNotNull(argumentIsNullMessage("fileExtensionToTransformers"), fileExtensionToTransformers);
         assertIsNotNull(argumentIsNullMessage("nullTransformer"), nullTransformer);
 
-        this.transformers = new ArrayList<Transformer<TokenTransformation>>(fileExtensionToTransformers.values());
+        this.transformers =
+                new ArrayList<WrappedTransformer<TokenTransformation>>(fileExtensionToTransformers.values());
         this.fileExtensionToTransformers = fileExtensionToTransformers;
         this.nullTransformer = nullTransformer;
     }
 
     @Override
-    public Transformer<TokenTransformation> get(int index) {
+    public WrappedTransformer<TokenTransformation> get(int index) {
 
         return isValidIndex(index) ? transformers.get(index) : nullTransformer;
     }
 
     @Override
-    public Transformer<TokenTransformation> get(File key) {
+    public WrappedTransformer<TokenTransformation> get(File key) {
 
-        final Transformer<TokenTransformation> transformer =
+        final WrappedTransformer<TokenTransformation> transformer =
                 fileExtensionToTransformers.get(FilenameUtils.getExtension(key.getName()));
 
         return isNotNull(transformer) ? transformer : nullTransformer;
     }
 
     @Override
-    public Iterator<Transformer<TokenTransformation>> iterator() {
+    public Iterator<WrappedTransformer<TokenTransformation>> iterator() {
 
-        return new LinkedList<Transformer<TokenTransformation>>(transformers).iterator();
+        return new LinkedList<WrappedTransformer<TokenTransformation>>(transformers).iterator();
     }
 
     private boolean isValidIndex(int index) {
