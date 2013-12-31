@@ -1,11 +1,8 @@
 package shiver.me.timbers;
 
-import org.antlr.v4.runtime.RuleContext;
-import org.antlr.v4.runtime.Token;
 import shiver.me.timbers.transform.IndividualTransformations;
 import shiver.me.timbers.transform.Transformations;
 import shiver.me.timbers.transform.antlr4.CompoundTransformations;
-import shiver.me.timbers.transform.antlr4.TokenApplier;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.java.JavaTransformer;
 import shiver.me.timbers.transform.java.rules.Annotation;
@@ -24,6 +21,14 @@ import java.io.InputStream;
 import java.util.LinkedList;
 
 import static java.util.Arrays.asList;
+import static shiver.me.timbers.ESCAPE.RESET;
+import static shiver.me.timbers.FOREGROUND_COLOUR.BLUE;
+import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_GREEN;
+import static shiver.me.timbers.FOREGROUND_COLOUR.CYAN;
+import static shiver.me.timbers.FOREGROUND_COLOUR.GREEN;
+import static shiver.me.timbers.FOREGROUND_COLOUR.RED;
+import static shiver.me.timbers.FOREGROUND_COLOUR.WHITE;
+import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
 import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TOKEN_TRANSFORMATION;
 import static shiver.me.timbers.transform.java.KeyWords.KEYWORD_NAMES;
 
@@ -32,21 +37,9 @@ import static shiver.me.timbers.transform.java.KeyWords.KEYWORD_NAMES;
  */
 public class PrettyCat {
 
-    private static final String ESC = "\033[";
-    private static final String RESET = "\033[0m";
-
-    private static final int RED = 31;
-    private static final int GREEN = 32;
-    private static final int YELLOW = 33;
-    private static final int BLUE = 34;
-    private static final int CYAN = 36;
-    private static final int WHITE = 37;
-    private static final int BRIGHT_GREEN = 92;
-    private static final int BRIGHT_WHITE = 97;
-
     private static final Transformations<TokenTransformation> KEYWORD_TRANSFORMATIONS = new CompoundTransformations(
             KEYWORD_NAMES,
-            new SimpleTerminalColourApplier(YELLOW)
+            new TerminalForegroundColourTokenApplier(YELLOW)
     );
 
     @SuppressWarnings("unchecked")
@@ -55,14 +48,14 @@ public class PrettyCat {
                     asList(
                             KEYWORD_TRANSFORMATIONS,
                             new LinkedList<TokenTransformation>() {{
-                                add(new JavaDoc(new SimpleTerminalColourApplier(GREEN)));
-                                add(new Comment(new SimpleTerminalColourApplier(WHITE)));
-                                add(new LineComment(new SimpleTerminalColourApplier(WHITE)));
-                                add(new Annotation(new SimpleTerminalColourApplier(RED)));
-                                add(new AnnotationName(new SimpleTerminalColourApplier(RED)));
-                                add(new IntegerLiteral(new SimpleTerminalColourApplier(BLUE)));
-                                add(new StringLiteral(new SimpleTerminalColourApplier(BRIGHT_GREEN)));
-                                add(new VariableDeclaratorId(new SimpleTerminalColourApplier(CYAN)));
+                                add(new JavaDoc(new TerminalForegroundColourTokenApplier(GREEN)));
+                                add(new Comment(new TerminalForegroundColourTokenApplier(WHITE)));
+                                add(new LineComment(new TerminalForegroundColourTokenApplier(WHITE)));
+                                add(new Annotation(new TerminalForegroundColourTokenApplier(RED)));
+                                add(new AnnotationName(new TerminalForegroundColourTokenApplier(RED)));
+                                add(new IntegerLiteral(new TerminalForegroundColourTokenApplier(BLUE)));
+                                add(new StringLiteral(new TerminalForegroundColourTokenApplier(BRIGHT_GREEN)));
+                                add(new VariableDeclaratorId(new TerminalForegroundColourTokenApplier(CYAN)));
                             }}
                     ),
                     NULL_TOKEN_TRANSFORMATION
@@ -74,20 +67,5 @@ public class PrettyCat {
 
         // Reset the colour scheme after printing the highlighted source code.
         System.out.println(new JavaTransformer().transform(stream, TRANSFORMATIONS) + RESET);
-    }
-
-    private static class SimpleTerminalColourApplier implements TokenApplier {
-
-        private final int colour;
-
-        private SimpleTerminalColourApplier(int colour) {
-            this.colour = colour;
-        }
-
-        @Override
-        public String apply(RuleContext context, Token token, String string) {
-
-            return ESC + colour + "m" + string + ESC + BRIGHT_WHITE + "m";
-        }
     }
 }
