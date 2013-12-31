@@ -27,6 +27,15 @@ public class FileTransformers implements Transformers<File, TokenTransformation>
     /**
      * @param fileExtensionToTransformers this map should contain file extensions that map to their related
      *                                    transformers.
+     */
+    public FileTransformers(Map<String, WrappedTransformer<TokenTransformation>> fileExtensionToTransformers) {
+
+        this(fileExtensionToTransformers, new NullWrappedTransformer());
+    }
+
+    /**
+     * @param fileExtensionToTransformers this map should contain file extensions that map to their related
+     *                                    transformers.
      * @param nullTransformer             this is the transformer that will be run when one cannot be found for the
      *                                    supplied file.
      */
