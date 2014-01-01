@@ -6,6 +6,7 @@ import shiver.me.timbers.transform.FileTransformer;
 import shiver.me.timbers.transform.FileTransformers;
 import shiver.me.timbers.transform.Transformers;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
+import shiver.me.timbers.xml.LazyXmlWrappedTransformer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,6 +22,7 @@ public class PrettyCat {
     private static final Transformers<File, TokenTransformation> TRANSFORMATIONS = new FileTransformers(
             new HashMap<String, CompositeTransformer<TokenTransformation>>() {{
                 put("java", new LazyJavaWrappedTransformer());
+                put("xml", new LazyXmlWrappedTransformer());
             }});
 
     public static void main(String[] args) throws FileNotFoundException {

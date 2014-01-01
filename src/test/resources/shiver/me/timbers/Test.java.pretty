@@ -1,0 +1,25 @@
+[33mpackage[97m shiver.me.timbers;
+
+[33mimport[97m java.util.concurrent.Callable;
+
+[32m/**
+ * This class is to be used for an acceptance test of the {@link PrettyCat} class.
+ */[97m
+[33mpublic[97m [33mabstract[97m [33mclass[97m Test [33mimplements[97m Callable<Integer> {
+
+    [33mprivate[97m [33mfinal[97m String [36mtest[97m;
+
+    [33mpublic[97m Test() {
+        [37m// A comment.[97m
+        [33mthis[97m.test = [92m"a string"[97m;
+    }
+
+    [33mprotected[97m [33mabstract[97m [33mvoid[97m test();
+
+    [31m@[97m[31mOverride[97m
+    [33mpublic[97m Integer call() [33mthrows[97m Exception {
+
+        [33mreturn[97m [34m42[97m;
+    }
+}
+[0m

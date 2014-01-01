@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This is a comment -->
+<test>
+    <one>one</one>
+    <two>2</two>
+    <three/>
+    <four five="test attribute"/>
+</test>

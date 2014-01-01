@@ -13,6 +13,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 public class LazyCompositeTransformerTest {
 
@@ -38,6 +39,17 @@ public class LazyCompositeTransformerTest {
         assertNull("the callable should not have produced a transformer.", callable.getTransformer());
 
         verifyZeroInteractions(callable);
+    }
+
+    @Test(expected = RuntimeException.class)
+    @SuppressWarnings("unchecked")
+    public void testCreateWithCallableThatThrowsAnException() throws Exception {
+
+        final Callable<CompositeTransformer<Transformation>> callable = mock(Callable.class);
+        when(callable.call()).thenThrow(new Exception("test callable exception."));
+
+        new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(callable)
+                .transform(mock(InputStream.class));
     }
 
     @Test(expected = AssertionError.class)

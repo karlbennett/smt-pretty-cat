@@ -12,8 +12,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static shiver.me.timbers.FileUtils.testInputStream;
-import static shiver.me.timbers.FileUtils.testText;
+import static shiver.me.timbers.FileUtils.testTxtContents;
+import static shiver.me.timbers.FileUtils.testTxtInputStream;
 
 public class NullTransformerTest {
 
@@ -24,15 +24,15 @@ public class NullTransformerTest {
         final Transformations<TokenTransformation> transformations = mock(Transformations.class);
         when(transformations.get(anyString())).thenReturn(new TestTokenTransformation());
 
-        assertEquals("the text should not be transformed.", testText(),
-                new NullTransformer().transform(testInputStream(), transformations));
+        assertEquals("the text should not be transformed.", testTxtContents(),
+                new NullTransformer().transform(testTxtInputStream(), transformations));
     }
 
     @Test(expected = RuntimeException.class)
     @SuppressWarnings("unchecked")
     public void testTransformWithClosedInputStream() throws IOException {
 
-        final InputStream stream = testInputStream();
+        final InputStream stream = testTxtInputStream();
         stream.close();
 
         new NullTransformer().transform(stream, mock(Transformations.class));
@@ -48,8 +48,8 @@ public class NullTransformerTest {
     @Test
     public void testTransformWithNullTransformations() {
 
-        assertEquals("the text should not be transformed.", testText(),
-                new NullTransformer().transform(testInputStream(), null));
+        assertEquals("the text should not be transformed.", testTxtContents(),
+                new NullTransformer().transform(testTxtInputStream(), null));
     }
 
 

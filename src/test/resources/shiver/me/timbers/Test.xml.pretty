@@ -1,0 +1,8 @@
+[93m<?xml [97m[36mversion[97m=[92m"1.0"[97m [36mencoding[97m=[92m"ISO-8859-1"[97m[93m?>[97m
+<!-- This is a comment -->
+[93m<[97m[33mtest[97m[93m>[97m
+    [93m<[97m[33mone[97m[93m>[97mone[93m<[97m[93m/[97m[33mone[97m[93m>[97m
+    [93m<[97m[33mtwo[97m[93m>[97m2[93m<[97m[93m/[97m[33mtwo[97m[93m>[97m
+    [93m<[97m[33mthree[97m/>
+    [93m<[97m[33mfour[97m [36mfive[97m=[92m"test attribute"[97m/>
+[93m<[97m[93m/[97m[33mtest[97m[93m>[97m[0m

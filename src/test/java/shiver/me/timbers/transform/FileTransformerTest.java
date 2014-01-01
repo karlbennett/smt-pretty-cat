@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static shiver.me.timbers.FileUtils.testFile;
+import static shiver.me.timbers.FileUtils.testTxtFile;
 
 public class FileTransformerTest {
 
@@ -37,7 +37,7 @@ public class FileTransformerTest {
 
         final String TEST_STRING = "test string";
 
-        final File TEST_FILE = testFile();
+        final File TEST_FILE = testTxtFile();
 
         final WrappedTransformer<TokenTransformation> transformer = mock(WrappedTransformer.class);
         when(transformer.transform(any(InputStream.class))).thenReturn(TEST_STRING);
