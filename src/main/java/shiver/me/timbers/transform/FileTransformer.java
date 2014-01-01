@@ -29,7 +29,7 @@ public class FileTransformer {
      */
     public String transform(File file) {
 
-        final WrappedTransformer<TokenTransformation> transformer = transformers.get(file);
+        final CompositeTransformer<TokenTransformation> transformer = transformers.get(file);
 
         try {
 

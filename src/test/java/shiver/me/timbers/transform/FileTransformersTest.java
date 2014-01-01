@@ -19,18 +19,18 @@ public class FileTransformersTest {
 
     private static final String TEST_EXTENSION = "ext";
     @SuppressWarnings("unchecked")
-    private static final WrappedTransformer<TokenTransformation> TEST_NULL_TRANSFORMER = mock(WrappedTransformer.class);
+    private static final CompositeTransformer<TokenTransformation> TEST_NULL_TRANSFORMER = mock(WrappedTransformer.class);
 
-    private WrappedTransformer<TokenTransformation> transformer;
-    private Map<String, WrappedTransformer<TokenTransformation>> transformerMap;
+    private CompositeTransformer<TokenTransformation> transformer;
+    private Map<String, CompositeTransformer<TokenTransformation>> transformerMap;
 
     @SuppressWarnings("unchecked")
     @Before
     public void setUp() {
 
-        transformer = mock(WrappedTransformer.class);
+        transformer = mock(CompositeTransformer.class);
         transformerMap = transformerMap(
-                new SimpleEntry<String, WrappedTransformer<TokenTransformation>>(TEST_EXTENSION, transformer));
+                new SimpleEntry<String, CompositeTransformer<TokenTransformation>>(TEST_EXTENSION, transformer));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class FileTransformersTest {
     public void testIterator() {
 
         int i = 0;
-        for (WrappedTransformer<TokenTransformation> transformer :
+        for (CompositeTransformer<TokenTransformation> transformer :
                 new FileTransformers(transformerMap, TEST_NULL_TRANSFORMER)) {
 
             assertThat("the transformer should be contained in the supplied map.", transformerMap.values(),
@@ -117,13 +117,13 @@ public class FileTransformersTest {
         assertEquals("the correct number if iterations should have occured.", transformerMap.size(), i);
     }
 
-    private static Map<String, WrappedTransformer<TokenTransformation>> transformerMap(
-            Entry<String, WrappedTransformer<TokenTransformation>>... entries) {
+    private static Map<String, CompositeTransformer<TokenTransformation>> transformerMap(
+            Entry<String, CompositeTransformer<TokenTransformation>>... entries) {
 
-        final Map<String, WrappedTransformer<TokenTransformation>> transformerMap =
-                new HashMap<String, WrappedTransformer<TokenTransformation>>(entries.length);
+        final Map<String, CompositeTransformer<TokenTransformation>> transformerMap =
+                new HashMap<String, CompositeTransformer<TokenTransformation>>(entries.length);
 
-        for (Entry<String, WrappedTransformer<TokenTransformation>> entry : entries) {
+        for (Entry<String, CompositeTransformer<TokenTransformation>> entry : entries) {
 
             transformerMap.put(entry.getKey(), entry.getValue());
         }

@@ -1,10 +1,10 @@
 package shiver.me.timbers;
 
-import shiver.me.timbers.java.JavaWrappedTransformer;
+import shiver.me.timbers.java.LazyJavaWrappedTransformer;
+import shiver.me.timbers.transform.CompositeTransformer;
 import shiver.me.timbers.transform.FileTransformer;
 import shiver.me.timbers.transform.FileTransformers;
 import shiver.me.timbers.transform.Transformers;
-import shiver.me.timbers.transform.WrappedTransformer;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import java.io.File;
@@ -19,13 +19,14 @@ import static shiver.me.timbers.ESCAPE.RESET;
 public class PrettyCat {
 
     private static final Transformers<File, TokenTransformation> TRANSFORMATIONS = new FileTransformers(
-            new HashMap<String, WrappedTransformer<TokenTransformation>>() {{
-                put("java", new JavaWrappedTransformer());
+            new HashMap<String, CompositeTransformer<TokenTransformation>>() {{
+                put("java", new LazyJavaWrappedTransformer());
             }});
 
     public static void main(String[] args) throws FileNotFoundException {
 
+        System.out.print(new FileTransformer(TRANSFORMATIONS).transform(new File(args[0])));
         // Reset the colour scheme after printing the highlighted source code.
-        System.out.println(new FileTransformer(TRANSFORMATIONS).transform(new File(args[0])) + RESET);
+        System.out.println(RESET);
     }
 }

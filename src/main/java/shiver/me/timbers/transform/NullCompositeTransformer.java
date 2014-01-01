@@ -7,9 +7,9 @@ import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TO
 /**
  * This wrapped transformer should be used for any unknown file.
  */
-public class NullWrappedTransformer extends WrappedTransformer<TokenTransformation> {
+public class NullCompositeTransformer extends WrappedTransformer<TokenTransformation> {
 
-    public NullWrappedTransformer() {
+    public NullCompositeTransformer() {
         super(new NullTransformer(), new IndividualTransformations<TokenTransformation>(NULL_TOKEN_TRANSFORMATION));
     }
 }
