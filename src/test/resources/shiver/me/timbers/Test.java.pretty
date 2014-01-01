@@ -7,6 +7,7 @@
  */[97m
 [33mpublic[97m [33mabstract[97m [33mclass[97m Test [33mimplements[97m Callable<Integer> {
 
+    [31m@[97m[31mSuppressWarnings[97m({[92m"FieldCanBeLocal"[97m, [92m"UnusedDeclaration"[97m})
     [33mprivate[97m [33mfinal[97m String [36mtest[97m;
 
     [33mpublic[97m Test() {
