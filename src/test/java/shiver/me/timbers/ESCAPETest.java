@@ -13,5 +13,9 @@ public class ESCAPETest {
 
         assertEquals("the escape character should be correct.", "\033[", ESC.toString());
         assertEquals("the reset sequence should be correct.", "\033[0m", RESET.toString());
+
+        // the following is just to get 100% coverage.
+        ESCAPE.valueOf("ESC");
+        ESCAPE.values();
     }
 }

@@ -37,6 +37,12 @@ public class PrettyCatTest {
     }
 
     @Test
+    public void testCreate() {
+
+        new PrettyCat();
+    }
+
+    @Test
     public void testMainWithUnknownFile() throws FileNotFoundException {
 
         PrettyCat.main(new String[]{testFilePath(TEST_TXT_FILE)});

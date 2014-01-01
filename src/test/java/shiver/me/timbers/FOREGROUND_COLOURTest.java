@@ -14,6 +14,9 @@ public class FOREGROUND_COLOURTest {
 
             assertEquals("colour sequence should be correct.", ESC.toString() + colour.getValue() + "m",
                     colour.escapeSequence());
+
+            // the following is just to get 100% coverage.
+            FOREGROUND_COLOUR.valueOf(colour.name());
         }
     }
 }
