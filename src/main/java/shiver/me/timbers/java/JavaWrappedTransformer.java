@@ -2,7 +2,7 @@ package shiver.me.timbers.java;
 
 import shiver.me.timbers.transform.IndividualTransformations;
 import shiver.me.timbers.transform.Transformations;
-import shiver.me.timbers.transform.WrappedTransformer;
+import shiver.me.timbers.transform.WrappedStreamTransformer;
 import shiver.me.timbers.transform.antlr4.CompoundTransformations;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.java.JavaTransformer;
@@ -27,7 +27,7 @@ import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
 import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TOKEN_TRANSFORMATION;
 import static shiver.me.timbers.transform.java.KeyWords.KEYWORD_NAMES;
 
-public class JavaWrappedTransformer extends WrappedTransformer<TokenTransformation> {
+public class JavaWrappedTransformer extends WrappedStreamTransformer<TokenTransformation> {
 
     public JavaWrappedTransformer() {
         super(new JavaTransformer(), configureTransformations());

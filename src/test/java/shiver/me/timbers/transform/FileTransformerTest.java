@@ -39,7 +39,7 @@ public class FileTransformerTest {
 
         final File TEST_FILE = testTxtFile();
 
-        final WrappedTransformer<TokenTransformation> transformer = mock(WrappedTransformer.class);
+        final WrappedStreamTransformer<TokenTransformation> transformer = mock(WrappedStreamTransformer.class);
         when(transformer.transform(any(InputStream.class))).thenReturn(TEST_STRING);
 
         final Transformers<File, TokenTransformation> transformers = mock(Transformers.class);

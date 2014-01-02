@@ -34,7 +34,7 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = spy(new MockTransformerCallable());
 
-        new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(callable);
+        new LazyCompositeTransformer<CompositeStreamTransformer<Transformation>, Transformation>(callable);
 
         assertNull("the callable should not have produced a transformer.", callable.getTransformer());
 
@@ -45,17 +45,17 @@ public class LazyCompositeTransformerTest {
     @SuppressWarnings("unchecked")
     public void testCreateWithCallableThatThrowsAnException() throws Exception {
 
-        final Callable<CompositeTransformer<Transformation>> callable = mock(Callable.class);
+        final Callable<CompositeStreamTransformer<Transformation>> callable = mock(Callable.class);
         when(callable.call()).thenThrow(new Exception("test callable exception."));
 
-        new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeStreamTransformer<Transformation>, Transformation>(callable)
                 .transform(mock(InputStream.class));
     }
 
     @Test(expected = AssertionError.class)
     public void testCreateWithNullCallable() {
 
-        new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(null);
+        new LazyCompositeTransformer<CompositeStreamTransformer<Transformation>, Transformation>(null);
     }
 
     @Test
@@ -63,10 +63,10 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = spy(new MockTransformerCallable());
 
-        new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeStreamTransformer<Transformation>, Transformation>(callable)
                 .transform(stream, transformations);
 
-        final CompositeTransformer<Transformation> mockTransformer = callable.getTransformer();
+        final CompositeStreamTransformer<Transformation> mockTransformer = callable.getTransformer();
 
         verify(callable, times(1)).call();
         verify(mockTransformer, times(1)).transform(stream, transformations);
@@ -80,12 +80,12 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = spy(new MockTransformerCallable());
 
-        final CompositeTransformer<Transformation> transformer =
-                new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(callable);
+        final CompositeStreamTransformer<Transformation> transformer =
+                new LazyCompositeTransformer<CompositeStreamTransformer<Transformation>, Transformation>(callable);
         transformer.transform(stream, transformations);
         transformer.transform(stream, transformations);
 
-        final CompositeTransformer<Transformation> mockTransformer = callable.getTransformer();
+        final CompositeStreamTransformer<Transformation> mockTransformer = callable.getTransformer();
 
         verify(callable, times(1)).call();
         verify(mockTransformer, times(2)).transform(stream, transformations);
@@ -99,10 +99,10 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = new MockTransformerCallable();
 
-        new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeStreamTransformer<Transformation>, Transformation>(callable)
                 .transform(null, transformations);
 
-        final CompositeTransformer<Transformation> mockTransformer = callable.getTransformer();
+        final CompositeStreamTransformer<Transformation> mockTransformer = callable.getTransformer();
 
         verify(mockTransformer, times(1)).transform(null, transformations);
 
@@ -114,10 +114,10 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = new MockTransformerCallable();
 
-        new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeStreamTransformer<Transformation>, Transformation>(callable)
                 .transform(stream, null);
 
-        final CompositeTransformer<Transformation> mockTransformer = callable.getTransformer();
+        final CompositeStreamTransformer<Transformation> mockTransformer = callable.getTransformer();
 
         verify(mockTransformer, times(1)).transform(stream, null);
 
@@ -129,10 +129,10 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = new MockTransformerCallable();
 
-        new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeStreamTransformer<Transformation>, Transformation>(callable)
                 .transform(null, null);
 
-        final CompositeTransformer<Transformation> mockTransformer = callable.getTransformer();
+        final CompositeStreamTransformer<Transformation> mockTransformer = callable.getTransformer();
 
         verify(mockTransformer, times(1)).transform(null, null);
 
@@ -144,10 +144,10 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = spy(new MockTransformerCallable());
 
-        new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeStreamTransformer<Transformation>, Transformation>(callable)
                 .transform(stream);
 
-        final CompositeTransformer<Transformation> mockTransformer = callable.getTransformer();
+        final CompositeStreamTransformer<Transformation> mockTransformer = callable.getTransformer();
 
         verify(callable, times(1)).call();
         verify(mockTransformer, times(1)).transform(stream);
@@ -161,12 +161,12 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = spy(new MockTransformerCallable());
 
-        final CompositeTransformer<Transformation> transformer =
-                new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(callable);
+        final CompositeStreamTransformer<Transformation> transformer =
+                new LazyCompositeTransformer<CompositeStreamTransformer<Transformation>, Transformation>(callable);
         transformer.transform(stream);
         transformer.transform(stream);
 
-        final CompositeTransformer<Transformation> mockTransformer = callable.getTransformer();
+        final CompositeStreamTransformer<Transformation> mockTransformer = callable.getTransformer();
 
         verify(callable, times(1)).call();
         verify(mockTransformer, times(2)).transform(stream);
@@ -180,27 +180,27 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = new MockTransformerCallable();
 
-        new LazyCompositeTransformer<CompositeTransformer<Transformation>, Transformation>(callable).transform(null);
+        new LazyCompositeTransformer<CompositeStreamTransformer<Transformation>, Transformation>(callable).transform(null);
 
-        final CompositeTransformer<Transformation> mockTransformer = callable.getTransformer();
+        final CompositeStreamTransformer<Transformation> mockTransformer = callable.getTransformer();
 
         verify(mockTransformer, times(1)).transform(null);
 
         verifyNoMoreInteractions(mockTransformer);
     }
 
-    private static class MockTransformerCallable implements Callable<CompositeTransformer<Transformation>> {
+    private static class MockTransformerCallable implements Callable<CompositeStreamTransformer<Transformation>> {
 
-        private CompositeTransformer<Transformation> transformer;
+        private CompositeStreamTransformer<Transformation> transformer;
 
         @SuppressWarnings("unchecked")
         @Override
-        public CompositeTransformer<Transformation> call() throws Exception {
+        public CompositeStreamTransformer<Transformation> call() throws Exception {
 
-            return transformer = mock(CompositeTransformer.class);
+            return transformer = mock(CompositeStreamTransformer.class);
         }
 
-        private CompositeTransformer<Transformation> getTransformer() {
+        private CompositeStreamTransformer<Transformation> getTransformer() {
 
             return transformer;
         }

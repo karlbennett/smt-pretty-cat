@@ -8,11 +8,11 @@ import static shiver.me.timbers.asserts.Asserts.assertIsNotNull;
 import static shiver.me.timbers.checks.Checks.isNull;
 
 /**
- * This {@link CompositeTransformer} will lazily create the it's related transformer just before calling either
+ * This {@link CompositeStreamTransformer} will lazily create the it's related transformer just before calling either
  * transform method.
  */
-public class LazyCompositeTransformer<L extends CompositeTransformer<T>, T extends Transformation>
-        implements CompositeTransformer<T> {
+public class LazyCompositeTransformer<L extends CompositeStreamTransformer<T>, T extends Transformation>
+        implements CompositeStreamTransformer<T> {
 
     private final Callable<L> callable;
     private L transformer;
@@ -36,7 +36,7 @@ public class LazyCompositeTransformer<L extends CompositeTransformer<T>, T exten
         return transformer().transform(stream, transformations);
     }
 
-    private CompositeTransformer<T> transformer() {
+    private CompositeStreamTransformer<T> transformer() {
 
         if (isNull(transformer)) {
 
@@ -46,7 +46,7 @@ public class LazyCompositeTransformer<L extends CompositeTransformer<T>, T exten
         return transformer;
     }
 
-    private CompositeTransformer<T> setAndRetrieveTransformer() {
+    private CompositeStreamTransformer<T> setAndRetrieveTransformer() {
 
         try {
 

@@ -2,7 +2,7 @@ package shiver.me.timbers.xml;
 
 import shiver.me.timbers.transform.IndividualTransformations;
 import shiver.me.timbers.transform.Transformations;
-import shiver.me.timbers.transform.WrappedTransformer;
+import shiver.me.timbers.transform.WrappedStreamTransformer;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.xml.XmlTransformer;
 import shiver.me.timbers.transform.xml.rules.Attribute;
@@ -22,7 +22,7 @@ import static shiver.me.timbers.FOREGROUND_COLOUR.CYAN;
 import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
 import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TOKEN_TRANSFORMATION;
 
-public class XmlWrappedTransformer extends WrappedTransformer<TokenTransformation> {
+public class XmlWrappedTransformer extends WrappedStreamTransformer<TokenTransformation> {
 
     public XmlWrappedTransformer() {
         super(new XmlTransformer(), configureTransformations());

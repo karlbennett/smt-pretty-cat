@@ -1,7 +1,7 @@
 package shiver.me.timbers;
 
 import shiver.me.timbers.java.LazyJavaWrappedTransformer;
-import shiver.me.timbers.transform.CompositeTransformer;
+import shiver.me.timbers.transform.CompositeStreamTransformer;
 import shiver.me.timbers.transform.FileTransformer;
 import shiver.me.timbers.transform.FileTransformers;
 import shiver.me.timbers.transform.Transformers;
@@ -20,7 +20,7 @@ import static shiver.me.timbers.ESCAPE.RESET;
 public class PrettyCat {
 
     private static final Transformers<File, TokenTransformation> TRANSFORMATIONS = new FileTransformers(
-            new HashMap<String, CompositeTransformer<TokenTransformation>>() {{
+            new HashMap<String, CompositeStreamTransformer<TokenTransformation>>() {{
                 put("java", new LazyJavaWrappedTransformer());
                 put("xml", new LazyXmlWrappedTransformer());
             }});

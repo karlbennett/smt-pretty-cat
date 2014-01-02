@@ -9,7 +9,7 @@ import java.io.InputStream;
 /**
  * This transformer should be used for any unknown file.
  */
-public class NullTransformer implements Transformer<TokenTransformation> {
+public class NullTransformer implements StreamTransformer<TokenTransformation> {
 
     @Override
     public String transform(InputStream stream, Transformations<TokenTransformation> transformations) {
