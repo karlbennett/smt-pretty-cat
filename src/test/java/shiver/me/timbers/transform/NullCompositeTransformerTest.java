@@ -18,17 +18,10 @@ public class NullCompositeTransformerTest {
     }
 
     @Test
-    public void testTransformWithInputStrea() {
+    public void testTransformWithInputStream() {
 
         assertEquals("the text should not be transformed.", testTxtContents(),
                 new NullCompositeTransformer().transform(testTxtInputStream()));
-    }
-
-    @Test
-    public void testTransformWithString() {
-
-        assertEquals("the text should not be transformed.", testTxtContents(),
-                new NullCompositeTransformer().transform(testTxtContents()));
     }
 
     @Test(expected = RuntimeException.class)
@@ -45,13 +38,6 @@ public class NullCompositeTransformerTest {
     @SuppressWarnings("unchecked")
     public void testTransformWithNullInputStream() {
 
-        new NullCompositeTransformer().transform((InputStream) null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    @SuppressWarnings("unchecked")
-    public void testTransformWithNullString() {
-
-        new NullCompositeTransformer().transform((String) null);
+        new NullCompositeTransformer().transform(null);
     }
 }
