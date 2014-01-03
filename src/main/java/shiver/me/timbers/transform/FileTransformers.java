@@ -17,17 +17,17 @@ import static shiver.me.timbers.checks.Checks.isNotNull;
 /**
  * This transformers container allows the lookup of transformers that support the supplied file type.
  */
-public class FileTransformers implements Transformers<File, TokenTransformation> {
+public class FileTransformers implements Transformers<File, CompositeFileTransformer<TokenTransformation>> {
 
-    private final List<CompositeStreamTransformer<TokenTransformation>> transformers;
-    private final Map<String, CompositeStreamTransformer<TokenTransformation>> fileExtensionToTransformers;
-    private final CompositeStreamTransformer<TokenTransformation> nullTransformer;
+    private final List<CompositeFileTransformer<TokenTransformation>> transformers;
+    private final Map<String, CompositeFileTransformer<TokenTransformation>> fileExtensionToTransformers;
+    private final CompositeFileTransformer<TokenTransformation> nullTransformer;
 
     /**
      * @param fileExtensionToTransformers this map should contain file extensions that map to their related
      *                                    transformers.
      */
-    public FileTransformers(Map<String, CompositeStreamTransformer<TokenTransformation>> fileExtensionToTransformers) {
+    public FileTransformers(Map<String, CompositeFileTransformer<TokenTransformation>> fileExtensionToTransformers) {
 
         this(fileExtensionToTransformers, new NullCompositeTransformer());
     }
@@ -38,37 +38,37 @@ public class FileTransformers implements Transformers<File, TokenTransformation>
      * @param nullTransformer             this is the transformer that will be run when one cannot be found for the
      *                                    supplied file.
      */
-    public FileTransformers(Map<String, CompositeStreamTransformer<TokenTransformation>> fileExtensionToTransformers,
-                            CompositeStreamTransformer<TokenTransformation> nullTransformer) {
+    public FileTransformers(Map<String, CompositeFileTransformer<TokenTransformation>> fileExtensionToTransformers,
+                            CompositeFileTransformer<TokenTransformation> nullTransformer) {
 
         assertIsNotNull(argumentIsNullMessage("fileExtensionToTransformers"), fileExtensionToTransformers);
         assertIsNotNull(argumentIsNullMessage("nullTransformer"), nullTransformer);
 
         this.transformers =
-                new ArrayList<CompositeStreamTransformer<TokenTransformation>>(fileExtensionToTransformers.values());
+                new ArrayList<CompositeFileTransformer<TokenTransformation>>(fileExtensionToTransformers.values());
         this.fileExtensionToTransformers = fileExtensionToTransformers;
         this.nullTransformer = nullTransformer;
     }
 
     @Override
-    public CompositeStreamTransformer<TokenTransformation> get(int index) {
+    public CompositeFileTransformer<TokenTransformation> get(int index) {
 
         return isValidIndex(index) ? transformers.get(index) : nullTransformer;
     }
 
     @Override
-    public CompositeStreamTransformer<TokenTransformation> get(File key) {
+    public CompositeFileTransformer<TokenTransformation> get(File key) {
 
-        final CompositeStreamTransformer<TokenTransformation> transformer =
+        final CompositeFileTransformer<TokenTransformation> transformer =
                 fileExtensionToTransformers.get(FilenameUtils.getExtension(key.getName()));
 
         return isNotNull(transformer) ? transformer : nullTransformer;
     }
 
     @Override
-    public Iterator<CompositeStreamTransformer<TokenTransformation>> iterator() {
+    public Iterator<CompositeFileTransformer<TokenTransformation>> iterator() {
 
-        return new LinkedList<CompositeStreamTransformer<TokenTransformation>>(transformers).iterator();
+        return new LinkedList<CompositeFileTransformer<TokenTransformation>>(transformers).iterator();
     }
 
     private boolean isValidIndex(int index) {

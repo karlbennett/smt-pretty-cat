@@ -19,18 +19,18 @@ public class FileTransformersTest {
 
     private static final String TEST_EXTENSION = "ext";
     @SuppressWarnings("unchecked")
-    private static final CompositeStreamTransformer<TokenTransformation> TEST_NULL_TRANSFORMER = mock(WrappedStreamTransformer.class);
+    private static final CompositeFileTransformer<TokenTransformation> TEST_NULL_TRANSFORMER = mock(WrappedFileTransformer.class);
 
-    private CompositeStreamTransformer<TokenTransformation> transformer;
-    private Map<String, CompositeStreamTransformer<TokenTransformation>> transformerMap;
+    private CompositeFileTransformer<TokenTransformation> transformer;
+    private Map<String, CompositeFileTransformer<TokenTransformation>> transformerMap;
 
     @SuppressWarnings("unchecked")
     @Before
     public void setUp() {
 
-        transformer = mock(CompositeStreamTransformer.class);
+        transformer = mock(CompositeFileTransformer.class);
         transformerMap = transformerMap(
-                new SimpleEntry<String, CompositeStreamTransformer<TokenTransformation>>(TEST_EXTENSION, transformer));
+                new SimpleEntry<String, CompositeFileTransformer<TokenTransformation>>(TEST_EXTENSION, transformer));
     }
 
     @Test
@@ -51,14 +51,14 @@ public class FileTransformersTest {
     @SuppressWarnings("unchecked")
     public void testCreateWithMapAndTransformer() {
 
-        new FileTransformers(mock(Map.class), mock(WrappedStreamTransformer.class));
+        new FileTransformers(mock(Map.class), mock(WrappedFileTransformer.class));
     }
 
     @Test(expected = AssertionError.class)
     @SuppressWarnings("unchecked")
     public void testCreateWithNullMapAndTransformer() {
 
-        new FileTransformers(null, mock(WrappedStreamTransformer.class));
+        new FileTransformers(null, mock(WrappedFileTransformer.class));
     }
 
     @Test(expected = AssertionError.class)
@@ -106,7 +106,7 @@ public class FileTransformersTest {
     public void testIterator() {
 
         int i = 0;
-        for (CompositeStreamTransformer<TokenTransformation> transformer :
+        for (CompositeFileTransformer<TokenTransformation> transformer :
                 new FileTransformers(transformerMap, TEST_NULL_TRANSFORMER)) {
 
             assertThat("the transformer should be contained in the supplied map.", transformerMap.values(),
@@ -117,13 +117,13 @@ public class FileTransformersTest {
         assertEquals("the correct number if iterations should have occured.", transformerMap.size(), i);
     }
 
-    private static Map<String, CompositeStreamTransformer<TokenTransformation>> transformerMap(
-            Entry<String, CompositeStreamTransformer<TokenTransformation>>... entries) {
+    private static Map<String, CompositeFileTransformer<TokenTransformation>> transformerMap(
+            Entry<String, CompositeFileTransformer<TokenTransformation>>... entries) {
 
-        final Map<String, CompositeStreamTransformer<TokenTransformation>> transformerMap =
-                new HashMap<String, CompositeStreamTransformer<TokenTransformation>>(entries.length);
+        final Map<String, CompositeFileTransformer<TokenTransformation>> transformerMap =
+                new HashMap<String, CompositeFileTransformer<TokenTransformation>>(entries.length);
 
-        for (Entry<String, CompositeStreamTransformer<TokenTransformation>> entry : entries) {
+        for (Entry<String, CompositeFileTransformer<TokenTransformation>> entry : entries) {
 
             transformerMap.put(entry.getKey(), entry.getValue());
         }

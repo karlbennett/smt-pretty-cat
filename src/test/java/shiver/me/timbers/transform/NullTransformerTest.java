@@ -5,15 +5,16 @@ import org.antlr.v4.runtime.Token;
 import org.junit.Test;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static shiver.me.timbers.FileUtils.testTxtContents;
-import static shiver.me.timbers.FileUtils.testTxtInputStream;
+import static shiver.me.timbers.FileUtils.testTxtFile;
 
 public class NullTransformerTest {
 
@@ -25,31 +26,28 @@ public class NullTransformerTest {
         when(transformations.get(anyString())).thenReturn(new TestTokenTransformation());
 
         assertEquals("the text should not be transformed.", testTxtContents(),
-                new NullTransformer().transform(testTxtInputStream(), transformations));
+                new NullTransformer().transform(testTxtFile(), transformations));
     }
 
     @Test(expected = RuntimeException.class)
     @SuppressWarnings("unchecked")
-    public void testTransformWithClosedInputStream() throws IOException {
+    public void testTransformWithInvalidFile() throws IOException {
 
-        final InputStream stream = testTxtInputStream();
-        stream.close();
-
-        new NullTransformer().transform(stream, mock(Transformations.class));
+        new NullTransformer().transform(new File("no file here."), mock(Transformations.class));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     @SuppressWarnings("unchecked")
     public void testTransformWithNullInputStream() {
 
-        new NullTransformer().transform(null, mock(Transformations.class));
+        assertNull("the null value should be passed through.", new NullTransformer().transform(null, mock(Transformations.class)));
     }
 
     @Test
     public void testTransformWithNullTransformations() {
 
         assertEquals("the text should not be transformed.", testTxtContents(),
-                new NullTransformer().transform(testTxtInputStream(), null));
+                new NullTransformer().transform(testTxtFile(), null));
     }
 
 

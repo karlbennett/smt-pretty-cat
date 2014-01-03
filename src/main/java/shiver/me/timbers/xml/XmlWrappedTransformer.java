@@ -1,8 +1,10 @@
 package shiver.me.timbers.xml;
 
 import shiver.me.timbers.transform.IndividualTransformations;
+import shiver.me.timbers.transform.StreamFileTransformer;
+import shiver.me.timbers.transform.StringStreamTransformer;
 import shiver.me.timbers.transform.Transformations;
-import shiver.me.timbers.transform.WrappedStringStreamTransformer;
+import shiver.me.timbers.transform.WrappedFileTransformer;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.xml.XmlTransformer;
 import shiver.me.timbers.transform.xml.rules.Attribute;
@@ -22,10 +24,14 @@ import static shiver.me.timbers.FOREGROUND_COLOUR.CYAN;
 import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
 import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TOKEN_TRANSFORMATION;
 
-public class XmlWrappedTransformer extends WrappedStringStreamTransformer<TokenTransformation> {
+public class XmlWrappedTransformer extends WrappedFileTransformer<TokenTransformation> {
 
     public XmlWrappedTransformer() {
-        super(new XmlTransformer(), configureTransformations());
+        super(
+                new StreamFileTransformer<TokenTransformation>(
+                        new StringStreamTransformer<TokenTransformation>(new XmlTransformer())),
+                configureTransformations()
+        );
     }
 
     private static Transformations<TokenTransformation> configureTransformations() {

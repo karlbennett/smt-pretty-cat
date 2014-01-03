@@ -6,17 +6,17 @@ import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import java.util.concurrent.Callable;
 
 /**
- * This callable simply instantiates a new {@link JavaWrappedTransformer}.
+ * This callable simply instantiates a new {@link JavaWrappedFileTransformer}.
  */
-public class LazyJavaWrappedTransformer extends LazyCompositeTransformer<JavaWrappedTransformer, TokenTransformation> {
+public class LazyJavaWrappedTransformer extends LazyCompositeTransformer<JavaWrappedFileTransformer, TokenTransformation> {
 
     public LazyJavaWrappedTransformer() {
-        super(new Callable<JavaWrappedTransformer>() {
+        super(new Callable<JavaWrappedFileTransformer>() {
 
             @Override
-            public JavaWrappedTransformer call() throws Exception {
+            public JavaWrappedFileTransformer call() throws Exception {
 
-                return new JavaWrappedTransformer();
+                return new JavaWrappedFileTransformer();
             }
         });
     }

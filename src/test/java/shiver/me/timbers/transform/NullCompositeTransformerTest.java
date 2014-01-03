@@ -2,12 +2,13 @@ package shiver.me.timbers.transform;
 
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static shiver.me.timbers.FileUtils.testTxtContents;
-import static shiver.me.timbers.FileUtils.testTxtInputStream;
+import static shiver.me.timbers.FileUtils.testTxtFile;
 
 public class NullCompositeTransformerTest {
 
@@ -21,23 +22,20 @@ public class NullCompositeTransformerTest {
     public void testTransformWithInputStream() {
 
         assertEquals("the text should not be transformed.", testTxtContents(),
-                new NullCompositeTransformer().transform(testTxtInputStream()));
+                new NullCompositeTransformer().transform(testTxtFile()));
     }
 
     @Test(expected = RuntimeException.class)
     @SuppressWarnings("unchecked")
-    public void testTransformWithClosedInputStream() throws IOException {
+    public void testTransformWithInvalidFile() throws IOException {
 
-        final InputStream stream = testTxtInputStream();
-        stream.close();
-
-        new NullCompositeTransformer().transform(stream);
+        new NullCompositeTransformer().transform(new File("this file is invalid."));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     @SuppressWarnings("unchecked")
     public void testTransformWithNullInputStream() {
 
-        new NullCompositeTransformer().transform(null);
+        assertNull("the null value should be passed through.", new NullCompositeTransformer().transform(null));
     }
 }

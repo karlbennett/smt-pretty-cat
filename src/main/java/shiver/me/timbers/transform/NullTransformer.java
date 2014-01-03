@@ -1,26 +1,20 @@
 package shiver.me.timbers.transform;
 
-import org.apache.commons.io.IOUtils;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * This transformer should be used for any unknown file.
  */
-public class NullTransformer implements StreamTransformer<TokenTransformation> {
+public class NullTransformer extends StreamFileTransformer<TokenTransformation> {
 
-    @Override
-    public String transform(InputStream stream, Transformations<TokenTransformation> transformations) {
+    public NullTransformer() {
+        super(new StringStreamTransformer<TokenTransformation>(new StringTransformer<TokenTransformation>() {
 
-        try {
+            @Override
+            public String transform(String input, Transformations<TokenTransformation> transformations) {
 
-            return IOUtils.toString(stream);
-
-        } catch (IOException e) {
-
-            throw new RuntimeException(e);
-        }
+                return input;
+            }
+        }));
     }
 }

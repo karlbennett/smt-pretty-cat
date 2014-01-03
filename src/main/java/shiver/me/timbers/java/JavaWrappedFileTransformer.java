@@ -1,8 +1,10 @@
 package shiver.me.timbers.java;
 
 import shiver.me.timbers.transform.IndividualTransformations;
+import shiver.me.timbers.transform.StreamFileTransformer;
+import shiver.me.timbers.transform.StringStreamTransformer;
 import shiver.me.timbers.transform.Transformations;
-import shiver.me.timbers.transform.WrappedStringStreamTransformer;
+import shiver.me.timbers.transform.WrappedFileTransformer;
 import shiver.me.timbers.transform.antlr4.CompoundTransformations;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.java.JavaTransformer;
@@ -27,10 +29,14 @@ import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
 import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TOKEN_TRANSFORMATION;
 import static shiver.me.timbers.transform.java.KeyWords.KEYWORD_NAMES;
 
-public class JavaWrappedTransformer extends WrappedStringStreamTransformer<TokenTransformation> {
+public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTransformation> {
 
-    public JavaWrappedTransformer() {
-        super(new JavaTransformer(), configureTransformations());
+    public JavaWrappedFileTransformer() {
+        super(
+                new StreamFileTransformer<TokenTransformation>(
+                        new StringStreamTransformer<TokenTransformation>(new JavaTransformer())),
+                configureTransformations()
+        );
     }
 
     @SuppressWarnings("unchecked")

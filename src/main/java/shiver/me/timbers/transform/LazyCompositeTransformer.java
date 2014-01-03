@@ -1,6 +1,6 @@
 package shiver.me.timbers.transform;
 
-import java.io.InputStream;
+import java.io.File;
 import java.util.concurrent.Callable;
 
 import static shiver.me.timbers.asserts.Asserts.argumentIsNullMessage;
@@ -11,8 +11,8 @@ import static shiver.me.timbers.checks.Checks.isNull;
  * This {@link CompositeStreamTransformer} will lazily create the it's related transformer just before calling either
  * transform method.
  */
-public class LazyCompositeTransformer<L extends CompositeStreamTransformer<T>, T extends Transformation>
-        implements CompositeStreamTransformer<T> {
+public class LazyCompositeTransformer<L extends CompositeFileTransformer<T>, T extends Transformation>
+        implements CompositeFileTransformer<T> {
 
     private final Callable<L> callable;
     private L transformer;
@@ -25,18 +25,18 @@ public class LazyCompositeTransformer<L extends CompositeStreamTransformer<T>, T
     }
 
     @Override
-    public String transform(InputStream stream) {
+    public String transform(File file) {
 
-        return transformer().transform(stream);
+        return transformer().transform(file);
     }
 
     @Override
-    public String transform(InputStream stream, Transformations<T> transformations) {
+    public String transform(File file, Transformations<T> transformations) {
 
-        return transformer().transform(stream, transformations);
+        return transformer().transform(file, transformations);
     }
 
-    private CompositeStreamTransformer<T> transformer() {
+    private CompositeFileTransformer<T> transformer() {
 
         if (isNull(transformer)) {
 
@@ -46,7 +46,7 @@ public class LazyCompositeTransformer<L extends CompositeStreamTransformer<T>, T
         return transformer;
     }
 
-    private CompositeStreamTransformer<T> setAndRetrieveTransformer() {
+    private CompositeFileTransformer<T> setAndRetrieveTransformer() {
 
         try {
 

@@ -2,11 +2,11 @@ package shiver.me.timbers.java;
 
 import org.junit.Test;
 
-public class JavaWrappedTransformerTest {
+public class JavaWrappedFileTransformerTest {
 
     @Test
     public void testCreate() {
 
-        new JavaWrappedTransformer();
+        new JavaWrappedFileTransformer();
     }
 }

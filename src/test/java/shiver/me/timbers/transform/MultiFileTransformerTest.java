@@ -4,7 +4,6 @@ import org.junit.Test;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import java.io.File;
-import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -15,20 +14,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static shiver.me.timbers.FileUtils.testTxtFile;
 
-public class FileTransformerTest {
+public class MultiFileTransformerTest {
 
     @Test
     @SuppressWarnings("unchecked")
     public void testCreate() {
 
-        new FileTransformer(mock(Transformers.class));
+        new MultiFileTransformer(mock(Transformers.class));
     }
 
     @Test(expected = AssertionError.class)
     @SuppressWarnings("unchecked")
     public void testCreateWithNullTransformers() {
 
-        new FileTransformer(null);
+        new MultiFileTransformer(null);
     }
 
     @Test
@@ -39,30 +38,30 @@ public class FileTransformerTest {
 
         final File TEST_FILE = testTxtFile();
 
-        final WrappedStreamTransformer<TokenTransformation> transformer = mock(WrappedStreamTransformer.class);
-        when(transformer.transform(any(InputStream.class))).thenReturn(TEST_STRING);
+        final WrappedFileTransformer<TokenTransformation> transformer = mock(WrappedFileTransformer.class);
+        when(transformer.transform(any(File.class))).thenReturn(TEST_STRING);
 
-        final Transformers<File, TokenTransformation> transformers = mock(Transformers.class);
+        final Transformers<File, CompositeFileTransformer<TokenTransformation>> transformers = mock(Transformers.class);
         when(transformers.get(TEST_FILE)).thenReturn(transformer);
 
         assertEquals("the transformed string should be correct.", TEST_STRING,
-                new FileTransformer(transformers).transform(TEST_FILE));
+                new MultiFileTransformer(transformers).transform(TEST_FILE));
 
         verify(transformers, times(1)).get(TEST_FILE);
-        verify(transformer, times(1)).transform(notNull(InputStream.class));
+        verify(transformer, times(1)).transform(notNull(File.class));
     }
 
     @Test(expected = RuntimeException.class)
     @SuppressWarnings("unchecked")
     public void testTransformWithInvalidFile() {
 
-        new FileTransformer(mock(Transformers.class)).transform(new File("this file is invalid"));
+        new MultiFileTransformer(mock(Transformers.class)).transform(new File("this file is invalid"));
     }
 
     @Test(expected = NullPointerException.class)
     @SuppressWarnings("unchecked")
     public void testTransformWithNullFile() {
 
-        new FileTransformer(mock(Transformers.class)).transform(null);
+        new MultiFileTransformer(mock(Transformers.class)).transform(null);
     }
 }
