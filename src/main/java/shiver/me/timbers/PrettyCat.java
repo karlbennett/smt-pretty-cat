@@ -19,7 +19,7 @@ import static shiver.me.timbers.ESCAPE.RESET;
  */
 public class PrettyCat {
 
-    private static final Transformers<File, CompositeFileTransformer<TokenTransformation>> TRANSFORMATIONS = new FileTransformers(
+    private static final Transformers<File, CompositeFileTransformer<TokenTransformation>> TRANSFORMERS = new FileTransformers(
             new HashMap<String, CompositeFileTransformer<TokenTransformation>>() {{
                 put("java", new LazyJavaWrappedTransformer());
                 put("xml", new LazyXmlWrappedTransformer());
@@ -27,7 +27,7 @@ public class PrettyCat {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        System.out.print(new MultiFileTransformer(TRANSFORMATIONS).transform(new File(args[0])));
+        System.out.print(new MultiFileTransformer(TRANSFORMERS).transform(new File(args[0])));
         // Reset the colour scheme after printing the highlighted source code.
         System.out.println(RESET);
     }
