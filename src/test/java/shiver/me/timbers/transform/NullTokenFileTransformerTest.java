@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 import static shiver.me.timbers.FileUtils.testTxtContents;
 import static shiver.me.timbers.FileUtils.testTxtFile;
 
-public class NullTransformerTest {
+public class NullTokenFileTransformerTest {
 
     @Test
     public void testTransform() {
@@ -26,28 +26,28 @@ public class NullTransformerTest {
         when(transformations.get(anyString())).thenReturn(new TestTokenTransformation());
 
         assertEquals("the text should not be transformed.", testTxtContents(),
-                new NullTransformer().transform(testTxtFile(), transformations));
+                new NullTokenFileTransformer().transform(testTxtFile(), transformations));
     }
 
     @Test(expected = RuntimeException.class)
     @SuppressWarnings("unchecked")
     public void testTransformWithInvalidFile() throws IOException {
 
-        new NullTransformer().transform(new File("no file here."), mock(Transformations.class));
+        new NullTokenFileTransformer().transform(new File("no file here."), mock(Transformations.class));
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void testTransformWithNullInputStream() {
 
-        assertNull("the null value should be passed through.", new NullTransformer().transform(null, mock(Transformations.class)));
+        assertNull("the null value should be passed through.", new NullTokenFileTransformer().transform(null, mock(Transformations.class)));
     }
 
     @Test
     public void testTransformWithNullTransformations() {
 
         assertEquals("the text should not be transformed.", testTxtContents(),
-                new NullTransformer().transform(testTxtFile(), null));
+                new NullTokenFileTransformer().transform(testTxtFile(), null));
     }
 
 

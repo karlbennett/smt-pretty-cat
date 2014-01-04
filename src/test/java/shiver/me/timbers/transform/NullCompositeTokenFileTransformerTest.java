@@ -10,32 +10,32 @@ import static org.junit.Assert.assertNull;
 import static shiver.me.timbers.FileUtils.testTxtContents;
 import static shiver.me.timbers.FileUtils.testTxtFile;
 
-public class NullCompositeTransformerTest {
+public class NullCompositeTokenFileTransformerTest {
 
     @Test
     public void testCreate() {
 
-        new NullCompositeTransformer();
+        new NullCompositeTokenFileTransformer();
     }
 
     @Test
     public void testTransformWithInputStream() {
 
         assertEquals("the text should not be transformed.", testTxtContents(),
-                new NullCompositeTransformer().transform(testTxtFile()));
+                new NullCompositeTokenFileTransformer().transform(testTxtFile()));
     }
 
     @Test(expected = RuntimeException.class)
     @SuppressWarnings("unchecked")
     public void testTransformWithInvalidFile() throws IOException {
 
-        new NullCompositeTransformer().transform(new File("this file is invalid."));
+        new NullCompositeTokenFileTransformer().transform(new File("this file is invalid."));
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void testTransformWithNullInputStream() {
 
-        assertNull("the null value should be passed through.", new NullCompositeTransformer().transform(null));
+        assertNull("the null value should be passed through.", new NullCompositeTokenFileTransformer().transform(null));
     }
 }

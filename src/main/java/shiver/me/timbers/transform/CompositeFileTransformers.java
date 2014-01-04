@@ -17,7 +17,7 @@ import static shiver.me.timbers.checks.Checks.isNotNull;
 /**
  * This transformers container allows the lookup of transformers that support the supplied file type.
  */
-public class FileTransformers implements Transformers<File, CompositeFileTransformer<TokenTransformation>> {
+public class CompositeFileTransformers implements Transformers<File, CompositeFileTransformer<TokenTransformation>> {
 
     private final List<CompositeFileTransformer<TokenTransformation>> transformers;
     private final Map<String, CompositeFileTransformer<TokenTransformation>> fileExtensionToTransformers;
@@ -27,9 +27,9 @@ public class FileTransformers implements Transformers<File, CompositeFileTransfo
      * @param fileExtensionToTransformers this map should contain file extensions that map to their related
      *                                    transformers.
      */
-    public FileTransformers(Map<String, CompositeFileTransformer<TokenTransformation>> fileExtensionToTransformers) {
+    public CompositeFileTransformers(Map<String, CompositeFileTransformer<TokenTransformation>> fileExtensionToTransformers) {
 
-        this(fileExtensionToTransformers, new NullCompositeTransformer());
+        this(fileExtensionToTransformers, new NullCompositeTokenFileTransformer());
     }
 
     /**
@@ -38,8 +38,8 @@ public class FileTransformers implements Transformers<File, CompositeFileTransfo
      * @param nullTransformer             this is the transformer that will be run when one cannot be found for the
      *                                    supplied file.
      */
-    public FileTransformers(Map<String, CompositeFileTransformer<TokenTransformation>> fileExtensionToTransformers,
-                            CompositeFileTransformer<TokenTransformation> nullTransformer) {
+    public CompositeFileTransformers(Map<String, CompositeFileTransformer<TokenTransformation>> fileExtensionToTransformers,
+                                     CompositeFileTransformer<TokenTransformation> nullTransformer) {
 
         assertIsNotNull(argumentIsNullMessage("fileExtensionToTransformers"), fileExtensionToTransformers);
         assertIsNotNull(argumentIsNullMessage("nullTransformer"), nullTransformer);

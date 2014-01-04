@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class FileTransformersTest {
+public class CompositeFileTransformersTest {
 
     private static final String TEST_EXTENSION = "ext";
     @SuppressWarnings("unchecked")
@@ -37,41 +37,41 @@ public class FileTransformersTest {
     @SuppressWarnings("unchecked")
     public void testCreateWithMap() {
 
-        new FileTransformers(mock(Map.class));
+        new CompositeFileTransformers(mock(Map.class));
     }
 
     @Test(expected = AssertionError.class)
     @SuppressWarnings("unchecked")
     public void testCreateWithNullMap() {
 
-        new FileTransformers(null);
+        new CompositeFileTransformers(null);
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void testCreateWithMapAndTransformer() {
 
-        new FileTransformers(mock(Map.class), mock(WrappedFileTransformer.class));
+        new CompositeFileTransformers(mock(Map.class), mock(WrappedFileTransformer.class));
     }
 
     @Test(expected = AssertionError.class)
     @SuppressWarnings("unchecked")
     public void testCreateWithNullMapAndTransformer() {
 
-        new FileTransformers(null, mock(WrappedFileTransformer.class));
+        new CompositeFileTransformers(null, mock(WrappedFileTransformer.class));
     }
 
     @Test(expected = AssertionError.class)
     @SuppressWarnings("unchecked")
     public void testCreateWithMapAndNullTransformer() {
 
-        new FileTransformers(mock(Map.class), null);
+        new CompositeFileTransformers(mock(Map.class), null);
     }
 
     @Test
     public void testGetWithIndex() {
 
-        assertEquals("the correct transformer should be returned.", transformer, new FileTransformers(transformerMap,
+        assertEquals("the correct transformer should be returned.", transformer, new CompositeFileTransformers(transformerMap,
                 TEST_NULL_TRANSFORMER).get(0));
     }
 
@@ -79,9 +79,9 @@ public class FileTransformersTest {
     public void testGetWithIndexInvalid() {
 
         assertEquals("the null transformer should be returned.", TEST_NULL_TRANSFORMER,
-                new FileTransformers(transformerMap, TEST_NULL_TRANSFORMER).get(-1));
+                new CompositeFileTransformers(transformerMap, TEST_NULL_TRANSFORMER).get(-1));
         assertEquals("the null transformer should be returned.", TEST_NULL_TRANSFORMER,
-                new FileTransformers(transformerMap, TEST_NULL_TRANSFORMER).get(transformerMap.size()));
+                new CompositeFileTransformers(transformerMap, TEST_NULL_TRANSFORMER).get(transformerMap.size()));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class FileTransformersTest {
 
         final File file = new File("test." + TEST_EXTENSION);
 
-        assertEquals("the correct transformer should be returned.", transformer, new FileTransformers(transformerMap,
+        assertEquals("the correct transformer should be returned.", transformer, new CompositeFileTransformers(transformerMap,
                 TEST_NULL_TRANSFORMER).get(file));
     }
 
@@ -99,7 +99,7 @@ public class FileTransformersTest {
         final File file = new File("test.inv");
 
         assertEquals("the correct transformer should be returned.", TEST_NULL_TRANSFORMER,
-                new FileTransformers(transformerMap, TEST_NULL_TRANSFORMER).get(file));
+                new CompositeFileTransformers(transformerMap, TEST_NULL_TRANSFORMER).get(file));
     }
 
     @Test
@@ -107,7 +107,7 @@ public class FileTransformersTest {
 
         int i = 0;
         for (CompositeFileTransformer<TokenTransformation> transformer :
-                new FileTransformers(transformerMap, TEST_NULL_TRANSFORMER)) {
+                new CompositeFileTransformers(transformerMap, TEST_NULL_TRANSFORMER)) {
 
             assertThat("the transformer should be contained in the supplied map.", transformerMap.values(),
                     hasItem(transformer));
