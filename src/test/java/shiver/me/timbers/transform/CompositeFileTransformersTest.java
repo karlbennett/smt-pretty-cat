@@ -5,6 +5,7 @@ import org.junit.Test;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -105,16 +106,14 @@ public class CompositeFileTransformersTest {
     @Test
     public void testIterator() {
 
-        int i = 0;
-        for (CompositeFileTransformer<TokenTransformation> transformer :
-                new CompositeFileTransformers(transformerMap, TEST_NULL_TRANSFORMER)) {
+        assertCollection(transformerMap.values(), new CompositeFileTransformers(transformerMap, TEST_NULL_TRANSFORMER));
+    }
 
-            assertThat("the transformer should be contained in the supplied map.", transformerMap.values(),
-                    hasItem(transformer));
-            i++;
-        }
+    @Test
+    public void testAsCollection() {
 
-        assertEquals("the correct number if iterations should have occured.", transformerMap.size(), i);
+        assertCollection(transformerMap.values(),
+                new CompositeFileTransformers(transformerMap, TEST_NULL_TRANSFORMER).asCollection());
     }
 
     private static Map<String, CompositeFileTransformer<TokenTransformation>> transformerMap(
@@ -129,5 +128,19 @@ public class CompositeFileTransformersTest {
         }
 
         return transformerMap;
+    }
+
+    private void assertCollection(Collection<CompositeFileTransformer<TokenTransformation>> expected,
+                                  Iterable<CompositeFileTransformer<TokenTransformation>> actual) {
+
+        int i = 0;
+        for (CompositeFileTransformer<TokenTransformation> transformer : actual) {
+
+            assertThat("the transformer should be contained in the supplied map.", expected,
+                    hasItem(transformer));
+            i++;
+        }
+
+        assertEquals("the correct number if iterations should have occurred.", expected.size(), i);
     }
 }

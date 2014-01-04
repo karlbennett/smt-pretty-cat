@@ -5,6 +5,7 @@ import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,6 +64,12 @@ public class CompositeFileTransformers implements Transformers<File, CompositeFi
                 fileExtensionToTransformers.get(FilenameUtils.getExtension(key.getName()));
 
         return isNotNull(transformer) ? transformer : nullTransformer;
+    }
+
+    @Override
+    public Collection<CompositeFileTransformer<TokenTransformation>> asCollection() {
+
+        return new ArrayList<CompositeFileTransformer<TokenTransformation>>(transformers);
     }
 
     @Override

@@ -18,6 +18,7 @@ import shiver.me.timbers.transform.java.types.LineComment;
 import shiver.me.timbers.transform.java.types.StringLiteral;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import static shiver.me.timbers.FOREGROUND_COLOUR.BLUE;
 import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_GREEN;
@@ -46,25 +47,25 @@ public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTran
                 new JavaPropertyTerminalForegroundColourTokenApplier("keywords", YELLOW));
 
         return new IndividualTransformations<TokenTransformation>(
-                Arrays.<Iterable<TokenTransformation>>asList(
-                        keywordTransformations,
-                        Arrays.<TokenTransformation>asList(
-                                new JavaDoc(new JavaPropertyTerminalForegroundColourTokenApplier(JavaDoc.class, GREEN)),
-                                new Comment(new JavaPropertyTerminalForegroundColourTokenApplier(Comment.class, WHITE)),
-                                new LineComment(new JavaPropertyTerminalForegroundColourTokenApplier(LineComment.class,
-                                        WHITE)),
-                                new Annotation(new JavaPropertyTerminalForegroundColourTokenApplier(Annotation.class,
-                                        RED)),
-                                new AnnotationName(new JavaPropertyTerminalForegroundColourTokenApplier(
-                                        AnnotationName.class, RED)),
-                                new IntegerLiteral(new JavaPropertyTerminalForegroundColourTokenApplier(
-                                        IntegerLiteral.class, BLUE)),
-                                new StringLiteral(new JavaPropertyTerminalForegroundColourTokenApplier(
-                                        StringLiteral.class, BRIGHT_GREEN)),
-                                new VariableDeclaratorId(new JavaPropertyTerminalForegroundColourTokenApplier(
-                                        VariableDeclaratorId.class, CYAN))
-                        )
-                ),
+                new LinkedList<TokenTransformation>() {{
+                    addAll(keywordTransformations.asCollection());
+                    addAll(Arrays.<TokenTransformation>asList(
+                            new JavaDoc(new JavaPropertyTerminalForegroundColourTokenApplier(JavaDoc.class, GREEN)),
+                            new Comment(new JavaPropertyTerminalForegroundColourTokenApplier(Comment.class, WHITE)),
+                            new LineComment(new JavaPropertyTerminalForegroundColourTokenApplier(LineComment.class,
+                                    WHITE)),
+                            new Annotation(new JavaPropertyTerminalForegroundColourTokenApplier(Annotation.class,
+                                    RED)),
+                            new AnnotationName(new JavaPropertyTerminalForegroundColourTokenApplier(
+                                    AnnotationName.class, RED)),
+                            new IntegerLiteral(new JavaPropertyTerminalForegroundColourTokenApplier(
+                                    IntegerLiteral.class, BLUE)),
+                            new StringLiteral(new JavaPropertyTerminalForegroundColourTokenApplier(
+                                    StringLiteral.class, BRIGHT_GREEN)),
+                            new VariableDeclaratorId(new JavaPropertyTerminalForegroundColourTokenApplier(
+                                    VariableDeclaratorId.class, CYAN))
+                    ));
+                }},
                 NULL_TOKEN_TRANSFORMATION
         );
     }
