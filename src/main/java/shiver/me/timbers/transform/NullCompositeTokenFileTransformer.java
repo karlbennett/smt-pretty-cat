@@ -10,6 +10,6 @@ import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TO
 public class NullCompositeTokenFileTransformer extends NullCompositeFileTransformer<TokenTransformation> {
 
     public NullCompositeTokenFileTransformer() {
-        super(new IndividualTransformations<TokenTransformation>(NULL_TOKEN_TRANSFORMATION));
+        super(new IterableTransformations<TokenTransformation>(NULL_TOKEN_TRANSFORMATION));
     }
 }

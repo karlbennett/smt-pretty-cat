@@ -1,6 +1,6 @@
 package shiver.me.timbers.java;
 
-import shiver.me.timbers.transform.IndividualTransformations;
+import shiver.me.timbers.transform.IterableTransformations;
 import shiver.me.timbers.transform.StreamFileTransformer;
 import shiver.me.timbers.transform.StringStreamTransformer;
 import shiver.me.timbers.transform.Transformations;
@@ -46,7 +46,7 @@ public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTran
         final Transformations<TokenTransformation> keywordTransformations = new CompoundTransformations(KEYWORD_NAMES,
                 new JavaPropertyTerminalForegroundColourTokenApplier("keywords", YELLOW));
 
-        return new IndividualTransformations<TokenTransformation>(
+        return new IterableTransformations<TokenTransformation>(
                 new LinkedList<TokenTransformation>() {{
                     addAll(keywordTransformations.asCollection());
                     addAll(Arrays.<TokenTransformation>asList(

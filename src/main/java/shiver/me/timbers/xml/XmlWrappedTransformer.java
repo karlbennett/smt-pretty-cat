@@ -1,6 +1,6 @@
 package shiver.me.timbers.xml;
 
-import shiver.me.timbers.transform.IndividualTransformations;
+import shiver.me.timbers.transform.IterableTransformations;
 import shiver.me.timbers.transform.StreamFileTransformer;
 import shiver.me.timbers.transform.StringStreamTransformer;
 import shiver.me.timbers.transform.Transformations;
@@ -36,7 +36,7 @@ public class XmlWrappedTransformer extends WrappedFileTransformer<TokenTransform
 
     private static Transformations<TokenTransformation> configureTransformations() {
 
-        return new IndividualTransformations<TokenTransformation>(Arrays.<TokenTransformation>asList(
+        return new IterableTransformations<TokenTransformation>(Arrays.<TokenTransformation>asList(
                 new XMLDeclOpen(new XmlPropertyTerminalForegroundColourTokenApplier(XMLDeclOpen.class, BRIGHT_YELLOW)),
                 new SpecialClose(new XmlPropertyTerminalForegroundColourTokenApplier(SpecialClose.class, BRIGHT_YELLOW)),
                 new Name(new NamePropertyTerminalForegroundColourTokenApplier(YELLOW)),

@@ -1,7 +1,7 @@
 package shiver.me.timbers.java;
 
 import org.junit.Test;
-import shiver.me.timbers.transform.IndividualTransformations;
+import shiver.me.timbers.transform.IterableTransformations;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import static org.junit.Assert.assertNotNull;
@@ -24,6 +24,6 @@ public class LazyJavaWrappedTransformerTest {
 
         assertNotNull("the transform should produce a string.",
                 new LazyJavaWrappedTransformer().transform(testTxtFile(),
-                        new IndividualTransformations<TokenTransformation>(NULL_TOKEN_TRANSFORMATION)));
+                        new IterableTransformations<TokenTransformation>(NULL_TOKEN_TRANSFORMATION)));
     }
 }
