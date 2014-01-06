@@ -1,6 +1,8 @@
 package shiver.me.timbers.transform;
 
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
+import shiver.me.timbers.transform.composite.NullCompositeFileTransformer;
+import shiver.me.timbers.transform.iterable.IterableTransformations;
 
 import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TOKEN_TRANSFORMATION;
 

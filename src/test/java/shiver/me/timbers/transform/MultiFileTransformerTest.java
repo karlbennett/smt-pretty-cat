@@ -2,6 +2,8 @@ package shiver.me.timbers.transform;
 
 import org.junit.Test;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
+import shiver.me.timbers.transform.composite.CompositeFileTransformer;
+import shiver.me.timbers.transform.composite.WrappedFileTransformer;
 
 import java.io.File;
 

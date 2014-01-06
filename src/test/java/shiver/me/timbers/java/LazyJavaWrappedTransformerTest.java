@@ -1,7 +1,7 @@
 package shiver.me.timbers.java;
 
 import org.junit.Test;
-import shiver.me.timbers.transform.IterableTransformations;
+import shiver.me.timbers.transform.iterable.IterableTransformations;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import static org.junit.Assert.assertNotNull;

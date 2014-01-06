@@ -2,6 +2,7 @@ package shiver.me.timbers.transform;
 
 import org.junit.Before;
 import org.junit.Test;
+import shiver.me.timbers.transform.composite.CompositeFileTransformer;
 
 import java.io.File;
 import java.util.concurrent.Callable;

@@ -1,5 +1,7 @@
 package shiver.me.timbers.transform;
 
+import shiver.me.timbers.transform.composite.CompositeFileTransformer;
+
 import java.io.File;
 import java.util.concurrent.Callable;
 
@@ -8,7 +10,7 @@ import static shiver.me.timbers.asserts.Asserts.assertIsNotNull;
 import static shiver.me.timbers.checks.Checks.isNull;
 
 /**
- * This {@link CompositeStreamTransformer} will lazily create the it's related transformer just before calling either
+ * This {@link shiver.me.timbers.transform.composite.CompositeStreamTransformer} will lazily create the it's related transformer just before calling either
  * transform method.
  */
 public class LazyCompositeTransformer<L extends CompositeFileTransformer<T>, T extends Transformation>
