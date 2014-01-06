@@ -1,11 +1,11 @@
 package shiver.me.timbers;
 
 import shiver.me.timbers.java.LazyJavaWrappedTransformer;
-import shiver.me.timbers.transform.composite.CompositeFileTransformer;
 import shiver.me.timbers.transform.CompositeFileTransformers;
 import shiver.me.timbers.transform.MultiFileTransformer;
 import shiver.me.timbers.transform.Transformers;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
+import shiver.me.timbers.transform.composite.CompositeFileTransformer;
 import shiver.me.timbers.xml.LazyXmlWrappedTransformer;
 
 import java.io.File;

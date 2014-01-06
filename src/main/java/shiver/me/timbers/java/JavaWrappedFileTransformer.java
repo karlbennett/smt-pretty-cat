@@ -1,12 +1,11 @@
 package shiver.me.timbers.java;
 
-import shiver.me.timbers.transform.iterable.IterableTransformations;
-import shiver.me.timbers.transform.file.StreamFileTransformer;
-import shiver.me.timbers.transform.stream.StringStreamTransformer;
 import shiver.me.timbers.transform.Transformations;
-import shiver.me.timbers.transform.composite.WrappedFileTransformer;
 import shiver.me.timbers.transform.antlr4.CompoundTransformations;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
+import shiver.me.timbers.transform.composite.WrappedFileTransformer;
+import shiver.me.timbers.transform.file.StreamFileTransformer;
+import shiver.me.timbers.transform.iterable.IterableTransformations;
 import shiver.me.timbers.transform.java.JavaTransformer;
 import shiver.me.timbers.transform.java.rules.Annotation;
 import shiver.me.timbers.transform.java.rules.AnnotationName;
@@ -16,6 +15,7 @@ import shiver.me.timbers.transform.java.types.IntegerLiteral;
 import shiver.me.timbers.transform.java.types.JavaDoc;
 import shiver.me.timbers.transform.java.types.LineComment;
 import shiver.me.timbers.transform.java.types.StringLiteral;
+import shiver.me.timbers.transform.stream.StringStreamTransformer;
 
 import java.util.Arrays;
 import java.util.LinkedList;
