@@ -4,25 +4,16 @@ import org.apache.commons.io.FilenameUtils;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-
-import static shiver.me.timbers.asserts.Asserts.argumentIsNullMessage;
-import static shiver.me.timbers.asserts.Asserts.assertIsNotNull;
-import static shiver.me.timbers.checks.Checks.isNotNull;
 
 /**
  * This transformers container allows the lookup of transformers that support the supplied file type.
  */
 public class CompositeFileTransformers implements Transformers<File, CompositeFileTransformer<TokenTransformation>> {
 
-    private final List<CompositeFileTransformer<TokenTransformation>> transformers;
-    private final Map<String, CompositeFileTransformer<TokenTransformation>> fileExtensionToTransformers;
-    private final CompositeFileTransformer<TokenTransformation> nullTransformer;
+    private final Transformers<String, CompositeFileTransformer<TokenTransformation>> transformers;
 
     /**
      * @param fileExtensionToTransformers this map should contain file extensions that map to their related
@@ -42,44 +33,40 @@ public class CompositeFileTransformers implements Transformers<File, CompositeFi
     public CompositeFileTransformers(Map<String, CompositeFileTransformer<TokenTransformation>> fileExtensionToTransformers,
                                      CompositeFileTransformer<TokenTransformation> nullTransformer) {
 
-        assertIsNotNull(argumentIsNullMessage("fileExtensionToTransformers"), fileExtensionToTransformers);
-        assertIsNotNull(argumentIsNullMessage("nullTransformer"), nullTransformer);
-
-        this.transformers =
-                new ArrayList<CompositeFileTransformer<TokenTransformation>>(fileExtensionToTransformers.values());
-        this.fileExtensionToTransformers = fileExtensionToTransformers;
-        this.nullTransformer = nullTransformer;
+        transformers = new MappedTransformers<String, CompositeFileTransformer<TokenTransformation>>(
+                fileExtensionToTransformers, nullTransformer);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CompositeFileTransformer<TokenTransformation> get(int index) {
 
-        return isValidIndex(index) ? transformers.get(index) : nullTransformer;
+        return transformers.get(index);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CompositeFileTransformer<TokenTransformation> get(File key) {
 
-        final CompositeFileTransformer<TokenTransformation> transformer =
-                fileExtensionToTransformers.get(FilenameUtils.getExtension(key.getName()));
-
-        return isNotNull(transformer) ? transformer : nullTransformer;
-    }
-
-    @Override
-    public Collection<CompositeFileTransformer<TokenTransformation>> asCollection() {
-
-        return new ArrayList<CompositeFileTransformer<TokenTransformation>>(transformers);
+        return transformers.get(FilenameUtils.getExtension(key.getName()));
     }
 
     @Override
     public Iterator<CompositeFileTransformer<TokenTransformation>> iterator() {
 
-        return new LinkedList<CompositeFileTransformer<TokenTransformation>>(transformers).iterator();
+        return transformers.iterator();
     }
 
-    private boolean isValidIndex(int index) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<CompositeFileTransformer<TokenTransformation>> asCollection() {
 
-        return 0 <= index && transformers.size() > index;
+        return transformers.asCollection();
     }
 }
