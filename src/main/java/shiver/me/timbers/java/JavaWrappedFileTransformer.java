@@ -2,10 +2,10 @@ package shiver.me.timbers.java;
 
 import shiver.me.timbers.transform.Transformations;
 import shiver.me.timbers.transform.antlr4.CompoundTransformations;
+import shiver.me.timbers.transform.antlr4.IterableTokenTransformations;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.composite.WrappedFileTransformer;
 import shiver.me.timbers.transform.file.StreamFileTransformer;
-import shiver.me.timbers.transform.iterable.IterableTransformations;
 import shiver.me.timbers.transform.java.JavaTransformer;
 import shiver.me.timbers.transform.java.rules.Annotation;
 import shiver.me.timbers.transform.java.rules.AnnotationName;
@@ -27,7 +27,6 @@ import static shiver.me.timbers.FOREGROUND_COLOUR.GREEN;
 import static shiver.me.timbers.FOREGROUND_COLOUR.RED;
 import static shiver.me.timbers.FOREGROUND_COLOUR.WHITE;
 import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
-import static shiver.me.timbers.transform.antlr4.NullTokenTransformation.NULL_TOKEN_TRANSFORMATION;
 import static shiver.me.timbers.transform.java.KeyWords.KEYWORD_NAMES;
 
 public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTransformation> {
@@ -46,7 +45,7 @@ public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTran
         final Transformations<TokenTransformation> keywordTransformations = new CompoundTransformations(KEYWORD_NAMES,
                 new JavaPropertyTerminalForegroundColourTokenApplier("keywords", YELLOW));
 
-        return new IterableTransformations<TokenTransformation>(
+        return new IterableTokenTransformations(
                 new LinkedList<TokenTransformation>() {{
                     addAll(keywordTransformations.asCollection());
                     addAll(Arrays.<TokenTransformation>asList(
@@ -65,8 +64,7 @@ public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTran
                             new VariableDeclaratorId(new JavaPropertyTerminalForegroundColourTokenApplier(
                                     VariableDeclaratorId.class, CYAN))
                     ));
-                }},
-                NULL_TOKEN_TRANSFORMATION
+                }}
         );
     }
 }
