@@ -41,8 +41,10 @@ public class XmlWrappedTransformer extends WrappedFileTransformer<TokenTransform
                                 new XmlPropertyTerminalForegroundColourTokenApplier(XMLDeclOpen.class, BRIGHT_YELLOW)),
                         new SpecialClose(
                                 new XmlPropertyTerminalForegroundColourTokenApplier(SpecialClose.class, BRIGHT_YELLOW)),
-                        new Name(new NamePropertyTerminalForegroundColourTokenApplier(YELLOW)),
-                        new Attribute(new XmlPropertyTerminalForegroundColourTokenApplier(Attribute.class, CYAN)),
+                        new Name(new IsNotAttributeTokenApplier(
+                                new XmlPropertyTerminalForegroundColourTokenApplier(SpecialClose.class, YELLOW))),
+                        new Attribute(new IsNameTokenApplier(
+                                new XmlPropertyTerminalForegroundColourTokenApplier(Attribute.class, CYAN))),
                         new Open(new XmlPropertyTerminalForegroundColourTokenApplier(Open.class, BRIGHT_YELLOW)),
                         new Close(new XmlPropertyTerminalForegroundColourTokenApplier(Close.class, BRIGHT_YELLOW)),
                         new Slash(new XmlPropertyTerminalForegroundColourTokenApplier(Slash.class, BRIGHT_YELLOW)),

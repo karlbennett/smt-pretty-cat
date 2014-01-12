@@ -53,8 +53,8 @@ public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTran
                             new Comment(new JavaPropertyTerminalForegroundColourTokenApplier(Comment.class, WHITE)),
                             new LineComment(new JavaPropertyTerminalForegroundColourTokenApplier(LineComment.class,
                                     WHITE)),
-                            new Annotation(new JavaPropertyTerminalForegroundColourTokenApplier(Annotation.class,
-                                    RED)),
+                            new Annotation(new IsAtTokenApplier(
+                                    new JavaPropertyTerminalForegroundColourTokenApplier(Annotation.class, RED))),
                             new AnnotationName(new JavaPropertyTerminalForegroundColourTokenApplier(
                                     AnnotationName.class, RED)),
                             new IntegerLiteral(new JavaPropertyTerminalForegroundColourTokenApplier(
