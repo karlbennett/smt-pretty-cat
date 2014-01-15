@@ -9,6 +9,9 @@ import shiver.me.timbers.transform.composite.NullCompositeFileTransformer;
  */
 public class NullCompositeTokenFileTransformer extends NullCompositeFileTransformer<TokenTransformation> {
 
+    public static final NullCompositeTokenFileTransformer NULL_COMPOSITE_TOKEN_FILE_TRANSFORMER =
+            new NullCompositeTokenFileTransformer();
+
     public NullCompositeTokenFileTransformer() {
         super(new IterableTokenTransformations());
     }

@@ -22,13 +22,14 @@ import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_GREEN;
 import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_YELLOW;
 import static shiver.me.timbers.FOREGROUND_COLOUR.CYAN;
 import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
+import static shiver.me.timbers.transform.xml.XmlTransformer.TEXT_XML;
 
 public class XmlWrappedTransformer extends WrappedFileTransformer<TokenTransformation> {
 
     public XmlWrappedTransformer() {
         super(
-                new StreamFileTransformer<TokenTransformation>(
-                        new StringStreamTransformer<TokenTransformation>(new XmlTransformer())),
+                new StreamFileTransformer<TokenTransformation>(TEXT_XML,
+                        new StringStreamTransformer<TokenTransformation>(TEXT_XML, new XmlTransformer())),
                 configureTransformations()
         );
     }

@@ -20,21 +20,22 @@ import shiver.me.timbers.transform.stream.StringStreamTransformer;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import static shiver.me.timbers.FOREGROUND_COLOUR.BLUE;
+import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_BLUE;
 import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_GREEN;
 import static shiver.me.timbers.FOREGROUND_COLOUR.CYAN;
 import static shiver.me.timbers.FOREGROUND_COLOUR.GREEN;
 import static shiver.me.timbers.FOREGROUND_COLOUR.RED;
 import static shiver.me.timbers.FOREGROUND_COLOUR.WHITE;
 import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
+import static shiver.me.timbers.transform.java.JavaTransformer.TEXT_X_JAVA_SOURCE;
 import static shiver.me.timbers.transform.java.KeyWords.KEYWORD_NAMES;
 
 public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTransformation> {
 
     public JavaWrappedFileTransformer() {
         super(
-                new StreamFileTransformer<TokenTransformation>(
-                        new StringStreamTransformer<TokenTransformation>(new JavaTransformer())),
+                new StreamFileTransformer<TokenTransformation>(TEXT_X_JAVA_SOURCE,
+                        new StringStreamTransformer<TokenTransformation>(TEXT_X_JAVA_SOURCE, new JavaTransformer())),
                 configureTransformations()
         );
     }
@@ -58,7 +59,7 @@ public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTran
                             new AnnotationName(new JavaPropertyTerminalForegroundColourTokenApplier(
                                     AnnotationName.class, RED)),
                             new IntegerLiteral(new JavaPropertyTerminalForegroundColourTokenApplier(
-                                    IntegerLiteral.class, BLUE)),
+                                    IntegerLiteral.class, BRIGHT_BLUE)),
                             new StringLiteral(new JavaPropertyTerminalForegroundColourTokenApplier(
                                     StringLiteral.class, BRIGHT_GREEN)),
                             new VariableDeclaratorId(new JavaPropertyTerminalForegroundColourTokenApplier(

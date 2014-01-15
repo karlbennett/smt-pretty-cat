@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import shiver.me.timbers.transform.composite.CompositeFileTransformer;
 
+import javax.activation.MimeType;
 import java.io.File;
 import java.util.concurrent.Callable;
 
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.when;
 
 public class LazyCompositeTransformerTest {
 
+    private MimeType mimeType;
     private File file;
     private Transformations<Transformation> transformations;
 
@@ -25,6 +27,7 @@ public class LazyCompositeTransformerTest {
     @SuppressWarnings("unchecked")
     public void setUp() {
 
+        mimeType = mock(MimeType.class);
         file = mock(File.class);
         transformations = mock(Transformations.class);
     }
@@ -35,7 +38,7 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = spy(new MockTransformerCallable());
 
-        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(callable);
+        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(mimeType, callable);
 
         assertNull("the callable should not have produced a transformer.", callable.getTransformer());
 
@@ -49,14 +52,14 @@ public class LazyCompositeTransformerTest {
         final Callable<CompositeFileTransformer<Transformation>> callable = mock(Callable.class);
         when(callable.call()).thenThrow(new Exception("test callable exception."));
 
-        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(mimeType, callable)
                 .transform(mock(File.class));
     }
 
     @Test(expected = AssertionError.class)
     public void testCreateWithNullCallable() {
 
-        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(null);
+        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(mimeType, null);
     }
 
     @Test
@@ -64,7 +67,7 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = spy(new MockTransformerCallable());
 
-        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(mimeType, callable)
                 .transform(file, transformations);
 
         final CompositeFileTransformer<Transformation> mockTransformer = callable.getTransformer();
@@ -82,7 +85,8 @@ public class LazyCompositeTransformerTest {
         final MockTransformerCallable callable = spy(new MockTransformerCallable());
 
         final CompositeFileTransformer<Transformation> transformer =
-                new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(callable);
+                new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(mimeType,
+                        callable);
         transformer.transform(file, transformations);
         transformer.transform(file, transformations);
 
@@ -100,7 +104,7 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = new MockTransformerCallable();
 
-        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(mimeType, callable)
                 .transform(null, transformations);
 
         final CompositeFileTransformer<Transformation> mockTransformer = callable.getTransformer();
@@ -115,7 +119,7 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = new MockTransformerCallable();
 
-        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(mimeType, callable)
                 .transform(file, null);
 
         final CompositeFileTransformer<Transformation> mockTransformer = callable.getTransformer();
@@ -130,7 +134,7 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = new MockTransformerCallable();
 
-        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(mimeType, callable)
                 .transform(null, null);
 
         final CompositeFileTransformer<Transformation> mockTransformer = callable.getTransformer();
@@ -145,7 +149,7 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = spy(new MockTransformerCallable());
 
-        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(callable)
+        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(mimeType, callable)
                 .transform(file);
 
         final CompositeFileTransformer<Transformation> mockTransformer = callable.getTransformer();
@@ -163,7 +167,8 @@ public class LazyCompositeTransformerTest {
         final MockTransformerCallable callable = spy(new MockTransformerCallable());
 
         final CompositeFileTransformer<Transformation> transformer =
-                new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(callable);
+                new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(mimeType,
+                        callable);
         transformer.transform(file);
         transformer.transform(file);
 
@@ -181,7 +186,8 @@ public class LazyCompositeTransformerTest {
 
         final MockTransformerCallable callable = new MockTransformerCallable();
 
-        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(callable).transform(null);
+        new LazyCompositeTransformer<CompositeFileTransformer<Transformation>, Transformation>(mimeType, callable)
+                .transform(null);
 
         final CompositeFileTransformer<Transformation> mockTransformer = callable.getTransformer();
 

@@ -5,13 +5,15 @@ import shiver.me.timbers.transform.antlr4.TokenTransformation;
 
 import java.util.concurrent.Callable;
 
+import static shiver.me.timbers.transform.xml.XmlTransformer.TEXT_XML;
+
 /**
  * This callable simply instantiates a new {@link XmlWrappedTransformer}.
  */
 public class LazyXmlWrappedTransformer extends LazyCompositeTransformer<XmlWrappedTransformer, TokenTransformation> {
 
     public LazyXmlWrappedTransformer() {
-        super(new Callable<XmlWrappedTransformer>() {
+        super(TEXT_XML, new Callable<XmlWrappedTransformer>() {
 
             @Override
             public XmlWrappedTransformer call() throws Exception {

@@ -1,21 +1,32 @@
 package shiver.me.timbers.transform;
 
+import org.apache.commons.io.FilenameUtils;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.composite.CompositeFileTransformer;
 
+import javax.activation.MimeType;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import static shiver.me.timbers.asserts.Asserts.argumentIsNullMessage;
 import static shiver.me.timbers.asserts.Asserts.assertIsNotNull;
+import static shiver.me.timbers.transform.java.JavaTransformer.TEXT_X_JAVA_SOURCE;
+import static shiver.me.timbers.transform.xml.XmlTransformer.TEXT_XML;
 
 /**
  * This transformer supports the transformation of multiple file types.
  */
 public class MultiFileTransformer {
 
-    private final Transformers<File, CompositeFileTransformer<TokenTransformation>> transformers;
+    private static final Map<String, MimeType> FILE_EXTENSION_TO_MIME_TYPE = new HashMap<String, MimeType>() {{
+        put("java", TEXT_X_JAVA_SOURCE);
+        put("xml", TEXT_XML);
+    }};
 
-    public MultiFileTransformer(Transformers<File, CompositeFileTransformer<TokenTransformation>> transformers) {
+    private final Transformers<CompositeFileTransformer<TokenTransformation>> transformers;
+
+    public MultiFileTransformer(Transformers<CompositeFileTransformer<TokenTransformation>> transformers) {
 
         assertIsNotNull(argumentIsNullMessage("transformers"), transformers);
 
@@ -27,7 +38,9 @@ public class MultiFileTransformer {
      */
     public String transform(File file) {
 
-        final CompositeFileTransformer<TokenTransformation> transformer = transformers.get(file);
+        final MimeType mimeType = FILE_EXTENSION_TO_MIME_TYPE.get(FilenameUtils.getExtension(file.getName()));
+
+        final CompositeFileTransformer<TokenTransformation> transformer = transformers.get(mimeType);
 
         return transformer.transform(file);
     }
