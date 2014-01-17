@@ -8,6 +8,8 @@ import shiver.me.timbers.transform.Container;
 import java.lang.reflect.Constructor;
 import java.util.concurrent.Callable;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -15,7 +17,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
-import static shiver.me.timbers.exceptions.Exceptions.ExceptionHandler;
 
 public class ExceptionsTest {
 
@@ -43,7 +44,7 @@ public class ExceptionsTest {
     @Test
     public void testWithExceptionHandlingWithNoException() throws Exception {
 
-        Exceptions.withExceptionHandling(handlers, callable);
+        assertTrue("should return success status code.", Exceptions.withExceptionHandling(handlers, callable));
 
         verify(callable, times(1)).call();
         verifyNoMoreInteractions(callable);
@@ -63,7 +64,7 @@ public class ExceptionsTest {
 
         when(handlers.get(exception.getClass())).thenReturn(exceptionHandler);
 
-        Exceptions.withExceptionHandling(handlers, callable);
+        assertFalse("should return failed status code.", Exceptions.withExceptionHandling(handlers, callable));
 
         verify(callable, times(1)).call();
         verifyNoMoreInteractions(callable);
@@ -85,7 +86,7 @@ public class ExceptionsTest {
 
         when(handlers.get(error.getClass())).thenReturn(exceptionHandler);
 
-        Exceptions.withExceptionHandling(handlers, callable);
+        assertFalse("should return failed status code.", Exceptions.withExceptionHandling(handlers, callable));
 
         verify(callable, times(1)).call();
         verifyNoMoreInteractions(callable);
@@ -101,7 +102,7 @@ public class ExceptionsTest {
     @SuppressWarnings("unchecked")
     public void testWithExceptionHandlingWithNullHandlersAndNoException() throws Exception {
 
-        Exceptions.withExceptionHandling(null, callable);
+        assertTrue("should return success status code.", Exceptions.withExceptionHandling(null, callable));
 
         verify(callable, times(1)).call();
         verifyNoMoreInteractions(callable);
@@ -123,7 +124,7 @@ public class ExceptionsTest {
 
         when(handlers.get(NullPointerException.class)).thenReturn(exceptionHandler);
 
-        Exceptions.withExceptionHandling(handlers, null);
+        assertFalse("should return failed status code.", Exceptions.withExceptionHandling(handlers, null));
 
         verify(handlers, times(1)).get(NullPointerException.class);
         verifyNoMoreInteractions(handlers);

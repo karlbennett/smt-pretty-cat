@@ -1,18 +1,25 @@
 package shiver.me.timbers;
 
+import shiver.me.timbers.exceptions.ErrorLoggingExceptionHandler;
+import shiver.me.timbers.exceptions.ExceptionHandler;
 import shiver.me.timbers.java.LazyJavaWrappedTransformer;
+import shiver.me.timbers.transform.Container;
 import shiver.me.timbers.transform.MultiFileTransformer;
 import shiver.me.timbers.transform.Transformers;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.composite.CompositeFileTransformer;
 import shiver.me.timbers.transform.iterable.IterableTransformers;
+import shiver.me.timbers.transform.mapped.MappedContainer;
 import shiver.me.timbers.xml.LazyXmlWrappedTransformer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
+import static java.lang.System.out;
 import static shiver.me.timbers.ESCAPE.RESET;
+import static shiver.me.timbers.exceptions.Exceptions.withExceptionHandling;
 import static shiver.me.timbers.transform.NullCompositeTokenFileTransformer.NULL_COMPOSITE_TOKEN_FILE_TRANSFORMER;
 
 /**
@@ -29,10 +36,22 @@ public class PrettyCat {
                     NULL_COMPOSITE_TOKEN_FILE_TRANSFORMER
             );
 
-    public static void main(String[] args) throws FileNotFoundException {
+    private static final Container<Class, ExceptionHandler> EXCEPTION_HANDLERS =
+            new MappedContainer<Class, ExceptionHandler>(new ErrorLoggingExceptionHandler());
 
-        System.out.print(new MultiFileTransformer(TRANSFORMERS).transform(new File(args[0])));
-        // Reset the colour scheme after printing the highlighted source code.
-        System.out.println(RESET);
+    public static void main(final String[] args) throws FileNotFoundException {
+
+        withExceptionHandling(EXCEPTION_HANDLERS, new Callable<Void>() {
+
+            @Override
+            public Void call() throws Exception {
+
+                out.print(new MultiFileTransformer(TRANSFORMERS).transform(new File(args[0])));
+                // Reset the colour scheme after printing the highlighted source code.
+                out.println(RESET);
+
+                return null;
+            }
+        });
     }
 }
