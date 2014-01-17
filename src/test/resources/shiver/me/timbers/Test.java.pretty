@@ -20,7 +20,7 @@
     [31m@[97m[31mOverride[97m
     [33mpublic[97m Integer call() [33mthrows[97m Exception {
 
-        [33mreturn[97m [34m42[97m;
+        [33mreturn[97m [94m42[97m;
     }
 }
 [0m
