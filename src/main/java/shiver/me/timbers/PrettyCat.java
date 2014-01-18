@@ -1,6 +1,8 @@
 package shiver.me.timbers;
 
 import shiver.me.timbers.exceptions.ExceptionHandler;
+import shiver.me.timbers.exceptions.IterableExceptionHandlers;
+import shiver.me.timbers.exceptions.MissingFileNameArgumentExceptionHandler;
 import shiver.me.timbers.exceptions.RethrowingExceptionHandler;
 import shiver.me.timbers.java.LazyJavaWrappedTransformer;
 import shiver.me.timbers.transform.Container;
@@ -9,11 +11,10 @@ import shiver.me.timbers.transform.Transformers;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.composite.CompositeFileTransformer;
 import shiver.me.timbers.transform.iterable.IterableTransformers;
-import shiver.me.timbers.transform.mapped.MappedContainer;
 import shiver.me.timbers.xml.LazyXmlWrappedTransformer;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.concurrent.Callable;
 
 import static java.lang.System.out;
@@ -28,7 +29,7 @@ public class PrettyCat {
 
     private static final Transformers<CompositeFileTransformer<TokenTransformation>> TRANSFORMERS =
             new IterableTransformers<CompositeFileTransformer<TokenTransformation>>(
-                    new ArrayList<CompositeFileTransformer<TokenTransformation>>() {{
+                    new LinkedList<CompositeFileTransformer<TokenTransformation>>() {{
                         add(new LazyJavaWrappedTransformer());
                         add(new LazyXmlWrappedTransformer());
                     }},
@@ -36,7 +37,12 @@ public class PrettyCat {
             );
 
     private static final Container<Class, ExceptionHandler> EXCEPTION_HANDLERS =
-            new MappedContainer<Class, ExceptionHandler>(new RethrowingExceptionHandler());
+            new IterableExceptionHandlers(
+                    new LinkedList<ExceptionHandler>() {{
+                        add(new MissingFileNameArgumentExceptionHandler());
+                    }},
+                    new RethrowingExceptionHandler()
+            );
 
     public static void main(final String[] args) throws Throwable {
 
