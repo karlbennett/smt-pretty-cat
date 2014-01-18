@@ -1,9 +1,5 @@
 package shiver.me.timbers;
 
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.Options;
 import shiver.me.timbers.exceptions.ExceptionHandler;
 import shiver.me.timbers.exceptions.RethrowingExceptionHandler;
 import shiver.me.timbers.java.LazyJavaWrappedTransformer;
@@ -49,12 +45,7 @@ public class PrettyCat {
             @Override
             public Void call() throws Exception {
 
-                final CommandLineParser parser = new BasicParser();
-                CommandLine commandLine = parser.parse(new Options().addOption("x", false, "it's x"), args);
-
-                final String fileName = commandLine.getArgList().get(0).toString();
-
-                out.print(new MultiFileTransformer(TRANSFORMERS).transform(new File(fileName)));
+                out.print(new MultiFileTransformer(TRANSFORMERS).transform(new File(args[0])));
                 // Reset the colour scheme after printing the highlighted source code.
                 out.println(RESET);
 
