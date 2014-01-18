@@ -8,6 +8,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
+import static shiver.me.timbers.exceptions.StandardErrUtils.replaceStandardError;
+import static shiver.me.timbers.exceptions.StandardErrUtils.restoreStandardError;
 
 public class ErrorLoggingExceptionHandlerTest {
 
@@ -15,17 +17,15 @@ public class ErrorLoggingExceptionHandlerTest {
     private ByteArrayOutputStream err;
 
     @Before
-    public void replaceStandardError() {
+    public void setup() {
 
-        oldErr = System.err;
-
-        System.setErr(new PrintStream(err = new ByteArrayOutputStream()));
+        oldErr = replaceStandardError(err = new ByteArrayOutputStream());
     }
 
     @After
-    public void restoreStandardError() {
+    public void tearDown() {
 
-        System.setErr(oldErr);
+        restoreStandardError(oldErr);
     }
 
     @Test
