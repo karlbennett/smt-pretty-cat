@@ -22,7 +22,8 @@ public class Exceptions {
      * @return true if no exception is thrown, otherwise false.
      */
     @SuppressWarnings("unchecked")
-    public static boolean withExceptionHandling(Container<Class, ExceptionHandler> handlers, Callable<Void> callable) {
+    public static boolean withExceptionHandling(Container<Class, ExceptionHandler> handlers, Callable<Void> callable)
+            throws Throwable {
 
         try {
 

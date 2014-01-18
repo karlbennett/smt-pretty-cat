@@ -8,5 +8,5 @@ public interface ExceptionHandler<T extends Throwable> {
     /**
      * @param throwable the exception that was thrown.
      */
-    public void handle(T throwable);
+    public void handle(T throwable) throws T;
 }

@@ -42,7 +42,7 @@ public class ExceptionsTest {
     }
 
     @Test
-    public void testWithExceptionHandlingWithNoException() throws Exception {
+    public void testWithExceptionHandlingWithNoException() throws Throwable {
 
         assertTrue("should return success status code.", Exceptions.withExceptionHandling(handlers, callable));
 
@@ -56,7 +56,7 @@ public class ExceptionsTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testWithExceptionHandlingWithHandledException() throws Exception {
+    public void testWithExceptionHandlingWithHandledException() throws Throwable {
 
         final Exception exception = new Exception();
 
@@ -78,7 +78,7 @@ public class ExceptionsTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testWithExceptionHandlingWithHandledError() throws Exception {
+    public void testWithExceptionHandlingWithHandledError() throws Throwable {
 
         final Error error = new Error();
 
@@ -100,7 +100,7 @@ public class ExceptionsTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testWithExceptionHandlingWithNullHandlersAndNoException() throws Exception {
+    public void testWithExceptionHandlingWithNullHandlersAndNoException() throws Throwable {
 
         assertTrue("should return success status code.", Exceptions.withExceptionHandling(null, callable));
 
@@ -109,7 +109,7 @@ public class ExceptionsTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testWithExceptionHandlingWithNullHandlersAndException() throws Exception {
+    public void testWithExceptionHandlingWithNullHandlersAndException() throws Throwable {
 
         final Exception exception = new Exception();
 
@@ -120,7 +120,7 @@ public class ExceptionsTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testWithExceptionHandlingWithNullCallable() throws Exception {
+    public void testWithExceptionHandlingWithNullCallable() throws Throwable {
 
         when(handlers.get(NullPointerException.class)).thenReturn(exceptionHandler);
 

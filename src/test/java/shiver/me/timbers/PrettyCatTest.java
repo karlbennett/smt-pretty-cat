@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
@@ -43,7 +42,7 @@ public class PrettyCatTest {
     }
 
     @Test
-    public void testMainWithUnknownFile() throws FileNotFoundException {
+    public void testMainWithUnknownFile() throws Throwable {
 
         PrettyCat.main(new String[]{testFilePath(TEST_TXT_FILE)});
 
@@ -52,7 +51,7 @@ public class PrettyCatTest {
     }
 
     @Test
-    public void testMainWithJavaFile() throws FileNotFoundException {
+    public void testMainWithJavaFile() throws Throwable {
 
         PrettyCat.main(new String[]{testFilePath(TEST_JAVA_FILE)});
 
@@ -60,7 +59,7 @@ public class PrettyCatTest {
     }
 
     @Test
-    public void testMainWithXmlFile() throws FileNotFoundException {
+    public void testMainWithXmlFile() throws Throwable {
 
         PrettyCat.main(new String[]{testFilePath(TEST_XML_FILE)});
 

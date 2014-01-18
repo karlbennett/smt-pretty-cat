@@ -1,7 +1,11 @@
 package shiver.me.timbers;
 
-import shiver.me.timbers.exceptions.ErrorLoggingExceptionHandler;
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Options;
 import shiver.me.timbers.exceptions.ExceptionHandler;
+import shiver.me.timbers.exceptions.RethrowingExceptionHandler;
 import shiver.me.timbers.java.LazyJavaWrappedTransformer;
 import shiver.me.timbers.transform.Container;
 import shiver.me.timbers.transform.MultiFileTransformer;
@@ -13,7 +17,6 @@ import shiver.me.timbers.transform.mapped.MappedContainer;
 import shiver.me.timbers.xml.LazyXmlWrappedTransformer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -37,16 +40,21 @@ public class PrettyCat {
             );
 
     private static final Container<Class, ExceptionHandler> EXCEPTION_HANDLERS =
-            new MappedContainer<Class, ExceptionHandler>(new ErrorLoggingExceptionHandler());
+            new MappedContainer<Class, ExceptionHandler>(new RethrowingExceptionHandler());
 
-    public static void main(final String[] args) throws FileNotFoundException {
+    public static void main(final String[] args) throws Throwable {
 
         withExceptionHandling(EXCEPTION_HANDLERS, new Callable<Void>() {
 
             @Override
             public Void call() throws Exception {
 
-                out.print(new MultiFileTransformer(TRANSFORMERS).transform(new File(args[0])));
+                final CommandLineParser parser = new BasicParser();
+                CommandLine commandLine = parser.parse(new Options().addOption("x", false, "it's x"), args);
+
+                final String fileName = commandLine.getArgList().get(0).toString();
+
+                out.print(new MultiFileTransformer(TRANSFORMERS).transform(new File(fileName)));
                 // Reset the colour scheme after printing the highlighted source code.
                 out.println(RESET);
 
