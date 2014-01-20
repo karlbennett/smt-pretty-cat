@@ -3,6 +3,10 @@ package shiver.me.timbers.exceptions;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,12 +15,15 @@ import java.util.concurrent.Callable;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+import static shiver.me.timbers.exceptions.IterableExceptionHandlers.*;
 
 public class IterableExceptionHandlersTest {
 
@@ -200,6 +207,64 @@ public class IterableExceptionHandlersTest {
 
         assertThat("the returned collection should contain all the correct values.", handlerCollection,
                 containsInAnyOrder(handlers.toArray()));
+    }
+
+    @Test
+    public void testGetFirstGenericArgumentWithNonParameterizedType() throws Exception {
+
+        assertNull("type should produce null.", getFirstGenericArgument(mock(Type.class)));
+        assertNull("TypeVariable should produce null.", getFirstGenericArgument(mock(TypeVariable.class)));
+        assertNull("GenericArrayType should produce null.", getFirstGenericArgument(mock(GenericArrayType.class)));
+        assertNull("Class should produce null.", getFirstGenericArgument(Class.class));
+    }
+
+    @Test
+    public void testGetFirstGenericArgumentWithParameterizedTypeWithNullTypeArgument() throws Exception {
+
+        final ParameterizedType type = mock(ParameterizedType.class);
+        when(type.getActualTypeArguments()).thenReturn(new Type[] {mock(Type.class)});
+
+        assertNull("Raw ParameterizedType should produce null.",
+                getFirstGenericArgument(mock(ParameterizedType.class)));
+    }
+
+    @Test
+    public void testGetFirstGenericArgumentWithParameterizedTypeWithTypeTypeArgument() throws Exception {
+
+        final ParameterizedType type = mock(ParameterizedType.class);
+        when(type.getActualTypeArguments()).thenReturn(new Type[] {mock(Type.class)});
+
+        assertNull("Raw ParameterizedType should produce null.", getFirstGenericArgument(type));
+    }
+
+    @Test
+    public void testGetFirstGenericArgumentWithParameterizedTypeWithClassTypeArgument() throws Exception {
+
+        final Type genericType = Class.class;
+
+        final ParameterizedType type = mock(ParameterizedType.class);
+        when(type.getActualTypeArguments()).thenReturn(new Type[] {genericType});
+
+        assertEquals("Raw ParameterizedType should produce null.", genericType, getFirstGenericArgument(type));
+    }
+
+    @Test
+    public void testGetFirstGenericArgumentWithParameterizedTypeWithMultipleClassTypeArguments() throws Exception {
+
+        final Type genericTypeOne = Class.class;
+        final Type genericTypeTwo = Integer.class;
+        final Type genericTypeThree = String.class;
+
+        final ParameterizedType type = mock(ParameterizedType.class);
+        when(type.getActualTypeArguments()).thenReturn(new Type[] {genericTypeOne, genericTypeTwo, genericTypeThree});
+
+        assertEquals("Raw ParameterizedType should produce null.", genericTypeOne, getFirstGenericArgument(type));
+    }
+
+    @Test
+    public void testGetFirstGenericArgumentWithParameterizedTypeWithNull() throws Exception {
+
+        assertNull("null should produce null.", getFirstGenericArgument(null));
     }
 
     private static class TestExceptionHandler<T extends Throwable> implements ExceptionHandler<T> {

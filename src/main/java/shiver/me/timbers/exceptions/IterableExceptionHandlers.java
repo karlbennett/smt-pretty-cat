@@ -95,7 +95,7 @@ public class IterableExceptionHandlers implements Container<Class, ExceptionHand
         }
     }
 
-    private static Class findExceptionHandlerInterfaceGenericType(Class handlerClass) {
+    static Class findExceptionHandlerInterfaceGenericType(Class handlerClass) {
 
         if (isNull(handlerClass)) {
 
@@ -114,7 +114,7 @@ public class IterableExceptionHandlers implements Container<Class, ExceptionHand
         return findExceptionHandlerInterfaceGenericType(handlerClass.getSuperclass());
     }
 
-    private static Class findExceptionHandlerInterfaceGenericClass(Class handlerClass) {
+    static Class findExceptionHandlerInterfaceGenericClass(Class handlerClass) {
 
         final Type[] interfaces = handlerClass.getGenericInterfaces();
 
@@ -132,14 +132,14 @@ public class IterableExceptionHandlers implements Container<Class, ExceptionHand
         return null;
     }
 
-    private static Class findExceptionHandlerClassGenericClass(Class handlerClass) {
+    static Class findExceptionHandlerClassGenericClass(Class handlerClass) {
 
         final Type superClass = handlerClass.getGenericSuperclass();
 
         return getExceptionHandlerGenericArgument(superClass);
     }
 
-    private static Class getExceptionHandlerGenericArgument(Type type) {
+    static Class getExceptionHandlerGenericArgument(Type type) {
 
         if (type instanceof ParameterizedType &&
                 ExceptionHandler.class.isAssignableFrom((Class) ((ParameterizedType) type).getRawType())) {
@@ -150,11 +150,18 @@ public class IterableExceptionHandlers implements Container<Class, ExceptionHand
         return null;
     }
 
-    private static Class getFirstGenericArgument(Type type) {
+    static Class getFirstGenericArgument(Type type) {
 
         if (type instanceof ParameterizedType) {
 
-            type = ((ParameterizedType) type).getActualTypeArguments()[0];
+            final Type[] typeArguments = ((ParameterizedType) type).getActualTypeArguments();
+
+            if (isNull(typeArguments)) {
+
+                return null;
+            }
+
+            type = typeArguments[0];
 
             if (type instanceof Class) {
 
