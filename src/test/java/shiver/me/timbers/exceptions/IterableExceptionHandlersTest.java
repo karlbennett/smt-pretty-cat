@@ -3,27 +3,19 @@ package shiver.me.timbers.exceptions;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
-import static shiver.me.timbers.exceptions.IterableExceptionHandlers.*;
 
 public class IterableExceptionHandlersTest {
 
@@ -40,19 +32,17 @@ public class IterableExceptionHandlersTest {
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
 
-        exceptionExceptionHandler = new ExceptionExceptionHandler();
-        runtimeExceptionExceptionHandler = new RuntimeExceptionExceptionHandler();
-        errorExceptionHandler = new ErrorExceptionExceptionHandler();
-        assertionErrorExceptionHandler = new AssertionErrorExceptionExceptionHandler();
+        exceptionExceptionHandler = new TestExceptionHandler<Exception>(Exception.class);
+        runtimeExceptionExceptionHandler = new TestExceptionHandler<RuntimeException>(RuntimeException.class);
+        errorExceptionHandler = new TestExceptionHandler<Error>(Error.class);
+        assertionErrorExceptionHandler = new TestExceptionHandler<AssertionError>(AssertionError.class);
 
         nullHandler = mock(ExceptionHandler.class);
 
         handlers = spy(new LinkedList<ExceptionHandler>() {{
             add(exceptionExceptionHandler);
-            add(new ChildRuntimeExceptionExceptionHandler());
             add(runtimeExceptionExceptionHandler);
             add(errorExceptionHandler);
-            add(new ChildAssertionErrorExceptionExceptionHandler());
             add(assertionErrorExceptionHandler);
         }});
     }
@@ -101,12 +91,12 @@ public class IterableExceptionHandlersTest {
         assertEquals("the requested handler should be correct.", exceptionExceptionHandler, exceptionHandlers.get(0));
 
         assertEquals("the requested handler should be correct.", runtimeExceptionExceptionHandler,
-                exceptionHandlers.get(2));
+                exceptionHandlers.get(1));
 
-        assertEquals("the requested handler should be correct.", errorExceptionHandler, exceptionHandlers.get(3));
+        assertEquals("the requested handler should be correct.", errorExceptionHandler, exceptionHandlers.get(2));
 
         assertEquals("the requested handler should be correct.", assertionErrorExceptionHandler,
-                exceptionHandlers.get(5));
+                exceptionHandlers.get(3));
 
         verify(handlers, times(1)).iterator();
 
@@ -209,99 +199,14 @@ public class IterableExceptionHandlersTest {
                 containsInAnyOrder(handlers.toArray()));
     }
 
-    @Test
-    public void testGetFirstGenericArgumentWithNonParameterizedType() throws Exception {
+    private static class TestExceptionHandler<T extends Throwable> extends AbstractExceptionHandler<T> {
 
-        assertNull("type should produce null.", getFirstGenericArgument(mock(Type.class)));
-        assertNull("TypeVariable should produce null.", getFirstGenericArgument(mock(TypeVariable.class)));
-        assertNull("GenericArrayType should produce null.", getFirstGenericArgument(mock(GenericArrayType.class)));
-        assertNull("Class should produce null.", getFirstGenericArgument(Class.class));
-    }
-
-    @Test
-    public void testGetFirstGenericArgumentWithParameterizedTypeWithNullTypeArgument() throws Exception {
-
-        final ParameterizedType type = mock(ParameterizedType.class);
-        when(type.getActualTypeArguments()).thenReturn(new Type[] {mock(Type.class)});
-
-        assertNull("Raw ParameterizedType should produce null.",
-                getFirstGenericArgument(mock(ParameterizedType.class)));
-    }
-
-    @Test
-    public void testGetFirstGenericArgumentWithParameterizedTypeWithTypeTypeArgument() throws Exception {
-
-        final ParameterizedType type = mock(ParameterizedType.class);
-        when(type.getActualTypeArguments()).thenReturn(new Type[] {mock(Type.class)});
-
-        assertNull("Raw ParameterizedType should produce null.", getFirstGenericArgument(type));
-    }
-
-    @Test
-    public void testGetFirstGenericArgumentWithParameterizedTypeWithClassTypeArgument() throws Exception {
-
-        final Type genericType = Class.class;
-
-        final ParameterizedType type = mock(ParameterizedType.class);
-        when(type.getActualTypeArguments()).thenReturn(new Type[] {genericType});
-
-        assertEquals("Raw ParameterizedType should produce null.", genericType, getFirstGenericArgument(type));
-    }
-
-    @Test
-    public void testGetFirstGenericArgumentWithParameterizedTypeWithMultipleClassTypeArguments() throws Exception {
-
-        final Type genericTypeOne = Class.class;
-        final Type genericTypeTwo = Integer.class;
-        final Type genericTypeThree = String.class;
-
-        final ParameterizedType type = mock(ParameterizedType.class);
-        when(type.getActualTypeArguments()).thenReturn(new Type[] {genericTypeOne, genericTypeTwo, genericTypeThree});
-
-        assertEquals("Raw ParameterizedType should produce null.", genericTypeOne, getFirstGenericArgument(type));
-    }
-
-    @Test
-    public void testGetFirstGenericArgumentWithParameterizedTypeWithNull() throws Exception {
-
-        assertNull("null should produce null.", getFirstGenericArgument(null));
-    }
-
-    private static class TestExceptionHandler<T extends Throwable> implements ExceptionHandler<T> {
+        protected TestExceptionHandler(Class<T> exceptionType) {
+            super(exceptionType);
+        }
 
         @Override
         public void handle(T throwable) throws T {
         }
-    }
-
-    private static class ExceptionExceptionHandler extends TestExceptionHandler<Exception> {
-    }
-
-    private static class RuntimeExceptionExceptionHandler implements ExceptionHandler<RuntimeException> {
-        @Override
-        public void handle(RuntimeException throwable) throws RuntimeException {
-        }
-    }
-
-    private static class ChildRuntimeExceptionExceptionHandler extends RuntimeExceptionExceptionHandler {
-    }
-
-    private static class ErrorExceptionExceptionHandler extends TestExceptionHandler<Error>
-            implements ExceptionHandler<Error> {
-    }
-
-    private static class AssertionErrorExceptionExceptionHandler implements Callable<Void>,
-            ExceptionHandler<AssertionError> {
-        @Override
-        public Void call() throws Exception {
-            return null;
-        }
-
-        @Override
-        public void handle(AssertionError throwable) throws AssertionError {
-        }
-    }
-
-    private static class ChildAssertionErrorExceptionExceptionHandler extends AssertionErrorExceptionExceptionHandler {
     }
 }

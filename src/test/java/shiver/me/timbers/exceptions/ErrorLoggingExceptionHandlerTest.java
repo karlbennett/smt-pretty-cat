@@ -33,7 +33,7 @@ public class ErrorLoggingExceptionHandlerTest {
 
         final String TEST_MESSAGE = "test exception message.";
 
-        new ErrorLoggingExceptionHandler<Exception>().handle(new Exception(TEST_MESSAGE));
+        new ErrorLoggingExceptionHandler<Exception>(Exception.class).handle(new Exception(TEST_MESSAGE));
 
         assertEquals("the error message should be sent to standard error.", TEST_MESSAGE + '\n', err.toString());
     }
@@ -41,7 +41,7 @@ public class ErrorLoggingExceptionHandlerTest {
     @Test
     public void testHandleWithNullMessage() {
 
-        new ErrorLoggingExceptionHandler<Exception>().handle(new Exception());
+        new ErrorLoggingExceptionHandler<Exception>(Exception.class).handle(new Exception());
 
         assertEquals("the error message should be sent to standard error.", null + "\n", err.toString());
     }
@@ -49,6 +49,6 @@ public class ErrorLoggingExceptionHandlerTest {
     @Test(expected = NullPointerException.class)
     public void testHandleWithNullException() {
 
-        new ErrorLoggingExceptionHandler<Exception>().handle(null);
+        new ErrorLoggingExceptionHandler<Exception>(Exception.class).handle(null);
     }
 }

@@ -41,7 +41,7 @@ public class PrettyCat {
                     new LinkedList<ExceptionHandler>() {{
                         add(new MissingFileNameArgumentExceptionHandler());
                     }},
-                    new RethrowingExceptionHandler()
+                    new RethrowingExceptionHandler<Throwable>(Throwable.class)
             );
 
     public static void main(final String[] args) throws Throwable {

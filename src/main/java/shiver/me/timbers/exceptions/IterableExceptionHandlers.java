@@ -2,8 +2,6 @@ package shiver.me.timbers.exceptions;
 
 import shiver.me.timbers.transform.Container;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -90,86 +88,9 @@ public class IterableExceptionHandlers implements Container<Class, ExceptionHand
             for (ExceptionHandler handler : handlers) {
 
                 handlerList.add(handler);
-                handlerMap.put(findExceptionHandlerInterfaceGenericType(handler.getClass()), handler);
+                handlerMap.put(handler.getExceptionType(), handler);
             }
         }
-    }
-
-    static Class findExceptionHandlerInterfaceGenericType(Class handlerClass) {
-
-        if (isNull(handlerClass)) {
-
-            throw new IllegalStateException("could not find the generic exception type.");
-        }
-
-        Class genericType = findExceptionHandlerClassGenericClass(handlerClass);
-
-        genericType = isNotNull(genericType) ? genericType : findExceptionHandlerInterfaceGenericClass(handlerClass);
-
-        if (isNotNull(genericType)) {
-
-            return genericType;
-        }
-
-        return findExceptionHandlerInterfaceGenericType(handlerClass.getSuperclass());
-    }
-
-    static Class findExceptionHandlerInterfaceGenericClass(Class handlerClass) {
-
-        final Type[] interfaces = handlerClass.getGenericInterfaces();
-
-        Class genericClass;
-        for (Type type : interfaces) {
-
-            genericClass = getExceptionHandlerGenericArgument(type);
-
-            if (isNotNull(genericClass)) {
-
-                return genericClass;
-            }
-        }
-
-        return null;
-    }
-
-    static Class findExceptionHandlerClassGenericClass(Class handlerClass) {
-
-        final Type superClass = handlerClass.getGenericSuperclass();
-
-        return getExceptionHandlerGenericArgument(superClass);
-    }
-
-    static Class getExceptionHandlerGenericArgument(Type type) {
-
-        if (type instanceof ParameterizedType &&
-                ExceptionHandler.class.isAssignableFrom((Class) ((ParameterizedType) type).getRawType())) {
-
-            return getFirstGenericArgument(type);
-        }
-
-        return null;
-    }
-
-    static Class getFirstGenericArgument(Type type) {
-
-        if (type instanceof ParameterizedType) {
-
-            final Type[] typeArguments = ((ParameterizedType) type).getActualTypeArguments();
-
-            if (isNull(typeArguments)) {
-
-                return null;
-            }
-
-            type = typeArguments[0];
-
-            if (type instanceof Class) {
-
-                return (Class) type;
-            }
-        }
-
-        return null;
     }
 
     private boolean isNotPopulated() {
