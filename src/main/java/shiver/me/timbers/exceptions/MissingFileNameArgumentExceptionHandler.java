@@ -8,14 +8,18 @@ public class MissingFileNameArgumentExceptionHandler extends AbstractExceptionHa
     public static final String MISSING_FILE_NAME_ERROR = "The path to a file must be supplied.";
     public static final String USAGE = "Usage: pcat [FILE_PATH]";
 
+    public static final int MISSING_FILE_ERROR_CODE = 2;
+
     public MissingFileNameArgumentExceptionHandler() {
         super(ArrayIndexOutOfBoundsException.class);
     }
 
     @Override
-    public void handle(ArrayIndexOutOfBoundsException throwable) {
+    public int handle(ArrayIndexOutOfBoundsException throwable) {
 
         System.err.println(MISSING_FILE_NAME_ERROR);
         System.err.println(USAGE);
+
+        return MISSING_FILE_ERROR_CODE;
     }
 }

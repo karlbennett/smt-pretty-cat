@@ -206,7 +206,8 @@ public class IterableExceptionHandlersTest {
         }
 
         @Override
-        public void handle(T throwable) throws T {
+        public int handle(T throwable) throws T {
+            return -1;
         }
     }
 }

@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
+import static shiver.me.timbers.exceptions.MissingFileNameArgumentExceptionHandler.MISSING_FILE_ERROR_CODE;
 import static shiver.me.timbers.exceptions.MissingFileNameArgumentExceptionHandler.MISSING_FILE_NAME_ERROR;
 import static shiver.me.timbers.exceptions.MissingFileNameArgumentExceptionHandler.USAGE;
 import static shiver.me.timbers.exceptions.StandardErrUtils.NEW_LINE;
@@ -36,7 +37,8 @@ public class MissingFileNameArgumentExceptionHandlerTest {
     @Test
     public void testHandle() throws Exception {
 
-        new MissingFileNameArgumentExceptionHandler().handle(new ArrayIndexOutOfBoundsException());
+        assertEquals("the correct error code should be returned.", MISSING_FILE_ERROR_CODE,
+                new MissingFileNameArgumentExceptionHandler().handle(new ArrayIndexOutOfBoundsException()));
 
         assertEquals("the error message should be sent to standard error.", ERROR_MESSAGE, err.toString());
     }
@@ -44,7 +46,8 @@ public class MissingFileNameArgumentExceptionHandlerTest {
     @Test
     public void testHandleWithNull() throws Exception {
 
-        new MissingFileNameArgumentExceptionHandler().handle(null);
+        assertEquals("the correct error code should be returned.", MISSING_FILE_ERROR_CODE,
+                new MissingFileNameArgumentExceptionHandler().handle(null));
 
         assertEquals("the error message should be sent to standard error.", ERROR_MESSAGE, err.toString());
     }

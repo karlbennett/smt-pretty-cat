@@ -12,6 +12,8 @@ public interface ExceptionHandler<T extends Throwable> {
 
     /**
      * @param throwable the exception that was thrown.
+     * @return an error code for the handled exception that will be returned from the program with a call to
+     *         {@link System#exit(int)}.
      */
-    public void handle(T throwable) throws T;
+    public int handle(T throwable) throws T;
 }

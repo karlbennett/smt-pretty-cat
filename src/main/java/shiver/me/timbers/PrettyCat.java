@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.concurrent.Callable;
 
+import static java.lang.System.exit;
 import static java.lang.System.out;
 import static shiver.me.timbers.ESCAPE.RESET;
 import static shiver.me.timbers.exceptions.Exceptions.withExceptionHandling;
@@ -46,7 +47,12 @@ public class PrettyCat {
 
     public static void main(final String[] args) throws Throwable {
 
-        withExceptionHandling(EXCEPTION_HANDLERS, new Callable<Void>() {
+        exit(run(args));
+    }
+
+    public static int run(final String[] args) throws Throwable {
+
+        return withExceptionHandling(EXCEPTION_HANDLERS, new Callable<Void>() {
 
             @Override
             public Void call() throws Exception {

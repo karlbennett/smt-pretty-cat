@@ -10,7 +10,7 @@ public class RethrowingExceptionHandler<T extends Throwable> extends AbstractExc
     }
 
     @Override
-    public void handle(T throwable) throws T {
+    public int handle(T throwable) throws T {
 
         throw throwable;
     }

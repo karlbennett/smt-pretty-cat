@@ -8,8 +8,8 @@ import shiver.me.timbers.transform.Container;
 import java.lang.reflect.Constructor;
 import java.util.concurrent.Callable;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -17,8 +17,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
+import static shiver.me.timbers.exceptions.Exceptions.SUCCESS;
+import static shiver.me.timbers.exceptions.Exceptions.withExceptionHandling;
 
 public class ExceptionsTest {
+
+    private static final int ERROR_CODE = 1;
 
     private ExceptionHandler exceptionHandler;
     private Callable<Void> callable;
@@ -26,9 +30,11 @@ public class ExceptionsTest {
 
     @Before
     @SuppressWarnings("unchecked")
-    public void setUp() throws Exception {
+    public void setUp() throws Throwable {
 
         exceptionHandler = mock(ExceptionHandler.class);
+        when(exceptionHandler.handle(any(Throwable.class))).thenReturn(ERROR_CODE);
+
         callable = mock(Callable.class);
         handlers = mock(Container.class);
     }
@@ -44,7 +50,7 @@ public class ExceptionsTest {
     @Test
     public void testWithExceptionHandlingWithNoException() throws Throwable {
 
-        assertTrue("should return success status code.", Exceptions.withExceptionHandling(handlers, callable));
+        assertEquals("should return success status code.", SUCCESS, withExceptionHandling(handlers, callable));
 
         verify(callable, times(1)).call();
         verifyNoMoreInteractions(callable);
@@ -64,7 +70,7 @@ public class ExceptionsTest {
 
         when(handlers.get(exception.getClass())).thenReturn(exceptionHandler);
 
-        assertFalse("should return failed status code.", Exceptions.withExceptionHandling(handlers, callable));
+        assertEquals("should return failed status code.", ERROR_CODE, withExceptionHandling(handlers, callable));
 
         verify(callable, times(1)).call();
         verifyNoMoreInteractions(callable);
@@ -86,7 +92,7 @@ public class ExceptionsTest {
 
         when(handlers.get(error.getClass())).thenReturn(exceptionHandler);
 
-        assertFalse("should return failed status code.", Exceptions.withExceptionHandling(handlers, callable));
+        assertEquals("should return failed status code.", ERROR_CODE, withExceptionHandling(handlers, callable));
 
         verify(callable, times(1)).call();
         verifyNoMoreInteractions(callable);
@@ -102,7 +108,7 @@ public class ExceptionsTest {
     @SuppressWarnings("unchecked")
     public void testWithExceptionHandlingWithNullHandlersAndNoException() throws Throwable {
 
-        assertTrue("should return success status code.", Exceptions.withExceptionHandling(null, callable));
+        assertEquals("should return success status code.", SUCCESS, withExceptionHandling(null, callable));
 
         verify(callable, times(1)).call();
         verifyNoMoreInteractions(callable);
@@ -115,7 +121,7 @@ public class ExceptionsTest {
 
         when(callable.call()).thenThrow(exception);
 
-        Exceptions.withExceptionHandling(null, callable);
+        withExceptionHandling(null, callable);
     }
 
     @Test
@@ -124,7 +130,7 @@ public class ExceptionsTest {
 
         when(handlers.get(NullPointerException.class)).thenReturn(exceptionHandler);
 
-        assertFalse("should return failed status code.", Exceptions.withExceptionHandling(handlers, null));
+        assertEquals("should return failed status code.", ERROR_CODE, withExceptionHandling(handlers, null));
 
         verify(handlers, times(1)).get(NullPointerException.class);
         verifyNoMoreInteractions(handlers);

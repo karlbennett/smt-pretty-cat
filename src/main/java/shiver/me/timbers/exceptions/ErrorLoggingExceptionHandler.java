@@ -5,13 +5,19 @@ package shiver.me.timbers.exceptions;
  */
 public class ErrorLoggingExceptionHandler<T extends Throwable> extends AbstractExceptionHandler<T> {
 
-    protected ErrorLoggingExceptionHandler(Class<T> exceptionType) {
+    private final int errorCode;
+
+    protected ErrorLoggingExceptionHandler(Class<T> exceptionType, int errorCode) {
         super(exceptionType);
+
+        this.errorCode = errorCode;
     }
 
     @Override
-    public void handle(T throwable) {
+    public int handle(T throwable) {
 
         System.err.println(throwable.getMessage());
+
+        return errorCode;
     }
 }

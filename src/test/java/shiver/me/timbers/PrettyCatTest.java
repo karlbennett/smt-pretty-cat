@@ -44,7 +44,7 @@ public class PrettyCatTest {
     @Test
     public void testMainWithUnknownFile() throws Throwable {
 
-        PrettyCat.main(new String[]{testFilePath(TEST_TXT_FILE)});
+        PrettyCat.run(new String[]{testFilePath(TEST_TXT_FILE)});
 
         assertEquals("an unknown file should not be prettified.", appendPrettySuffix(testTxtContents()),
                 out.toString());
@@ -53,7 +53,7 @@ public class PrettyCatTest {
     @Test
     public void testMainWithJavaFile() throws Throwable {
 
-        PrettyCat.main(new String[]{testFilePath(TEST_JAVA_FILE)});
+        PrettyCat.run(new String[]{testFilePath(TEST_JAVA_FILE)});
 
         assertEquals("a Java file should be prettified.", testFileContents(TEST_PRETTY_JAVA_FILE), out.toString());
     }
@@ -61,7 +61,7 @@ public class PrettyCatTest {
     @Test
     public void testMainWithXmlFile() throws Throwable {
 
-        PrettyCat.main(new String[]{testFilePath(TEST_XML_FILE)});
+        PrettyCat.run(new String[]{testFilePath(TEST_XML_FILE)});
 
         assertEquals("a Java file should be prettified.", testFileContents(TEST_PRETTY_XML_FILE), out.toString());
     }

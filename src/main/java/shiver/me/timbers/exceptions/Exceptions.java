@@ -13,30 +13,30 @@ public class Exceptions {
     private Exceptions() {
     }
 
+    public static final int SUCCESS = 0;
+
     /**
      * Any exception thrown from with the callable passed to this method with have it's exceptions handled by the
      * supplied handlers.
      *
      * @param handlers all handler implementations mapped to the {@code Class} of their respective exceptions.
      * @param callable this callable should be implemented with the logic that requires exception handling.
-     * @return true if no exception is thrown, otherwise false.
+     * @return {@link #SUCCESS} if no exception is handled otherwise the error code returned by the exception handler.
      */
     @SuppressWarnings("unchecked")
-    public static boolean withExceptionHandling(Container<Class, ExceptionHandler> handlers, Callable<Void> callable)
+    public static int withExceptionHandling(Container<Class, ExceptionHandler> handlers, Callable<Void> callable)
             throws Throwable {
 
         try {
 
             callable.call();
 
-            return true;
+            return SUCCESS;
 
         } catch (Throwable e) {
 
             final ExceptionHandler handler = handlers.get(e.getClass());
-            handler.handle(e);
-
-            return false;
+            return handler.handle(e);
         }
     }
 }
