@@ -61,51 +61,40 @@ public class ExceptionsTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testWithExceptionHandlingWithHandledException() throws Throwable {
 
         final Exception exception = new Exception();
 
-        when(callable.call()).thenThrow(exception);
-
-        when(handlers.get(exception.getClass())).thenReturn(exceptionHandler);
-
-        assertEquals("should return failed status code.", ERROR_CODE, withExceptionHandling(handlers, callable));
-
-        verify(callable, times(1)).call();
-        verifyNoMoreInteractions(callable);
-
-        verify(handlers, times(1)).get(exception.getClass());
-        verifyNoMoreInteractions(handlers);
-
-        verify(exceptionHandler, times(1)).handle(exception);
-        verifyNoMoreInteractions(exceptionHandler);
+        handledThrowableTest(exception, exception);
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    public void testWithExceptionHandlingWithHandledRuntimeException() throws Throwable {
+
+        final Exception exception = new RuntimeException();
+
+        handledThrowableTest(exception, exception);
+    }
+
+    @Test
+    public void testWithExceptionHandlingWithHandledRuntimeExceptionWithCause() throws Throwable {
+
+        final Exception cause = new Exception();
+
+        final Exception exception = new RuntimeException(cause);
+
+        handledThrowableTest(exception, cause);
+    }
+
+    @Test
     public void testWithExceptionHandlingWithHandledError() throws Throwable {
 
-        final Error error = new Error();
+        final Error error =  new Error();
 
-        when(callable.call()).thenThrow(error);
-
-        when(handlers.get(error.getClass())).thenReturn(exceptionHandler);
-
-        assertEquals("should return failed status code.", ERROR_CODE, withExceptionHandling(handlers, callable));
-
-        verify(callable, times(1)).call();
-        verifyNoMoreInteractions(callable);
-
-        verify(handlers, times(1)).get(error.getClass());
-        verifyNoMoreInteractions(handlers);
-
-        verify(exceptionHandler, times(1)).handle(error);
-        verifyNoMoreInteractions(exceptionHandler);
+        handledThrowableTest(error, error);
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testWithExceptionHandlingWithNullHandlersAndNoException() throws Throwable {
 
         assertEquals("should return success status code.", SUCCESS, withExceptionHandling(null, callable));
@@ -136,6 +125,25 @@ public class ExceptionsTest {
         verifyNoMoreInteractions(handlers);
 
         verify(exceptionHandler, times(1)).handle(isA(NullPointerException.class));
+        verifyNoMoreInteractions(exceptionHandler);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void handledThrowableTest(Throwable throwable, Throwable cause) throws Throwable {
+
+        when(callable.call()).thenThrow(throwable);
+
+        when(handlers.get(cause.getClass())).thenReturn(exceptionHandler);
+
+        assertEquals("should return failed status code.", ERROR_CODE, withExceptionHandling(handlers, callable));
+
+        verify(callable, times(1)).call();
+        verifyNoMoreInteractions(callable);
+
+        verify(handlers, times(1)).get(cause.getClass());
+        verifyNoMoreInteractions(handlers);
+
+        verify(exceptionHandler, times(1)).handle(cause);
         verifyNoMoreInteractions(exceptionHandler);
     }
 }

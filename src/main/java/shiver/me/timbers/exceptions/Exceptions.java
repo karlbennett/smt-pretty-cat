@@ -4,6 +4,8 @@ import shiver.me.timbers.transform.Container;
 
 import java.util.concurrent.Callable;
 
+import static shiver.me.timbers.checks.Checks.isNotNull;
+
 /**
  * This utility class contains the method and interface that is used to handle any exceptions thrown during the
  * execution of {@link shiver.me.timbers.PrettyCat#main(String[])}.
@@ -23,7 +25,6 @@ public class Exceptions {
      * @param callable this callable should be implemented with the logic that requires exception handling.
      * @return {@link #SUCCESS} if no exception is handled otherwise the error code returned by the exception handler.
      */
-    @SuppressWarnings("unchecked")
     public static int withExceptionHandling(Container<Class, ExceptionHandler> handlers, Callable<Void> callable)
             throws Throwable {
 
@@ -33,10 +34,20 @@ public class Exceptions {
 
             return SUCCESS;
 
+        } catch (RuntimeException e) {
+
+            return isNotNull(e.getCause()) ? handle(handlers, e.getCause()) : handle(handlers, e);
+
         } catch (Throwable e) {
 
-            final ExceptionHandler handler = handlers.get(e.getClass());
-            return handler.handle(e);
+            return handle(handlers, e);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static int handle(Container<Class, ExceptionHandler> handlers, Throwable t) throws Throwable {
+
+        final ExceptionHandler handler = handlers.get(t.getClass());
+        return handler.handle(t);
     }
 }

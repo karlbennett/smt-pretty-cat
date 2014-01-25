@@ -1,6 +1,7 @@
 package shiver.me.timbers;
 
 import shiver.me.timbers.exceptions.ExceptionHandler;
+import shiver.me.timbers.exceptions.FileNotFoundExceptionHandler;
 import shiver.me.timbers.exceptions.IterableExceptionHandlers;
 import shiver.me.timbers.exceptions.MissingFileNameArgumentExceptionHandler;
 import shiver.me.timbers.exceptions.RethrowingExceptionHandler;
@@ -41,6 +42,7 @@ public class PrettyCat {
             new IterableExceptionHandlers(
                     new LinkedList<ExceptionHandler>() {{
                         add(new MissingFileNameArgumentExceptionHandler());
+                        add(new FileNotFoundExceptionHandler());
                     }},
                     new RethrowingExceptionHandler<Throwable>(Throwable.class)
             );
