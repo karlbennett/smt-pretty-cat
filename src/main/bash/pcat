@@ -1,0 +1,5 @@
+#! /bin/bash
+
+PCAT_HOME=$(dirname $0)
+
+java -jar ${PCAT_HOME}/smt-pretty-cat-1.0-SNAPSHOT.jar "$@"
