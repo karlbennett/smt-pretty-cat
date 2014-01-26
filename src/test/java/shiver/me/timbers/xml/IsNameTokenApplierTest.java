@@ -11,10 +11,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static shiver.me.timbers.TestUtils.TEST_STRING;
 
 public class IsNameTokenApplierTest {
-
-    private static final String TEST_STRING = "test_string";
 
     private TokenApplier applier;
 

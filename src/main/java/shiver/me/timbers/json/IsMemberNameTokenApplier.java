@@ -30,6 +30,6 @@ public class IsMemberNameTokenApplier implements TokenApplier {
 
     private static boolean isMemberName(Token token) {
 
-        return JsonParser.T__3 != token.getType();
+        return JsonParser.STRING == token.getType();
     }
 }

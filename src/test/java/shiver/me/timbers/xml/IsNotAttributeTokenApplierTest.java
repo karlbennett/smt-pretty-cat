@@ -10,11 +10,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static shiver.me.timbers.TestUtils.TEST_STRING;
 import static shiver.me.timbers.antlr4.xml.XMLParser.RULE_attribute;
 
 public class IsNotAttributeTokenApplierTest {
-
-    private static final String TEST_STRING = "test_string";
 
     private TokenApplier applier;
 

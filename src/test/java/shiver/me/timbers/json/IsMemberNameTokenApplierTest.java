@@ -1,9 +1,9 @@
-package shiver.me.timbers.java;
+package shiver.me.timbers.json;
 
 import org.antlr.v4.runtime.Token;
 import org.junit.Before;
 import org.junit.Test;
-import shiver.me.timbers.antlr4.java.JavaParser;
+import shiver.me.timbers.antlr4.json.JsonParser;
 import shiver.me.timbers.transform.antlr4.TokenApplier;
 
 import static org.mockito.Mockito.mock;
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static shiver.me.timbers.TestUtils.TEST_STRING;
 
-public class IsAtTokenApplierTest {
+public class IsMemberNameTokenApplierTest {
 
     private TokenApplier applier;
 
@@ -26,22 +26,22 @@ public class IsAtTokenApplierTest {
     @Test
     public void testCreate() {
 
-        new IsAtTokenApplier(applier);
+        new IsMemberNameTokenApplier(applier);
     }
 
     @Test(expected = AssertionError.class)
     public void testCreateWithNullColour() {
 
-        new IsAtTokenApplier(null);
+        new IsMemberNameTokenApplier(null);
     }
 
     @Test
     public void testApplyWithAtType() {
 
         final Token token = mock(Token.class);
-        when(token.getType()).thenReturn(JavaParser.AT);
+        when(token.getType()).thenReturn(JsonParser.STRING);
 
-        new IsAtTokenApplier(applier).apply(null, token, TEST_STRING);
+        new IsMemberNameTokenApplier(applier).apply(null, token, TEST_STRING);
 
         verify(applier, times(1)).apply(null, token, TEST_STRING);
 
@@ -51,7 +51,7 @@ public class IsAtTokenApplierTest {
     @Test
     public void testApplyWithNoType() {
 
-        new IsAtTokenApplier(applier).apply(null, mock(Token.class), TEST_STRING);
+        new IsMemberNameTokenApplier(applier).apply(null, mock(Token.class), TEST_STRING);
 
         verifyNoMoreInteractions(applier);
     }
@@ -59,6 +59,6 @@ public class IsAtTokenApplierTest {
     @Test(expected = NullPointerException.class)
     public void testApplyWithNullToken() {
 
-        new IsAtTokenApplier(applier).apply(null, null, TEST_STRING);
+        new IsMemberNameTokenApplier(applier).apply(null, null, TEST_STRING);
     }
 }
