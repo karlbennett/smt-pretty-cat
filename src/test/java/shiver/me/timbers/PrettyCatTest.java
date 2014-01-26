@@ -8,9 +8,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
+import static shiver.me.timbers.BACKGROUND_COLOUR.BLACK;
 import static shiver.me.timbers.ESCAPE.RESET;
+import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_WHITE;
 import static shiver.me.timbers.FileUtils.TEST_JAVA_FILE;
+import static shiver.me.timbers.FileUtils.TEST_JSON_FILE;
 import static shiver.me.timbers.FileUtils.TEST_PRETTY_JAVA_FILE;
+import static shiver.me.timbers.FileUtils.TEST_PRETTY_JSON_FILE;
 import static shiver.me.timbers.FileUtils.TEST_PRETTY_XML_FILE;
 import static shiver.me.timbers.FileUtils.TEST_TXT_FILE;
 import static shiver.me.timbers.FileUtils.TEST_XML_FILE;
@@ -42,16 +46,15 @@ public class PrettyCatTest {
     }
 
     @Test
-    public void testMainWithUnknownFile() throws Throwable {
+    public void testRunWithUnknownFile() throws Throwable {
 
         PrettyCat.run(new String[]{testFilePath(TEST_TXT_FILE)});
 
-        assertEquals("an unknown file should not be prettified.", appendPrettySuffix(testTxtContents()),
-                out.toString());
+        assertEquals("an unknown file should be prettified.", prettyWrap(testTxtContents()), out.toString());
     }
 
     @Test
-    public void testMainWithJavaFile() throws Throwable {
+    public void testRunWithJavaFile() throws Throwable {
 
         PrettyCat.run(new String[]{testFilePath(TEST_JAVA_FILE)});
 
@@ -59,11 +62,19 @@ public class PrettyCatTest {
     }
 
     @Test
-    public void testMainWithXmlFile() throws Throwable {
+    public void testRunWithXmlFile() throws Throwable {
 
         PrettyCat.run(new String[]{testFilePath(TEST_XML_FILE)});
 
-        assertEquals("a Java file should be prettified.", testFileContents(TEST_PRETTY_XML_FILE), out.toString());
+        assertEquals("a XML file should be prettified.", testFileContents(TEST_PRETTY_XML_FILE), out.toString());
+    }
+
+    @Test
+    public void testRunWithJsonFile() throws Throwable {
+
+        PrettyCat.run(new String[]{testFilePath(TEST_JSON_FILE)});
+
+        assertEquals("a JSON file should be prettified.", testFileContents(TEST_PRETTY_JSON_FILE), out.toString());
     }
 
     private ByteArrayOutputStream replaceStandardOut() {
@@ -82,8 +93,8 @@ public class PrettyCatTest {
         System.setOut(originalStandardOut);
     }
 
-    private static String appendPrettySuffix(String string) {
+    private static String prettyWrap(String string) {
 
-        return string + RESET + '\n';
+        return BLACK.escapeSequence() + BRIGHT_WHITE.escapeSequence() + string + RESET + '\n';
     }
 }

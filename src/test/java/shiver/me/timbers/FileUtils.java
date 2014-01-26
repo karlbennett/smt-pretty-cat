@@ -23,6 +23,9 @@ public final class FileUtils {
     public static final String TEST_XML_FILE = "Test.xml";
     public static final String TEST_PRETTY_XML_FILE = "Test.xml.pretty";
 
+    public static final String TEST_JSON_FILE = "Test.json";
+    public static final String TEST_PRETTY_JSON_FILE = "Test.json.pretty";
+
     public static String testFilePath(String fileName) {
 
         return testFile(fileName).getPath();
@@ -55,11 +58,6 @@ public final class FileUtils {
 
             throw new RuntimeException(e);
         }
-    }
-
-    public static InputStream testTxtInputStream() {
-
-        return testInputStream(TEST_TXT_FILE);
     }
 
     public static InputStream testInputStream(String fileName) {

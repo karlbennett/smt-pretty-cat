@@ -1,4 +1,4 @@
-[93m<?xml [97m[36mversion[97m=[92m"1.0"[97m [36mencoding[97m=[92m"ISO-8859-1"[97m[93m?>[97m
+[40m[97m[93m<?xml [97m[36mversion[97m=[92m"1.0"[97m [36mencoding[97m=[92m"ISO-8859-1"[97m[93m?>[97m
 <!-- This is a comment -->
 [93m<[97m[33mtest[97m[93m>[97m
     [93m<[97m[33mone[97m[93m>[97mone[93m<[97m[93m/[97m[33mone[97m[93m>[97m

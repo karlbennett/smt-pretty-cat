@@ -1,6 +1,8 @@
 package shiver.me.timbers.transform;
 
 import org.apache.commons.io.FilenameUtils;
+import shiver.me.timbers.BACKGROUND_COLOUR;
+import shiver.me.timbers.FOREGROUND_COLOUR;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.composite.CompositeFileTransformer;
 
@@ -27,12 +29,19 @@ public class MultiFileTransformer {
     }};
 
     private final Transformers<CompositeFileTransformer<TokenTransformation>> transformers;
+    private final BACKGROUND_COLOUR background;
+    private final FOREGROUND_COLOUR foreground;
 
-    public MultiFileTransformer(Transformers<CompositeFileTransformer<TokenTransformation>> transformers) {
+    public MultiFileTransformer(Transformers<CompositeFileTransformer<TokenTransformation>> transformers,
+                                BACKGROUND_COLOUR background, FOREGROUND_COLOUR foreground) {
 
         assertIsNotNull(argumentIsNullMessage("transformers"), transformers);
+        assertIsNotNull(argumentIsNullMessage("background"), background);
+        assertIsNotNull(argumentIsNullMessage("foreground"), foreground);
 
         this.transformers = transformers;
+        this.background = background;
+        this.foreground= foreground;
     }
 
     /**
@@ -44,6 +53,6 @@ public class MultiFileTransformer {
 
         final CompositeFileTransformer<TokenTransformation> transformer = transformers.get(mimeType);
 
-        return transformer.transform(file);
+        return background.escapeSequence() + foreground.escapeSequence() + transformer.transform(file);
     }
 }

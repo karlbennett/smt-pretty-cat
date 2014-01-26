@@ -1,10 +1,12 @@
 package shiver.me.timbers.transform;
 
+import org.junit.Before;
 import org.junit.Test;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
 import shiver.me.timbers.transform.composite.CompositeFileTransformer;
 import shiver.me.timbers.transform.composite.WrappedFileTransformer;
 
+import javax.activation.MimeType;
 import java.io.File;
 
 import static org.junit.Assert.assertEquals;
@@ -14,6 +16,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static shiver.me.timbers.BACKGROUND_COLOUR.BLACK;
+import static shiver.me.timbers.FOREGROUND_COLOUR.WHITE;
 import static shiver.me.timbers.FileUtils.TEST_JAVA_FILE;
 import static shiver.me.timbers.FileUtils.testFile;
 import static shiver.me.timbers.FileUtils.testTxtFile;
@@ -21,79 +25,85 @@ import static shiver.me.timbers.transform.java.JavaTransformer.TEXT_X_JAVA_SOURC
 
 public class MultiFileTransformerTest {
 
-    @Test
+    private static final String TEST_STRING = "test string";
+    private static final String RESULT_STRING = BLACK.escapeSequence() + WHITE.escapeSequence() + TEST_STRING;
+
+    private WrappedFileTransformer<TokenTransformation> transformer;
+    private Transformers<CompositeFileTransformer<TokenTransformation>> transformers;
+
+    @Before
     @SuppressWarnings("unchecked")
+    public void setUp() throws Exception {
+
+        transformer = mock(WrappedFileTransformer.class);
+        when(transformer.transform(any(File.class))).thenReturn(TEST_STRING);
+
+        transformers = mock(Transformers.class);
+    }
+
+    @Test
     public void testCreate() {
 
-        new MultiFileTransformer(mock(Transformers.class));
+        new MultiFileTransformer(transformers, BLACK, WHITE);
     }
 
     @Test(expected = AssertionError.class)
-    @SuppressWarnings("unchecked")
     public void testCreateWithNullTransformers() {
 
-        new MultiFileTransformer(null);
+        new MultiFileTransformer(null, BLACK, WHITE);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testCreateWithNullBackgroundColour() {
+
+        new MultiFileTransformer(transformers, null, WHITE);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testCreateWithNullForegroundColour() {
+
+        new MultiFileTransformer(transformers, BLACK, null);
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testTransform() {
-
-        final String TEST_STRING = "test string";
 
         final File TEST_FILE = testFile(TEST_JAVA_FILE);
 
-        final WrappedFileTransformer<TokenTransformation> transformer = mock(WrappedFileTransformer.class);
-        when(transformer.transform(any(File.class))).thenReturn(TEST_STRING);
-
-        final Transformers<CompositeFileTransformer<TokenTransformation>> transformers = mock(Transformers.class);
-        when(transformers.get(TEXT_X_JAVA_SOURCE)).thenReturn(transformer);
-
-        assertEquals("the transformed string should be correct.", TEST_STRING,
-                new MultiFileTransformer(transformers).transform(TEST_FILE));
-
-        verify(transformers, times(1)).get(TEXT_X_JAVA_SOURCE);
-        verify(transformer, times(1)).transform(TEST_FILE);
-
-        verifyNoMoreInteractions(transformers);
-        verifyNoMoreInteractions(transformer);
+        assertTransform(TEXT_X_JAVA_SOURCE, TEST_FILE);
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testTransformWithUnknownFileType() {
-
-        final String TEST_STRING = "another test string";
 
         final File TEST_FILE = testTxtFile();
 
-        final WrappedFileTransformer<TokenTransformation> transformer = mock(WrappedFileTransformer.class);
-        when(transformer.transform(any(File.class))).thenReturn(TEST_STRING);
-
-        final Transformers<CompositeFileTransformer<TokenTransformation>> transformers = mock(Transformers.class);
-        when(transformers.get(null)).thenReturn(transformer);
-
-        assertEquals("the transformed string should be correct.", TEST_STRING,
-                new MultiFileTransformer(transformers).transform(TEST_FILE));
-
-        verify(transformers, times(1)).get(null);
-        verify(transformer, times(1)).transform(TEST_FILE);
-
-        verifyNoMoreInteractions(transformers);
-        verifyNoMoreInteractions(transformer);
+        assertTransform(null, TEST_FILE);
     }
 
     @Test(expected = RuntimeException.class)
-    @SuppressWarnings("unchecked")
     public void testTransformWithInvalidFile() {
 
-        new MultiFileTransformer(mock(Transformers.class)).transform(new File("this file is invalid"));
+        new MultiFileTransformer(transformers, BLACK, WHITE).transform(new File("this file is invalid"));
     }
 
     @Test(expected = NullPointerException.class)
-    @SuppressWarnings("unchecked")
     public void testTransformWithNullFile() {
 
-        new MultiFileTransformer(mock(Transformers.class)).transform(null);
+        new MultiFileTransformer(transformers, BLACK, WHITE).transform(null);
+    }
+
+    public void assertTransform(MimeType mimeType, File testFile) {
+
+        when(transformers.get(mimeType)).thenReturn(transformer);
+
+        assertEquals("the transformed string should be correct.", RESULT_STRING,
+                new MultiFileTransformer(transformers, BLACK, WHITE).transform(testFile));
+
+        verify(transformers, times(1)).get(mimeType);
+        verify(transformer, times(1)).transform(testFile);
+
+        verifyNoMoreInteractions(transformers);
+        verifyNoMoreInteractions(transformer);
     }
 }

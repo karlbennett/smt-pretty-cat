@@ -21,7 +21,9 @@ import java.util.concurrent.Callable;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
+import static shiver.me.timbers.BACKGROUND_COLOUR.BLACK;
 import static shiver.me.timbers.ESCAPE.RESET;
+import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_WHITE;
 import static shiver.me.timbers.exceptions.Exceptions.withExceptionHandling;
 import static shiver.me.timbers.transform.NullCompositeTokenFileTransformer.NULL_COMPOSITE_TOKEN_FILE_TRANSFORMER;
 
@@ -61,7 +63,7 @@ public class PrettyCat {
             @Override
             public Void call() throws Exception {
 
-                out.print(new MultiFileTransformer(TRANSFORMERS).transform(new File(args[0])));
+                out.print(new MultiFileTransformer(TRANSFORMERS, BLACK, BRIGHT_WHITE).transform(new File(args[0])));
                 // Reset the colour scheme after printing the highlighted source code.
                 out.println(RESET);
 
