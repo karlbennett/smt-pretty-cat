@@ -6,18 +6,18 @@ import static org.junit.Assert.assertEquals;
 import static shiver.me.timbers.FOREGROUND_COLOUR.BLACK;
 import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_WHITE;
 
-public class TerminalForegroundColourTokenApplierTest {
+public class TerminalColourApplierTest {
 
     @Test
     public void testCreate() {
 
-        new TerminalForegroundColourTokenApplier(BLACK);
+        new TerminalColourApplier(BLACK);
     }
 
     @Test(expected = AssertionError.class)
     public void testCreateWithNull() {
 
-        new TerminalForegroundColourTokenApplier(null);
+        new TerminalColourApplier(null);
     }
 
     @Test
@@ -27,7 +27,7 @@ public class TerminalForegroundColourTokenApplierTest {
 
         assertEquals("the string should be transformed correctly.",
                 BLACK.escapeSequence() + TEST_STRING + BRIGHT_WHITE.escapeSequence(),
-                new TerminalForegroundColourTokenApplier(BLACK).apply(null, null, TEST_STRING));
+                new TerminalColourApplier(BLACK).apply(null, null, TEST_STRING));
     }
 
     @Test
@@ -35,6 +35,6 @@ public class TerminalForegroundColourTokenApplierTest {
 
         assertEquals("the string should be transformed correctly.",
                 BLACK.escapeSequence() + null + BRIGHT_WHITE.escapeSequence(),
-                new TerminalForegroundColourTokenApplier(BLACK).apply(null, null, null));
+                new TerminalColourApplier(BLACK).apply(null, null, null));
     }
 }

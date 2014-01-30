@@ -12,11 +12,11 @@ import static shiver.me.timbers.asserts.Asserts.assertIsNotNull;
 /**
  * This transformer will add terminal foreground colour escape sequences to the supplied string.
  */
-public class TerminalForegroundColourTokenApplier implements TokenApplier {
+public class TerminalColourApplier implements TokenApplier {
 
     private final FOREGROUND_COLOUR colour;
 
-    public TerminalForegroundColourTokenApplier(FOREGROUND_COLOUR colour) {
+    public TerminalColourApplier(FOREGROUND_COLOUR colour) {
 
         assertIsNotNull(argumentIsNullMessage("colour"), colour);
 

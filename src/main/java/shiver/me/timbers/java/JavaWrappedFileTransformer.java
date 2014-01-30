@@ -1,5 +1,9 @@
 package shiver.me.timbers.java;
 
+import shiver.me.timbers.FOREGROUND_COLOUR;
+import shiver.me.timbers.ForegroundColourResolver;
+import shiver.me.timbers.ValueResolver;
+import shiver.me.timbers.transform.TerminalColourApplier;
 import shiver.me.timbers.transform.Transformations;
 import shiver.me.timbers.transform.antlr4.CompoundTransformations;
 import shiver.me.timbers.transform.antlr4.IterableTokenTransformations;
@@ -32,6 +36,8 @@ import static shiver.me.timbers.transform.java.KeyWords.KEYWORD_NAMES;
 
 public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTransformation> {
 
+    private static final ValueResolver<FOREGROUND_COLOUR> COLOUR = new ForegroundColourResolver("java");
+
     public JavaWrappedFileTransformer() {
         super(
                 new StreamFileTransformer<TokenTransformation>(TEXT_X_JAVA_SOURCE,
@@ -44,26 +50,25 @@ public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTran
     private static Transformations<TokenTransformation> configureTransformations() {
 
         final Transformations<TokenTransformation> keywordTransformations = new CompoundTransformations(KEYWORD_NAMES,
-                new JavaPropertyTerminalForegroundColourTokenApplier("keywords", YELLOW));
+                new TerminalColourApplier(COLOUR.resolve("keywords", YELLOW)));
 
         return new IterableTokenTransformations(
                 new LinkedList<TokenTransformation>() {{
                     addAll(keywordTransformations.asCollection());
                     addAll(Arrays.<TokenTransformation>asList(
-                            new JavaDoc(new JavaPropertyTerminalForegroundColourTokenApplier(JavaDoc.class, GREEN)),
-                            new Comment(new JavaPropertyTerminalForegroundColourTokenApplier(Comment.class, WHITE)),
-                            new LineComment(new JavaPropertyTerminalForegroundColourTokenApplier(LineComment.class,
-                                    WHITE)),
-                            new Annotation(new IsAtTokenApplier(
-                                    new JavaPropertyTerminalForegroundColourTokenApplier(Annotation.class, RED))),
-                            new AnnotationName(new JavaPropertyTerminalForegroundColourTokenApplier(
-                                    AnnotationName.class, RED)),
-                            new IntegerLiteral(new JavaPropertyTerminalForegroundColourTokenApplier(
-                                    IntegerLiteral.class, BRIGHT_BLUE)),
-                            new StringLiteral(new JavaPropertyTerminalForegroundColourTokenApplier(
-                                    StringLiteral.class, BRIGHT_GREEN)),
-                            new VariableDeclaratorId(new JavaPropertyTerminalForegroundColourTokenApplier(
-                                    VariableDeclaratorId.class, CYAN))
+                            new JavaDoc(new TerminalColourApplier(COLOUR.resolve(JavaDoc.class, GREEN))),
+                            new Comment(new TerminalColourApplier(COLOUR.resolve(Comment.class, WHITE))),
+                            new LineComment(new TerminalColourApplier(COLOUR.resolve(LineComment.class, WHITE))),
+                            new Annotation(
+                                    new IsAtTokenApplier(
+                                            new TerminalColourApplier(COLOUR.resolve(Annotation.class, RED)))),
+                            new AnnotationName(new TerminalColourApplier(COLOUR.resolve(AnnotationName.class, RED))),
+                            new IntegerLiteral(
+                                    new TerminalColourApplier(COLOUR.resolve(IntegerLiteral.class, BRIGHT_BLUE))),
+                            new StringLiteral(
+                                    new TerminalColourApplier(COLOUR.resolve(StringLiteral.class, BRIGHT_GREEN))),
+                            new VariableDeclaratorId(
+                                    new TerminalColourApplier(COLOUR.resolve(VariableDeclaratorId.class, CYAN)))
                     ));
                 }}
         );

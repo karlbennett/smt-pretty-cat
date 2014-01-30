@@ -1,5 +1,9 @@
 package shiver.me.timbers.xml;
 
+import shiver.me.timbers.FOREGROUND_COLOUR;
+import shiver.me.timbers.ForegroundColourResolver;
+import shiver.me.timbers.ValueResolver;
+import shiver.me.timbers.transform.TerminalColourApplier;
 import shiver.me.timbers.transform.Transformations;
 import shiver.me.timbers.transform.antlr4.IterableTokenTransformations;
 import shiver.me.timbers.transform.antlr4.TokenTransformation;
@@ -26,6 +30,8 @@ import static shiver.me.timbers.transform.xml.XmlTransformer.TEXT_XML;
 
 public class XmlWrappedTransformer extends WrappedFileTransformer<TokenTransformation> {
 
+    private static final ValueResolver<FOREGROUND_COLOUR> COLOUR = new ForegroundColourResolver("xml");
+
     public XmlWrappedTransformer() {
         super(
                 new StreamFileTransformer<TokenTransformation>(TEXT_XML,
@@ -38,19 +44,16 @@ public class XmlWrappedTransformer extends WrappedFileTransformer<TokenTransform
 
         return new IterableTokenTransformations(
                 Arrays.<TokenTransformation>asList(
-                        new XMLDeclOpen(
-                                new XmlPropertyTerminalForegroundColourTokenApplier(XMLDeclOpen.class, BRIGHT_YELLOW)),
-                        new SpecialClose(
-                                new XmlPropertyTerminalForegroundColourTokenApplier(SpecialClose.class, BRIGHT_YELLOW)),
+                        new XMLDeclOpen(new TerminalColourApplier(COLOUR.resolve(XMLDeclOpen.class, BRIGHT_YELLOW))),
+                        new SpecialClose(new TerminalColourApplier(COLOUR.resolve(SpecialClose.class, BRIGHT_YELLOW))),
                         new Name(new IsNotAttributeTokenApplier(
-                                new XmlPropertyTerminalForegroundColourTokenApplier(SpecialClose.class, YELLOW))),
+                                new TerminalColourApplier(COLOUR.resolve(SpecialClose.class, YELLOW)))),
                         new Attribute(new IsNameTokenApplier(
-                                new XmlPropertyTerminalForegroundColourTokenApplier(Attribute.class, CYAN))),
-                        new Open(new XmlPropertyTerminalForegroundColourTokenApplier(Open.class, BRIGHT_YELLOW)),
-                        new Close(new XmlPropertyTerminalForegroundColourTokenApplier(Close.class, BRIGHT_YELLOW)),
-                        new Slash(new XmlPropertyTerminalForegroundColourTokenApplier(Slash.class, BRIGHT_YELLOW)),
-                        new XMLString(
-                                new XmlPropertyTerminalForegroundColourTokenApplier(XMLString.class, BRIGHT_GREEN))
+                                new TerminalColourApplier(COLOUR.resolve(Attribute.class, CYAN)))),
+                        new Open(new TerminalColourApplier(COLOUR.resolve(Open.class, BRIGHT_YELLOW))),
+                        new Close(new TerminalColourApplier(COLOUR.resolve(Close.class, BRIGHT_YELLOW))),
+                        new Slash(new TerminalColourApplier(COLOUR.resolve(Slash.class, BRIGHT_YELLOW))),
+                        new XMLString(new TerminalColourApplier(COLOUR.resolve(XMLString.class, BRIGHT_GREEN)))
                 )
         );
     }

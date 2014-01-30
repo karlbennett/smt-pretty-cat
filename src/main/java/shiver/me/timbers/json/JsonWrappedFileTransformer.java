@@ -1,5 +1,9 @@
 package shiver.me.timbers.json;
 
+import shiver.me.timbers.FOREGROUND_COLOUR;
+import shiver.me.timbers.ForegroundColourResolver;
+import shiver.me.timbers.ValueResolver;
+import shiver.me.timbers.transform.TerminalColourApplier;
 import shiver.me.timbers.transform.Transformations;
 import shiver.me.timbers.transform.antlr4.CompoundTransformations;
 import shiver.me.timbers.transform.antlr4.IterableTokenTransformations;
@@ -24,6 +28,8 @@ import static shiver.me.timbers.transform.json.KeyWords.KEYWORD_NAMES;
 
 public class JsonWrappedFileTransformer extends WrappedFileTransformer<TokenTransformation> {
 
+    private static final ValueResolver<FOREGROUND_COLOUR> COLOUR = new ForegroundColourResolver("json");
+
     public JsonWrappedFileTransformer() {
         super(
                 new StreamFileTransformer<TokenTransformation>(APPLICATION_JSON,
@@ -36,18 +42,16 @@ public class JsonWrappedFileTransformer extends WrappedFileTransformer<TokenTran
     private static Transformations<TokenTransformation> configureTransformations() {
 
         final Transformations<TokenTransformation> keywordTransformations = new CompoundTransformations(KEYWORD_NAMES,
-                new JsonPropertyTerminalForegroundColourTokenApplier("keywords", YELLOW));
+                new TerminalColourApplier(COLOUR.resolve("keywords", YELLOW)));
 
         return new IterableTokenTransformations(
                 new LinkedList<TokenTransformation>() {{
                     addAll(keywordTransformations.asCollection());
                     addAll(Arrays.<TokenTransformation>asList(
                             new Member(new IsMemberNameTokenApplier(
-                                    new JsonPropertyTerminalForegroundColourTokenApplier(Member.class, CYAN))),
-                            new Number(new JsonPropertyTerminalForegroundColourTokenApplier(
-                                    Number.class, BRIGHT_BLUE)),
-                            new JsonString(new JsonPropertyTerminalForegroundColourTokenApplier(
-                                    JsonString.class, BRIGHT_GREEN))
+                                    new TerminalColourApplier(COLOUR.resolve(Member.class, CYAN)))),
+                            new Number(new TerminalColourApplier(COLOUR.resolve(Number.class, BRIGHT_BLUE))),
+                            new JsonString(new TerminalColourApplier(COLOUR.resolve(JsonString.class, BRIGHT_GREEN)))
                     ));
                 }}
         );
