@@ -47,7 +47,7 @@ public class XmlWrappedTransformer extends WrappedFileTransformer<TokenTransform
                         new XMLDeclOpen(new TerminalColourApplier(COLOUR.resolve(XMLDeclOpen.class, BRIGHT_YELLOW))),
                         new SpecialClose(new TerminalColourApplier(COLOUR.resolve(SpecialClose.class, BRIGHT_YELLOW))),
                         new Name(new IsNotAttributeTokenApplier(
-                                new TerminalColourApplier(COLOUR.resolve(SpecialClose.class, YELLOW)))),
+                                new TerminalColourApplier(COLOUR.resolve(Name.class, YELLOW)))),
                         new Attribute(new IsNameTokenApplier(
                                 new TerminalColourApplier(COLOUR.resolve(Attribute.class, CYAN)))),
                         new Open(new TerminalColourApplier(COLOUR.resolve(Open.class, BRIGHT_YELLOW))),
