@@ -25,7 +25,7 @@ public class GlobalPropertyLoader {
 
     public void load() {
 
-        Properties properties = new Properties();
+        final Properties properties = new Properties();
 
         try {
 
