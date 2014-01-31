@@ -89,7 +89,7 @@ public class ExceptionsTest {
     @Test
     public void testWithExceptionHandlingWithHandledError() throws Throwable {
 
-        final Error error =  new Error();
+        final Error error = new Error();
 
         handledThrowableTest(error, error);
     }

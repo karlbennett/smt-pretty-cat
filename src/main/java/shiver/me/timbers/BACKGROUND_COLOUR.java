@@ -36,4 +36,9 @@ public enum BACKGROUND_COLOUR {
 
         return new EscapeSequence(value).toString();
     }
+
+    public static BACKGROUND_COLOUR background(String name) {
+
+        return valueOf(name);
+    }
 }

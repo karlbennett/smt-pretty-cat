@@ -7,6 +7,7 @@ import shiver.me.timbers.exceptions.MissingFileNameArgumentExceptionHandler;
 import shiver.me.timbers.exceptions.RethrowingExceptionHandler;
 import shiver.me.timbers.java.LazyJavaWrappedTransformer;
 import shiver.me.timbers.json.LazyJsonWrappedTransformer;
+import shiver.me.timbers.properties.PropertyConfiguration;
 import shiver.me.timbers.transform.Container;
 import shiver.me.timbers.transform.MultiFileTransformer;
 import shiver.me.timbers.transform.Transformers;
@@ -22,8 +23,10 @@ import java.util.concurrent.Callable;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import static shiver.me.timbers.BACKGROUND_COLOUR.BLACK;
+import static shiver.me.timbers.BACKGROUND_COLOUR.background;
 import static shiver.me.timbers.ESCAPE.RESET;
 import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_WHITE;
+import static shiver.me.timbers.FOREGROUND_COLOUR.foreground;
 import static shiver.me.timbers.exceptions.Exceptions.withExceptionHandling;
 import static shiver.me.timbers.transform.NullCompositeTokenFileTransformer.NULL_COMPOSITE_TOKEN_FILE_TRANSFORMER;
 
@@ -51,12 +54,21 @@ public class PrettyCat {
                     new RethrowingExceptionHandler<Throwable>(Throwable.class)
             );
 
+    static {
+        new PropertyConfiguration("config.properties");
+    }
+
+    private static final ValueResolver<String> RESOLVER = new PropertyResolver();
+
     public static void main(final String[] args) throws Throwable {
 
         exit(run(args));
     }
 
     public static int run(final String[] args) throws Throwable {
+
+        final BACKGROUND_COLOUR bg = background(RESOLVER.resolve("background", BLACK.name()));
+        final FOREGROUND_COLOUR fg = foreground(RESOLVER.resolve("foreground", BRIGHT_WHITE.name()));
 
         return withExceptionHandling(EXCEPTION_HANDLERS, new Callable<Void>() {
 
@@ -65,7 +77,7 @@ public class PrettyCat {
 
                 for (String fileName : args) {
 
-                    out.print(new MultiFileTransformer(TRANSFORMERS, BLACK, BRIGHT_WHITE).transform(new File(fileName)));
+                    out.print(new MultiFileTransformer(TRANSFORMERS, bg, fg).transform(new File(fileName)));
                     // Reset the colour scheme after printing the highlighted source code.
                     out.println(RESET);
                 }

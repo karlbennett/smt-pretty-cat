@@ -6,24 +6,24 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static shiver.me.timbers.TestUtils.TEST_DEFAULT_PROPERTY_VALUE;
 import static shiver.me.timbers.TestUtils.TEST_PREFIX;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_FOUR;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_ONE;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_THREE;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_TWO;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_SUFFIX_THREE;
+import static shiver.me.timbers.TestUtils.TEST_PROPERTY_VALUE_FOUR;
+import static shiver.me.timbers.TestUtils.TEST_PROPERTY_VALUE_ONE;
+import static shiver.me.timbers.TestUtils.TEST_PROPERTY_VALUE_THREE;
+import static shiver.me.timbers.TestUtils.TEST_PROPERTY_VALUE_TWO;
 import static shiver.me.timbers.TestUtils.TestClassFour;
 import static shiver.me.timbers.TestUtils.TestClassOne;
 import static shiver.me.timbers.TestUtils.TestClassThree;
 import static shiver.me.timbers.TestUtils.TestClassTwo;
+import static shiver.me.timbers.TestUtils.clearTestProperties;
 
 public class PropertyResolverTest {
-
-    private static final String TEST_PROPERTY_VALUE_ONE = "test value one";
-    private static final String TEST_PROPERTY_VALUE_TWO = "test value two";
-    private static final String TEST_PROPERTY_VALUE_THREE = "test value three";
-    private static final String TEST_PROPERTY_VALUE_FOUR = "test value four";
-    private static final String TEST_DEFAULT_PROPERTY_VALUE = "test default value";
 
     @Before
     public void setUp() throws Exception {
@@ -37,10 +37,7 @@ public class PropertyResolverTest {
     @After
     public void tearDown() throws Exception {
 
-        System.clearProperty(TEST_PROPERTY_NAME_ONE);
-        System.clearProperty(TEST_PROPERTY_NAME_TWO);
-        System.clearProperty(TEST_PROPERTY_NAME_THREE);
-        System.clearProperty(TEST_PROPERTY_NAME_FOUR);
+        clearTestProperties();
     }
 
     @Test

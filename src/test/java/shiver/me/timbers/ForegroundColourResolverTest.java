@@ -11,20 +11,21 @@ import static shiver.me.timbers.FOREGROUND_COLOUR.GREEN;
 import static shiver.me.timbers.FOREGROUND_COLOUR.RED;
 import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
 import static shiver.me.timbers.TestUtils.TEST_PREFIX;
+import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_FIVE;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_FOUR;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_ONE;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_THREE;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_TWO;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_SUFFIX_THREE;
+import static shiver.me.timbers.TestUtils.TEST_PROPERTY_VALUE_FIVE;
+import static shiver.me.timbers.TestUtils.TestClassFive;
 import static shiver.me.timbers.TestUtils.TestClassFour;
 import static shiver.me.timbers.TestUtils.TestClassOne;
-import static shiver.me.timbers.TestUtils.TestClassTwo;
 import static shiver.me.timbers.TestUtils.TestClassThree;
+import static shiver.me.timbers.TestUtils.TestClassTwo;
+import static shiver.me.timbers.TestUtils.clearTestProperties;
 
 public class ForegroundColourResolverTest {
-
-    private static final String TEST_PROPERTY_NAME_FIVE = TEST_PREFIX + "." + TestClassFive.class.getSimpleName();
-    private static final String TEST_PROPERTY_VALUE_FIVE = "not a colour";
 
     @Before
     public void setUp() throws Exception {
@@ -39,11 +40,7 @@ public class ForegroundColourResolverTest {
     @After
     public void tearDown() throws Exception {
 
-        System.clearProperty(TEST_PROPERTY_NAME_ONE);
-        System.clearProperty(TEST_PROPERTY_NAME_TWO);
-        System.clearProperty(TEST_PROPERTY_NAME_THREE);
-        System.clearProperty(TEST_PROPERTY_NAME_FOUR);
-        System.clearProperty(TEST_PROPERTY_NAME_FIVE);
+        clearTestProperties();
     }
 
     @Test
@@ -136,8 +133,5 @@ public class ForegroundColourResolverTest {
         ValueResolver<FOREGROUND_COLOUR> resolver = new ForegroundColourResolver(TEST_PREFIX);
 
         resolver.resolve(TestClassOne.class, null);
-    }
-
-    public static class TestClassFive {
     }
 }

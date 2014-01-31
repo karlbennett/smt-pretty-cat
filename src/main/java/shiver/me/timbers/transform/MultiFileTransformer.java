@@ -41,7 +41,7 @@ public class MultiFileTransformer {
 
         this.transformers = transformers;
         this.background = background;
-        this.foreground= foreground;
+        this.foreground = foreground;
     }
 
     /**

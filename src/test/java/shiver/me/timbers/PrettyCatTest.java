@@ -88,7 +88,7 @@ public class PrettyCatTest {
 
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        final PrintStream expectedOut  = new PrintStream(outputStream);
+        final PrintStream expectedOut = new PrintStream(outputStream);
         expectedOut.print(testFileContents(TEST_PRETTY_JAVA_FILE));
         expectedOut.print(testFileContents(TEST_PRETTY_JSON_FILE));
         expectedOut.print(testFileContents(TEST_PRETTY_XML_FILE));
