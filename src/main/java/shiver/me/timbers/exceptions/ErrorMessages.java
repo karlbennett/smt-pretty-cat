@@ -8,5 +8,5 @@ public final class ErrorMessages {
     private ErrorMessages() {
     }
 
-    public static final String USAGE = "Usage: pcat [FILE_PATH]";
+    public static final String USAGE = "Usage: pcat [FILE_PATH]...";
 }

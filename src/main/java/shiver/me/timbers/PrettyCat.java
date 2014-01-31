@@ -63,9 +63,12 @@ public class PrettyCat {
             @Override
             public Void call() throws Exception {
 
-                out.print(new MultiFileTransformer(TRANSFORMERS, BLACK, BRIGHT_WHITE).transform(new File(args[0])));
-                // Reset the colour scheme after printing the highlighted source code.
-                out.println(RESET);
+                for (String fileName : args) {
+
+                    out.print(new MultiFileTransformer(TRANSFORMERS, BLACK, BRIGHT_WHITE).transform(new File(fileName)));
+                    // Reset the colour scheme after printing the highlighted source code.
+                    out.println(RESET);
+                }
 
                 return null;
             }

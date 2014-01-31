@@ -77,6 +77,25 @@ public class PrettyCatTest {
         assertEquals("a JSON file should be prettified.", testFileContents(TEST_PRETTY_JSON_FILE), out.toString());
     }
 
+    @Test
+    public void testRunWithMultipleFiles() throws Throwable {
+
+        PrettyCat.run(new String[]{
+                testFilePath(TEST_JAVA_FILE),
+                testFilePath(TEST_JSON_FILE),
+                testFilePath(TEST_XML_FILE)
+        });
+
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        final PrintStream expectedOut  = new PrintStream(outputStream);
+        expectedOut.print(testFileContents(TEST_PRETTY_JAVA_FILE));
+        expectedOut.print(testFileContents(TEST_PRETTY_JSON_FILE));
+        expectedOut.print(testFileContents(TEST_PRETTY_XML_FILE));
+
+        assertEquals("a JSON file should be prettified.", outputStream.toString(), out.toString());
+    }
+
     private ByteArrayOutputStream replaceStandardOut() {
 
         originalStandardOut = System.out;
