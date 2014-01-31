@@ -11,13 +11,19 @@ public class TerminalColourApplierTest {
     @Test
     public void testCreate() {
 
-        new TerminalColourApplier(BLACK);
+        new TerminalColourApplier(BRIGHT_WHITE, BLACK);
     }
 
     @Test(expected = AssertionError.class)
-    public void testCreateWithNull() {
+    public void testCreateWithNullForeground() {
 
-        new TerminalColourApplier(null);
+        new TerminalColourApplier(null, BLACK);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testCreateWithNullColour() {
+
+        new TerminalColourApplier(BRIGHT_WHITE, null);
     }
 
     @Test
@@ -27,7 +33,7 @@ public class TerminalColourApplierTest {
 
         assertEquals("the string should be transformed correctly.",
                 BLACK.escapeSequence() + TEST_STRING + BRIGHT_WHITE.escapeSequence(),
-                new TerminalColourApplier(BLACK).apply(null, null, TEST_STRING));
+                new TerminalColourApplier(BRIGHT_WHITE, BLACK).apply(null, null, TEST_STRING));
     }
 
     @Test
@@ -35,6 +41,6 @@ public class TerminalColourApplierTest {
 
         assertEquals("the string should be transformed correctly.",
                 BLACK.escapeSequence() + null + BRIGHT_WHITE.escapeSequence(),
-                new TerminalColourApplier(BLACK).apply(null, null, null));
+                new TerminalColourApplier(BRIGHT_WHITE, BLACK).apply(null, null, null));
     }
 }

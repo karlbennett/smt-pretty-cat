@@ -5,8 +5,14 @@ import shiver.me.timbers.transform.antlr4.IterableTokenTransformations;
 
 import static org.junit.Assert.assertNotNull;
 import static shiver.me.timbers.FileUtils.testTxtFile;
+import static shiver.me.timbers.TestUtils.CONFIGURATION;
 
 public class LazyXmlWrappedTransformerTest {
+
+    static {
+        @SuppressWarnings("UnusedDeclaration")
+        final Object o = CONFIGURATION;
+    }
 
     @Test
     public void testCreate() throws Exception {

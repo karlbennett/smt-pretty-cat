@@ -24,13 +24,8 @@ import shiver.me.timbers.transform.stream.StringStreamTransformer;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_BLUE;
-import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_GREEN;
-import static shiver.me.timbers.FOREGROUND_COLOUR.CYAN;
-import static shiver.me.timbers.FOREGROUND_COLOUR.GREEN;
-import static shiver.me.timbers.FOREGROUND_COLOUR.RED;
-import static shiver.me.timbers.FOREGROUND_COLOUR.WHITE;
-import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
+import static shiver.me.timbers.PropertyResolver.FOREGROUND;
+import static shiver.me.timbers.PropertyResolver.KEYWORDS;
 import static shiver.me.timbers.transform.java.JavaTransformer.TEXT_X_JAVA_SOURCE;
 import static shiver.me.timbers.transform.java.KeyWords.KEYWORD_NAMES;
 
@@ -49,26 +44,26 @@ public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTran
     @SuppressWarnings("unchecked")
     private static Transformations<TokenTransformation> configureTransformations() {
 
+        final FOREGROUND_COLOUR fg = new ForegroundColourResolver().resolve(FOREGROUND);
+
         final Transformations<TokenTransformation> keywordTransformations = new CompoundTransformations(KEYWORD_NAMES,
-                new TerminalColourApplier(COLOUR.resolve("keywords", YELLOW)));
+                new TerminalColourApplier(fg, COLOUR.resolve(KEYWORDS)));
 
         return new IterableTokenTransformations(
                 new LinkedList<TokenTransformation>() {{
                     addAll(keywordTransformations.asCollection());
                     addAll(Arrays.<TokenTransformation>asList(
-                            new JavaDoc(new TerminalColourApplier(COLOUR.resolve(JavaDoc.class, GREEN))),
-                            new Comment(new TerminalColourApplier(COLOUR.resolve(Comment.class, WHITE))),
-                            new LineComment(new TerminalColourApplier(COLOUR.resolve(LineComment.class, WHITE))),
+                            new JavaDoc(new TerminalColourApplier(fg, COLOUR.resolve(JavaDoc.class))),
+                            new Comment(new TerminalColourApplier(fg, COLOUR.resolve(Comment.class))),
+                            new LineComment(new TerminalColourApplier(fg, COLOUR.resolve(LineComment.class))),
                             new Annotation(
                                     new IsAtTokenApplier(
-                                            new TerminalColourApplier(COLOUR.resolve(Annotation.class, RED)))),
-                            new AnnotationName(new TerminalColourApplier(COLOUR.resolve(AnnotationName.class, RED))),
-                            new IntegerLiteral(
-                                    new TerminalColourApplier(COLOUR.resolve(IntegerLiteral.class, BRIGHT_BLUE))),
-                            new StringLiteral(
-                                    new TerminalColourApplier(COLOUR.resolve(StringLiteral.class, BRIGHT_GREEN))),
+                                            new TerminalColourApplier(fg, COLOUR.resolve(Annotation.class)))),
+                            new AnnotationName(new TerminalColourApplier(fg, COLOUR.resolve(AnnotationName.class))),
+                            new IntegerLiteral(new TerminalColourApplier(fg, COLOUR.resolve(IntegerLiteral.class))),
+                            new StringLiteral(new TerminalColourApplier(fg, COLOUR.resolve(StringLiteral.class))),
                             new VariableDeclaratorId(
-                                    new TerminalColourApplier(COLOUR.resolve(VariableDeclaratorId.class, CYAN)))
+                                    new TerminalColourApplier(fg, COLOUR.resolve(VariableDeclaratorId.class)))
                     ));
                 }}
         );

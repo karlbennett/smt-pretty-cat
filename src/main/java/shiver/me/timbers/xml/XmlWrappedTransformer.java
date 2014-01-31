@@ -22,10 +22,7 @@ import shiver.me.timbers.transform.xml.types.XMLString;
 
 import java.util.Arrays;
 
-import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_GREEN;
-import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_YELLOW;
-import static shiver.me.timbers.FOREGROUND_COLOUR.CYAN;
-import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
+import static shiver.me.timbers.PropertyResolver.FOREGROUND;
 import static shiver.me.timbers.transform.xml.XmlTransformer.TEXT_XML;
 
 public class XmlWrappedTransformer extends WrappedFileTransformer<TokenTransformation> {
@@ -42,18 +39,20 @@ public class XmlWrappedTransformer extends WrappedFileTransformer<TokenTransform
 
     private static Transformations<TokenTransformation> configureTransformations() {
 
+        final FOREGROUND_COLOUR fg = new ForegroundColourResolver().resolve(FOREGROUND);
+
         return new IterableTokenTransformations(
                 Arrays.<TokenTransformation>asList(
-                        new XMLDeclOpen(new TerminalColourApplier(COLOUR.resolve(XMLDeclOpen.class, BRIGHT_YELLOW))),
-                        new SpecialClose(new TerminalColourApplier(COLOUR.resolve(SpecialClose.class, BRIGHT_YELLOW))),
+                        new XMLDeclOpen(new TerminalColourApplier(fg, COLOUR.resolve(XMLDeclOpen.class))),
+                        new SpecialClose(new TerminalColourApplier(fg, COLOUR.resolve(SpecialClose.class))),
                         new Name(new IsNotAttributeTokenApplier(
-                                new TerminalColourApplier(COLOUR.resolve(Name.class, YELLOW)))),
+                                new TerminalColourApplier(fg, COLOUR.resolve(Name.class)))),
                         new Attribute(new IsNameTokenApplier(
-                                new TerminalColourApplier(COLOUR.resolve(Attribute.class, CYAN)))),
-                        new Open(new TerminalColourApplier(COLOUR.resolve(Open.class, BRIGHT_YELLOW))),
-                        new Close(new TerminalColourApplier(COLOUR.resolve(Close.class, BRIGHT_YELLOW))),
-                        new Slash(new TerminalColourApplier(COLOUR.resolve(Slash.class, BRIGHT_YELLOW))),
-                        new XMLString(new TerminalColourApplier(COLOUR.resolve(XMLString.class, BRIGHT_GREEN)))
+                                new TerminalColourApplier(fg, COLOUR.resolve(Attribute.class)))),
+                        new Open(new TerminalColourApplier(fg, COLOUR.resolve(Open.class))),
+                        new Close(new TerminalColourApplier(fg, COLOUR.resolve(Close.class))),
+                        new Slash(new TerminalColourApplier(fg, COLOUR.resolve(Slash.class))),
+                        new XMLString(new TerminalColourApplier(fg, COLOUR.resolve(XMLString.class)))
                 )
         );
     }

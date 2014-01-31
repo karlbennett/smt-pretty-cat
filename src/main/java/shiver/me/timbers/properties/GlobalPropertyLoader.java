@@ -7,6 +7,7 @@ import java.util.Properties;
 import static java.util.Map.Entry;
 import static shiver.me.timbers.asserts.Asserts.argumentIsNullMessage;
 import static shiver.me.timbers.asserts.Asserts.assertIsNotNull;
+import static shiver.me.timbers.checks.Checks.isNull;
 
 /**
  * This class can be used to load properties into the global scope.
@@ -32,7 +33,10 @@ public class GlobalPropertyLoader {
 
             for (Entry entry : properties.entrySet()) {
 
-                System.setProperty(entry.getKey().toString(), entry.getValue().toString());
+                if (isNull(System.getProperty(entry.getKey().toString()))) {
+
+                    System.setProperty(entry.getKey().toString(), entry.getValue().toString());
+                }
             }
 
         } catch (IOException e) {

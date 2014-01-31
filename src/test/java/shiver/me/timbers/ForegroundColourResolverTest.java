@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static shiver.me.timbers.FOREGROUND_COLOUR.BLACK;
 import static shiver.me.timbers.FOREGROUND_COLOUR.BLUE;
 import static shiver.me.timbers.FOREGROUND_COLOUR.GREEN;
 import static shiver.me.timbers.FOREGROUND_COLOUR.RED;
@@ -62,13 +61,11 @@ public class ForegroundColourResolverTest {
 
         ValueResolver<FOREGROUND_COLOUR> resolver = new ForegroundColourResolver(TEST_PREFIX);
 
-        assertEquals("property one should be returned.", RED, resolver.resolve(TestClassOne.class, BLACK));
+        assertEquals("property one should be returned.", RED, resolver.resolve(TestClassOne.class));
 
-        assertEquals("property two should be returned.", GREEN, resolver.resolve(TestClassTwo.class, BLACK));
+        assertEquals("property two should be returned.", GREEN, resolver.resolve(TestClassTwo.class));
 
-        assertEquals("property three should be returned.", BLUE, resolver.resolve(TEST_PROPERTY_SUFFIX_THREE, BLACK));
-
-        assertEquals("the default value should be returned.", BLACK, resolver.resolve(TestClassFour.class, BLACK));
+        assertEquals("property three should be returned.", BLUE, resolver.resolve(TEST_PROPERTY_SUFFIX_THREE));
     }
 
     @Test
@@ -76,14 +73,13 @@ public class ForegroundColourResolverTest {
 
         ValueResolver<FOREGROUND_COLOUR> resolver = new ForegroundColourResolver();
 
-        assertEquals("the default value should be returned.", BLACK, resolver.resolve(TestClassOne.class, BLACK));
+        assertEquals("property four should be returned.", YELLOW, resolver.resolve(TestClassFour.class));
+    }
 
-        assertEquals("the default value should be returned.", BLACK, resolver.resolve(TestClassTwo.class, BLACK));
+    @Test(expected = NullPointerException.class)
+    public void testResolveWithNoPrefixAndPropertyWithPrefix() {
 
-        assertEquals("the default value should be returned.", BLACK,
-                resolver.resolve(TEST_PROPERTY_SUFFIX_THREE, BLACK));
-
-        assertEquals("property four should be returned.", YELLOW, resolver.resolve(TestClassFour.class, BLACK));
+        new ForegroundColourResolver().resolve(TestClassOne.class);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -91,47 +87,36 @@ public class ForegroundColourResolverTest {
 
         ValueResolver<FOREGROUND_COLOUR> resolver = new ForegroundColourResolver(TEST_PREFIX);
 
-        resolver.resolve(TestClassFive.class, BLACK);
-    }
-
-    @Test
-    public void testResolveWithInvalidPrefix() {
-
-        ValueResolver<FOREGROUND_COLOUR> resolver = new ForegroundColourResolver("invalid prefix");
-
-        assertEquals("the default value should be returned.", BLACK,
-                resolver.resolve(TestClassOne.class, BLACK));
-    }
-
-    @Test
-    public void testResolveWithInvalidLookupType() {
-
-        ValueResolver<FOREGROUND_COLOUR> resolver = new ForegroundColourResolver(TEST_PREFIX);
-
-        assertEquals("the default value should be returned.", BLACK, resolver.resolve(TestClassThree.class, BLACK));
-    }
-
-    @Test
-    public void testResolveWithNullType() {
-
-        ValueResolver<FOREGROUND_COLOUR> resolver = new ForegroundColourResolver(TEST_PREFIX);
-
-        assertEquals("the default value should be returned.", BLACK, resolver.resolve((Class) null, BLACK));
-    }
-
-    @Test
-    public void testResolveWithNullName() {
-
-        ValueResolver<FOREGROUND_COLOUR> resolver = new ForegroundColourResolver(TEST_PREFIX);
-
-        assertEquals("the default value should be returned.", BLACK, resolver.resolve((String) null, BLACK));
+        resolver.resolve(TestClassFive.class);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testResolveWithNullDefaultValue() {
+    public void testResolveWithInvalidPrefix() {
 
-        ValueResolver<FOREGROUND_COLOUR> resolver = new ForegroundColourResolver(TEST_PREFIX);
+        new ForegroundColourResolver("invalid prefix").resolve(TestClassOne.class);
+    }
 
-        resolver.resolve(TestClassOne.class, null);
+    @Test(expected = NullPointerException.class)
+    public void testResolveWithInvalidLookupType() {
+
+        new ForegroundColourResolver(TEST_PREFIX).resolve(TestClassThree.class);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testResolveWithNullType() {
+
+        new ForegroundColourResolver(TEST_PREFIX).resolve((Class) null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testResolveWithInvalidLookupName() {
+
+        new ForegroundColourResolver(TEST_PREFIX).resolve("invalid property name");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testResolveWithNullName() {
+
+        new ForegroundColourResolver(TEST_PREFIX).resolve((String) null);
     }
 }

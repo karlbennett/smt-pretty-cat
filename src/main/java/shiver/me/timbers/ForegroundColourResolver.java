@@ -18,14 +18,14 @@ public class ForegroundColourResolver implements ValueResolver<FOREGROUND_COLOUR
     }
 
     @Override
-    public FOREGROUND_COLOUR resolve(Class type, FOREGROUND_COLOUR defaultValue) {
+    public FOREGROUND_COLOUR resolve(Class type) {
 
-        return FOREGROUND_COLOUR.valueOf(resolver.resolve(type, defaultValue.name()));
+        return FOREGROUND_COLOUR.valueOf(resolver.resolve(type));
     }
 
     @Override
-    public FOREGROUND_COLOUR resolve(String name, FOREGROUND_COLOUR defaultValue) {
+    public FOREGROUND_COLOUR resolve(String name) {
 
-        return FOREGROUND_COLOUR.valueOf(resolver.resolve(name, defaultValue.name()));
+        return FOREGROUND_COLOUR.valueOf(resolver.resolve(name));
     }
 }

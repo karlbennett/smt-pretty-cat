@@ -22,11 +22,11 @@ import java.util.concurrent.Callable;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
-import static shiver.me.timbers.BACKGROUND_COLOUR.BLACK;
 import static shiver.me.timbers.BACKGROUND_COLOUR.background;
 import static shiver.me.timbers.ESCAPE.RESET;
-import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_WHITE;
 import static shiver.me.timbers.FOREGROUND_COLOUR.foreground;
+import static shiver.me.timbers.PropertyResolver.BACKGROUND;
+import static shiver.me.timbers.PropertyResolver.FOREGROUND;
 import static shiver.me.timbers.exceptions.Exceptions.withExceptionHandling;
 import static shiver.me.timbers.transform.NullCompositeTokenFileTransformer.NULL_COMPOSITE_TOKEN_FILE_TRANSFORMER;
 
@@ -67,8 +67,8 @@ public class PrettyCat {
 
     public static int run(final String[] args) throws Throwable {
 
-        final BACKGROUND_COLOUR bg = background(RESOLVER.resolve("background", BLACK.name()));
-        final FOREGROUND_COLOUR fg = foreground(RESOLVER.resolve("foreground", BRIGHT_WHITE.name()));
+        final BACKGROUND_COLOUR bg = background(RESOLVER.resolve(BACKGROUND));
+        final FOREGROUND_COLOUR fg = foreground(RESOLVER.resolve(FOREGROUND));
 
         return withExceptionHandling(EXCEPTION_HANDLERS, new Callable<Void>() {
 

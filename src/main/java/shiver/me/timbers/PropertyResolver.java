@@ -9,6 +9,10 @@ import static shiver.me.timbers.checks.Checks.isNotNull;
  */
 public class PropertyResolver implements ValueResolver<String> {
 
+    public static final String BACKGROUND = "background";
+    public static final String FOREGROUND = "foreground";
+    public static final String KEYWORDS = "keywords";
+
     private final String prefix;
 
     public PropertyResolver() {
@@ -24,24 +28,24 @@ public class PropertyResolver implements ValueResolver<String> {
     }
 
     @Override
-    public String resolve(Class type, String defaultValue) {
+    public String resolve(Class type) {
 
-        return getPrefixedProperty(isNotNull(type) ? type.getSimpleName() : null, defaultValue);
+        return getPrefixedProperty(isNotNull(type) ? type.getSimpleName() : null);
     }
 
     @Override
-    public String resolve(String name, String defaultValue) {
+    public String resolve(String name) {
 
-        return getPrefixedProperty(name, defaultValue);
+        return getPrefixedProperty(name);
+    }
+
+    private String getPrefixedProperty(String name) {
+
+        return System.getProperty(prependPrefix(name));
     }
 
     private String prependPrefix(String suffix) {
 
         return (isNotNull(prefix) ? prefix + "." : "") + suffix;
-    }
-
-    private String getPrefixedProperty(String name, String defaultValue) {
-
-        return System.getProperty(prependPrefix(name), defaultValue);
     }
 }

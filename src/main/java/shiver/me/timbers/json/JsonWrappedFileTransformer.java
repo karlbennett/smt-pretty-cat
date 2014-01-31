@@ -19,10 +19,8 @@ import shiver.me.timbers.transform.stream.StringStreamTransformer;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_BLUE;
-import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_GREEN;
-import static shiver.me.timbers.FOREGROUND_COLOUR.CYAN;
-import static shiver.me.timbers.FOREGROUND_COLOUR.YELLOW;
+import static shiver.me.timbers.PropertyResolver.FOREGROUND;
+import static shiver.me.timbers.PropertyResolver.KEYWORDS;
 import static shiver.me.timbers.transform.json.JsonTransformer.APPLICATION_JSON;
 import static shiver.me.timbers.transform.json.KeyWords.KEYWORD_NAMES;
 
@@ -41,17 +39,19 @@ public class JsonWrappedFileTransformer extends WrappedFileTransformer<TokenTran
     @SuppressWarnings("unchecked")
     private static Transformations<TokenTransformation> configureTransformations() {
 
+        final FOREGROUND_COLOUR fg = new ForegroundColourResolver().resolve(FOREGROUND);
+
         final Transformations<TokenTransformation> keywordTransformations = new CompoundTransformations(KEYWORD_NAMES,
-                new TerminalColourApplier(COLOUR.resolve("keywords", YELLOW)));
+                new TerminalColourApplier(fg, COLOUR.resolve(KEYWORDS)));
 
         return new IterableTokenTransformations(
                 new LinkedList<TokenTransformation>() {{
                     addAll(keywordTransformations.asCollection());
                     addAll(Arrays.<TokenTransformation>asList(
                             new Member(new IsMemberNameTokenApplier(
-                                    new TerminalColourApplier(COLOUR.resolve(Member.class, CYAN)))),
-                            new Number(new TerminalColourApplier(COLOUR.resolve(Number.class, BRIGHT_BLUE))),
-                            new JsonString(new TerminalColourApplier(COLOUR.resolve(JsonString.class, BRIGHT_GREEN)))
+                                    new TerminalColourApplier(fg, COLOUR.resolve(Member.class)))),
+                            new Number(new TerminalColourApplier(fg, COLOUR.resolve(Number.class))),
+                            new JsonString(new TerminalColourApplier(fg, COLOUR.resolve(JsonString.class)))
                     ));
                 }}
         );

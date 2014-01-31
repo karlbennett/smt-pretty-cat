@@ -1,5 +1,7 @@
 package shiver.me.timbers;
 
+import shiver.me.timbers.properties.PropertyConfiguration;
+
 /**
  * This class contains common test constants and helper methods.
  */
@@ -7,6 +9,8 @@ public final class TestUtils {
 
     private TestUtils() {
     }
+
+    public static final PropertyConfiguration CONFIGURATION = new PropertyConfiguration("config.properties");
 
     public static final String TEST_PROPERTIES_FILE = "test.properties";
 
@@ -27,8 +31,7 @@ public final class TestUtils {
     public static final String TEST_PROPERTY_VALUE_THREE = "test value three";
     public static final String TEST_PROPERTY_VALUE_FOUR = "test value four";
     public static final String TEST_PROPERTY_VALUE_FIVE = "test value five";
-
-    public static final String TEST_DEFAULT_PROPERTY_VALUE = "test default value";
+    public static final String TEST_PROPERTY_VALUE_SIX = "test value six";
 
     public static void clearTestProperties() {
 

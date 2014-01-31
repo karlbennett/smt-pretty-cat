@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static shiver.me.timbers.TestUtils.TEST_DEFAULT_PROPERTY_VALUE;
 import static shiver.me.timbers.TestUtils.TEST_PREFIX;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_FOUR;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_ONE;
@@ -60,16 +59,15 @@ public class PropertyResolverTest {
         ValueResolver<String> resolver = new PropertyResolver(TEST_PREFIX);
 
         assertEquals("property one should be returned.", TEST_PROPERTY_VALUE_ONE,
-                resolver.resolve(TestClassOne.class, TEST_DEFAULT_PROPERTY_VALUE));
+                resolver.resolve(TestClassOne.class));
 
         assertEquals("property two should be returned.", TEST_PROPERTY_VALUE_TWO,
-                resolver.resolve(TestClassTwo.class, TEST_DEFAULT_PROPERTY_VALUE));
+                resolver.resolve(TestClassTwo.class));
 
         assertEquals("property three should be returned.", TEST_PROPERTY_VALUE_THREE,
-                resolver.resolve(TEST_PROPERTY_SUFFIX_THREE, TEST_DEFAULT_PROPERTY_VALUE));
+                resolver.resolve(TEST_PROPERTY_SUFFIX_THREE));
 
-        assertEquals("the default value should be returned.", TEST_DEFAULT_PROPERTY_VALUE,
-                resolver.resolve(TestClassFour.class, TEST_DEFAULT_PROPERTY_VALUE));
+        assertNull("property five should not be returned.", resolver.resolve(TestClassFour.class));
     }
 
     @Test
@@ -77,17 +75,14 @@ public class PropertyResolverTest {
 
         ValueResolver<String> resolver = new PropertyResolver();
 
-        assertEquals("the default value should be returned.", TEST_DEFAULT_PROPERTY_VALUE,
-                resolver.resolve(TestClassOne.class, TEST_DEFAULT_PROPERTY_VALUE));
+        assertNull("the prefixed property should not be returned.", resolver.resolve(TestClassOne.class));
 
-        assertEquals("the default value should be returned.", TEST_DEFAULT_PROPERTY_VALUE,
-                resolver.resolve(TestClassTwo.class, TEST_DEFAULT_PROPERTY_VALUE));
+        assertNull("the prefixed property should not be returned.", resolver.resolve(TestClassTwo.class));
 
-        assertEquals("the default value should be returned.", TEST_DEFAULT_PROPERTY_VALUE,
-                resolver.resolve(TEST_PROPERTY_SUFFIX_THREE, TEST_DEFAULT_PROPERTY_VALUE));
+        assertNull("the prefixed property should not be returned.", resolver.resolve(TEST_PROPERTY_SUFFIX_THREE));
 
         assertEquals("property four should be returned.", TEST_PROPERTY_VALUE_FOUR,
-                resolver.resolve(TestClassFour.class, TEST_DEFAULT_PROPERTY_VALUE));
+                resolver.resolve(TestClassFour.class));
     }
 
     @Test
@@ -95,8 +90,7 @@ public class PropertyResolverTest {
 
         ValueResolver<String> resolver = new PropertyResolver("invalid prefix");
 
-        assertEquals("the default value should be returned.", TEST_DEFAULT_PROPERTY_VALUE,
-                resolver.resolve(TestClassOne.class, TEST_DEFAULT_PROPERTY_VALUE));
+        assertNull("a property should not be returned.", resolver.resolve(TestClassOne.class));
     }
 
     @Test
@@ -104,8 +98,7 @@ public class PropertyResolverTest {
 
         ValueResolver<String> resolver = new PropertyResolver(TEST_PREFIX);
 
-        assertEquals("the default value should be returned.", TEST_DEFAULT_PROPERTY_VALUE,
-                resolver.resolve(TestClassThree.class, TEST_DEFAULT_PROPERTY_VALUE));
+        assertNull("a property should not be returned.", resolver.resolve(TestClassThree.class));
     }
 
     @Test
@@ -113,8 +106,15 @@ public class PropertyResolverTest {
 
         ValueResolver<String> resolver = new PropertyResolver(TEST_PREFIX);
 
-        assertEquals("the default value should be returned.", TEST_DEFAULT_PROPERTY_VALUE,
-                resolver.resolve((Class) null, TEST_DEFAULT_PROPERTY_VALUE));
+        assertNull("a property should not be returned.", resolver.resolve((Class) null));
+    }
+
+    @Test
+    public void testResolveWithInvalidLookupName() {
+
+        ValueResolver<String> resolver = new PropertyResolver(TEST_PREFIX);
+
+        assertNull("a property should not be returned.", resolver.resolve("invalid property name"));
     }
 
     @Test
@@ -122,21 +122,6 @@ public class PropertyResolverTest {
 
         ValueResolver<String> resolver = new PropertyResolver(TEST_PREFIX);
 
-        assertEquals("the default value should be returned.", TEST_DEFAULT_PROPERTY_VALUE,
-                resolver.resolve((String) null, TEST_DEFAULT_PROPERTY_VALUE));
-    }
-
-    @Test
-    public void testResolveWithNullDefaultValue() {
-
-        ValueResolver<String> resolver = new PropertyResolver(TEST_PREFIX);
-
-        assertEquals("property one should be returned.", TEST_PROPERTY_VALUE_ONE, resolver.resolve(TestClassOne.class,
-                null));
-
-        assertEquals("property one should be returned.", TEST_PROPERTY_VALUE_THREE,
-                resolver.resolve(TEST_PROPERTY_SUFFIX_THREE, null));
-
-        assertNull("null should be returned.", resolver.resolve(Object.class, null));
+        assertNull("a property should not be returned.", resolver.resolve((String) null));
     }
 }

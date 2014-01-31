@@ -18,6 +18,7 @@ import static shiver.me.timbers.TestUtils.TEST_PROPERTY_NAME_TWO;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_VALUE_FIVE;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_VALUE_FOUR;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_VALUE_ONE;
+import static shiver.me.timbers.TestUtils.TEST_PROPERTY_VALUE_SIX;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_VALUE_THREE;
 import static shiver.me.timbers.TestUtils.TEST_PROPERTY_VALUE_TWO;
 import static shiver.me.timbers.TestUtils.clearTestProperties;
@@ -66,6 +67,25 @@ public class GlobalPropertyLoaderTest {
         assertEquals("property one should be loaded.", TEST_PROPERTY_VALUE_ONE,
                 System.getProperty(TEST_PROPERTY_NAME_ONE));
         assertEquals("property two should be loaded.", TEST_PROPERTY_VALUE_TWO,
+                System.getProperty(TEST_PROPERTY_NAME_TWO));
+        assertEquals("property three should be loaded.", TEST_PROPERTY_VALUE_THREE,
+                System.getProperty(TEST_PROPERTY_NAME_THREE));
+        assertEquals("property four should be loaded.", TEST_PROPERTY_VALUE_FOUR,
+                System.getProperty(TEST_PROPERTY_NAME_FOUR));
+        assertEquals("property five should be loaded.", TEST_PROPERTY_VALUE_FIVE,
+                System.getProperty(TEST_PROPERTY_NAME_FIVE));
+    }
+
+    @Test
+    public void testLoadWithSetProperty() {
+
+        System.setProperty(TEST_PROPERTY_NAME_TWO, TEST_PROPERTY_VALUE_SIX);
+
+        new GlobalPropertyLoader(stream).load();
+
+        assertEquals("property one should be loaded.", TEST_PROPERTY_VALUE_ONE,
+                System.getProperty(TEST_PROPERTY_NAME_ONE));
+        assertEquals("property two should not be loaded.", TEST_PROPERTY_VALUE_SIX,
                 System.getProperty(TEST_PROPERTY_NAME_TWO));
         assertEquals("property three should be loaded.", TEST_PROPERTY_VALUE_THREE,
                 System.getProperty(TEST_PROPERTY_NAME_THREE));
