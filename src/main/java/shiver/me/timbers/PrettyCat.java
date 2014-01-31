@@ -35,6 +35,10 @@ import static shiver.me.timbers.transform.NullCompositeTokenFileTransformer.NULL
  */
 public class PrettyCat {
 
+    static {
+        new PropertyConfiguration("config.properties");
+    }
+
     private static final Transformers<CompositeFileTransformer<TokenTransformation>> TRANSFORMERS =
             new IterableTransformers<CompositeFileTransformer<TokenTransformation>>(
                     new LinkedList<CompositeFileTransformer<TokenTransformation>>() {{
@@ -53,10 +57,6 @@ public class PrettyCat {
                     }},
                     new RethrowingExceptionHandler<Throwable>(Throwable.class)
             );
-
-    static {
-        new PropertyConfiguration("config.properties");
-    }
 
     private static final ValueResolver<String> RESOLVER = new PropertyResolver();
 
