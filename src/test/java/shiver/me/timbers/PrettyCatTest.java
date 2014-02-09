@@ -11,8 +11,10 @@ import static org.junit.Assert.assertEquals;
 import static shiver.me.timbers.BACKGROUND_COLOUR.BLACK;
 import static shiver.me.timbers.ESCAPE.RESET;
 import static shiver.me.timbers.FOREGROUND_COLOUR.BRIGHT_WHITE;
+import static shiver.me.timbers.FileUtils.TEST_JAVASCRIPT_FILE;
 import static shiver.me.timbers.FileUtils.TEST_JAVA_FILE;
 import static shiver.me.timbers.FileUtils.TEST_JSON_FILE;
+import static shiver.me.timbers.FileUtils.TEST_PRETTY_JAVASCRIPT_FILE;
 import static shiver.me.timbers.FileUtils.TEST_PRETTY_JAVA_FILE;
 import static shiver.me.timbers.FileUtils.TEST_PRETTY_JSON_FILE;
 import static shiver.me.timbers.FileUtils.TEST_PRETTY_XML_FILE;
@@ -59,6 +61,15 @@ public class PrettyCatTest {
         PrettyCat.run(new String[]{testFilePath(TEST_JAVA_FILE)});
 
         assertEquals("a Java file should be prettified.", testFileContents(TEST_PRETTY_JAVA_FILE), out.toString());
+    }
+
+    @Test
+    public void testRunWithJavaScriptFile() throws Throwable {
+
+        PrettyCat.run(new String[]{testFilePath(TEST_JAVASCRIPT_FILE)});
+
+        assertEquals("a Java file should be prettified.",
+                testFileContents(TEST_PRETTY_JAVASCRIPT_FILE), out.toString());
     }
 
     @Test

@@ -6,6 +6,7 @@ import shiver.me.timbers.exceptions.IterableExceptionHandlers;
 import shiver.me.timbers.exceptions.MissingFileNameArgumentExceptionHandler;
 import shiver.me.timbers.exceptions.RethrowingExceptionHandler;
 import shiver.me.timbers.java.LazyJavaWrappedTransformer;
+import shiver.me.timbers.javascript.LazyJavaScriptWrappedTransformer;
 import shiver.me.timbers.json.LazyJsonWrappedTransformer;
 import shiver.me.timbers.properties.PropertyConfiguration;
 import shiver.me.timbers.transform.Container;
@@ -43,6 +44,7 @@ public class PrettyCat {
             new IterableTransformers<CompositeFileTransformer<TokenTransformation>>(
                     new LinkedList<CompositeFileTransformer<TokenTransformation>>() {{
                         add(new LazyJavaWrappedTransformer());
+                        add(new LazyJavaScriptWrappedTransformer());
                         add(new LazyXmlWrappedTransformer());
                         add(new LazyJsonWrappedTransformer());
                     }},

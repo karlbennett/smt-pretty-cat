@@ -1,0 +1,15 @@
+[40m[97m[33mfunction[97m test([36mone[97m) {
+
+    [33mvar[97m [36mtwo[97m = [94m2[97m;
+
+    [33mreturn[97m [33mfunction[97m ([36mthree[97m) {
+
+        [33mreturn[97m one + two + three;
+    }
+}
+
+[33mvar[97m [36mtext[97m = test([92m"one"[97m)([94m3.0[97m);
+
+console.log(text);
+
+[0m

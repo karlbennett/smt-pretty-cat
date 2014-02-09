@@ -20,6 +20,9 @@ public final class FileUtils {
     public static final String TEST_JAVA_FILE = "Test.java";
     public static final String TEST_PRETTY_JAVA_FILE = "Test.java.pretty";
 
+    public static final String TEST_JAVASCRIPT_FILE = "Test.js";
+    public static final String TEST_PRETTY_JAVASCRIPT_FILE = "Test.js.pretty";
+
     public static final String TEST_XML_FILE = "Test.xml";
     public static final String TEST_PRETTY_XML_FILE = "Test.xml.pretty";
 
