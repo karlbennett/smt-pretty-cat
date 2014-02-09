@@ -7,9 +7,6 @@ import java.util.concurrent.Callable;
 
 import static shiver.me.timbers.transform.xml.XmlTransformer.TEXT_XML;
 
-/**
- * This callable simply instantiates a new {@link XmlWrappedTransformer}.
- */
 public class LazyXmlWrappedTransformer extends LazyCompositeTransformer<XmlWrappedTransformer, TokenTransformation> {
 
     public LazyXmlWrappedTransformer() {

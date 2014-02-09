@@ -12,11 +12,11 @@ import static shiver.me.timbers.asserts.Asserts.assertIsNotNull;
  * This token applier will stop the application of transformations against tokens that have a parent rule of
  * "attribute".
  */
-public class IsNotAttributeTokenApplier implements TokenApplier {
+public class IsNotAttributeApplier implements TokenApplier {
 
     private final TokenApplier applier;
 
-    public IsNotAttributeTokenApplier(TokenApplier applier) {
+    public IsNotAttributeApplier(TokenApplier applier) {
 
         assertIsNotNull(argumentIsNullMessage("applier"), applier);
 

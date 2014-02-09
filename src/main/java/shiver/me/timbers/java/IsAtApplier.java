@@ -11,11 +11,11 @@ import static shiver.me.timbers.asserts.Asserts.assertIsNotNull;
 /**
  * This token applier will only apply a transformation against a "@" token.
  */
-public class IsAtTokenApplier implements TokenApplier {
+public class IsAtApplier implements TokenApplier {
 
     private final TokenApplier applier;
 
-    public IsAtTokenApplier(TokenApplier applier) {
+    public IsAtApplier(TokenApplier applier) {
 
         assertIsNotNull(argumentIsNullMessage("applier"), applier);
 

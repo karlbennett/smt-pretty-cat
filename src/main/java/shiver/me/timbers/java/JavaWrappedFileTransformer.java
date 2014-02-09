@@ -57,8 +57,7 @@ public class JavaWrappedFileTransformer extends WrappedFileTransformer<TokenTran
                             new Comment(new TerminalColourApplier(fg, COLOUR.resolve(Comment.class))),
                             new LineComment(new TerminalColourApplier(fg, COLOUR.resolve(LineComment.class))),
                             new Annotation(
-                                    new IsAtTokenApplier(
-                                            new TerminalColourApplier(fg, COLOUR.resolve(Annotation.class)))),
+                                    new IsAtApplier(new TerminalColourApplier(fg, COLOUR.resolve(Annotation.class)))),
                             new AnnotationName(new TerminalColourApplier(fg, COLOUR.resolve(AnnotationName.class))),
                             new IntegerLiteral(new TerminalColourApplier(fg, COLOUR.resolve(IntegerLiteral.class))),
                             new StringLiteral(new TerminalColourApplier(fg, COLOUR.resolve(StringLiteral.class))),

@@ -48,7 +48,7 @@ public class JsonWrappedFileTransformer extends WrappedFileTransformer<TokenTran
                 new LinkedList<TokenTransformation>() {{
                     addAll(keywordTransformations.asCollection());
                     addAll(Arrays.<TokenTransformation>asList(
-                            new Member(new IsMemberNameTokenApplier(
+                            new Member(new IsMemberNameApplier(
                                     new TerminalColourApplier(fg, COLOUR.resolve(Member.class)))),
                             new Number(new TerminalColourApplier(fg, COLOUR.resolve(Number.class))),
                             new JsonString(new TerminalColourApplier(fg, COLOUR.resolve(JsonString.class)))

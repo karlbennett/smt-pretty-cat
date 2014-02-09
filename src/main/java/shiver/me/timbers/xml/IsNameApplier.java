@@ -11,11 +11,11 @@ import static shiver.me.timbers.asserts.Asserts.assertIsNotNull;
 /**
  * This token applier will only apply a transformation against a "Name" token.
  */
-public class IsNameTokenApplier implements TokenApplier {
+public class IsNameApplier implements TokenApplier {
 
     private final TokenApplier applier;
 
-    public IsNameTokenApplier(TokenApplier applier) {
+    public IsNameApplier(TokenApplier applier) {
 
         assertIsNotNull(argumentIsNullMessage("applier"), applier);
 
