@@ -7,9 +7,6 @@ import java.util.concurrent.Callable;
 
 import static shiver.me.timbers.transform.java.JavaTransformer.TEXT_X_JAVA_SOURCE;
 
-/**
- * This callable simply instantiates a new {@link JavaWrappedFileTransformer}.
- */
 public class LazyJavaWrappedTransformer
         extends LazyCompositeTransformer<JavaWrappedFileTransformer, TokenTransformation> {
 

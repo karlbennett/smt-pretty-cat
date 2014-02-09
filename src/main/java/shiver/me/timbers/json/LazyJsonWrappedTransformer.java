@@ -7,9 +7,6 @@ import java.util.concurrent.Callable;
 
 import static shiver.me.timbers.transform.json.JsonTransformer.APPLICATION_JSON;
 
-/**
- * This callable simply instantiates a new {@link JsonWrappedFileTransformer}.
- */
 public class LazyJsonWrappedTransformer
         extends LazyCompositeTransformer<JsonWrappedFileTransformer, TokenTransformation> {
 
