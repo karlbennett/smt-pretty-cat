@@ -1,5 +1,6 @@
 package shiver.me.timbers;
 
+import shiver.me.timbers.clojure.LazyClojureWrappedTransformer;
 import shiver.me.timbers.exceptions.ExceptionHandler;
 import shiver.me.timbers.exceptions.FileNotFoundExceptionHandler;
 import shiver.me.timbers.exceptions.IterableExceptionHandlers;
@@ -44,6 +45,7 @@ public class PrettyCat {
             new IterableTransformers<CompositeFileTransformer<TokenTransformation>>(
                     new LinkedList<CompositeFileTransformer<TokenTransformation>>() {{
                         add(new LazyJavaWrappedTransformer());
+                        add(new LazyClojureWrappedTransformer());
                         add(new LazyJavaScriptWrappedTransformer());
                         add(new LazyXmlWrappedTransformer());
                         add(new LazyJsonWrappedTransformer());

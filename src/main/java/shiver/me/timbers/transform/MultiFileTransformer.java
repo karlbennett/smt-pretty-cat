@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static shiver.me.timbers.asserts.Asserts.argumentIsNullMessage;
 import static shiver.me.timbers.asserts.Asserts.assertIsNotNull;
+import static shiver.me.timbers.transform.clojure.ClojureTransformer.TEXT_X_CLOJURE;
 import static shiver.me.timbers.transform.java.JavaTransformer.TEXT_X_JAVA_SOURCE;
 import static shiver.me.timbers.transform.javascript.JavaScriptTransformer.APPLICATION_JAVASCRIPT;
 import static shiver.me.timbers.transform.json.JsonTransformer.APPLICATION_JSON;
@@ -25,6 +26,7 @@ public class MultiFileTransformer {
 
     private static final Map<String, MimeType> FILE_EXTENSION_TO_MIME_TYPE = new HashMap<String, MimeType>() {{
         put("java", TEXT_X_JAVA_SOURCE);
+        put("clj", TEXT_X_CLOJURE);
         put("js", APPLICATION_JAVASCRIPT);
         put("xml", TEXT_XML);
         put("json", APPLICATION_JSON);
